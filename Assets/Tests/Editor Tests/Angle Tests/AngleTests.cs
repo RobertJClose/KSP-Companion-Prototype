@@ -1,0 +1,494 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using NUnit.Framework;
+using UnityEngine;
+using UnityEngine.TestTools;
+
+namespace Tests
+{
+    public class AngleTests
+    {
+        private readonly float allowedError = 0.01f;
+
+        [Test]
+        public void ConstructorInputValidation_Within2PI_ReturnsEquivalentWithin2PI()
+        {
+            // Arrange
+            Angle angle = new Angle(Mathf.PI / 2f);
+
+            // Act
+            float actual = angle.RadValue;
+
+            // Assert
+            Assert.That(actual, Is.EqualTo(Mathf.PI / 2f).Within(allowedError));
+        }
+
+        [Test]
+        public void ConstructorInputValidation_Beyond2PI_ReturnsEquivalentWithin2PI()
+        {
+            // Arrange
+            Angle angle = new Angle(3f * Mathf.PI);
+
+            // Act
+            float actual = angle.RadValue;
+
+            // Assert
+            Assert.That(actual, Is.EqualTo(Mathf.PI).Within(allowedError));
+        }
+
+        [Test]
+        public void ConstructorInputValidation_NegativeWithin2PI_ReturnsEquivalentWithin2PI()
+        {
+            // Arrange
+            Angle angle = new Angle(-Mathf.PI);
+
+            // Act
+            float actual = angle.RadValue;
+
+            // Assert
+            Assert.That(actual, Is.EqualTo(Mathf.PI).Within(allowedError));
+        }
+
+        [Test]
+        public void ConstructorInputValidation_NegativeBeyond2PI_ReturnsEquivalentWithin2PI()
+        {
+            // Arrange
+            Angle angle = new Angle(-3f * Mathf.PI);
+
+            // Act
+            float actual = angle.RadValue;
+
+            // Assert
+            Assert.That(actual, Is.EqualTo(Mathf.PI).Within(allowedError));
+        }
+
+        [Test]
+        public void ConstructorInputValidation_Within360_ReturnsEquivalentWithin360()
+        {
+            // Arrange
+            Angle angle = new Angle(90f, isDeg: true);
+
+            // Act
+            float actual = angle.DegValue;
+
+            // Assert
+            Assert.That(actual, Is.EqualTo(90f).Within(allowedError));
+        }
+
+        [Test]
+        public void ConstructorInputValidation_Beyond360_ReturnsEquivalentWithin360()
+        {
+            // Arrange
+            Angle angle = new Angle(450f, isDeg: true);
+
+            // Act
+            float actual = angle.DegValue;
+
+            // Assert
+            Assert.That(actual, Is.EqualTo(90f).Within(allowedError));
+        }
+
+        [Test]
+        public void ConstructorInputValidation_NegativeWithin360_ReturnsEquivalentWithin360()
+        {
+            // Arrange
+            Angle angle = new Angle(-180f, isDeg: true);
+
+            // Act
+            float actual = angle.DegValue;
+
+            // Assert
+            Assert.That(actual, Is.EqualTo(180f).Within(allowedError));
+        }
+
+        [Test]
+        public void ConstructorInputValidation_NegativeBeyond360_ReturnsEquivalentWithin360()
+        {
+            // Arrange
+            Angle angle = new Angle(-450f, isDeg: true);
+
+            // Act
+            float actual = angle.DegValue;
+
+            // Assert
+            Assert.That(actual, Is.EqualTo(270f).Within(allowedError));
+        }
+
+        [Test]
+        public void ImplicitFromFloatConversion_CopyAssignment_ConstructsNew()
+        {
+            // Arrange
+            Angle angleVariable;
+            float floatVariable = Mathf.PI / 3f;
+
+            // Act
+            angleVariable = floatVariable;
+            float actual = angleVariable.RadValue;
+
+            // Assert
+            Assert.That(actual, Is.EqualTo(floatVariable).Within(allowedError));
+        }
+
+        [Test]
+        public void ImplicitFromFloatConversion_CopyInitialisation_CallsConstructor()
+        {
+            // Arrange
+            Angle angle = Mathf.PI;
+
+            // Act
+            float actual = angle.RadValue;
+
+            // Assert
+            Assert.That(actual, Is.EqualTo(Mathf.PI).Within(allowedError));
+        }
+
+        [Test]
+        public void ImplicitToFloatConversion_MathfSinFunction_SinReturnsFloat()
+        {
+            // Arrange
+            Angle angle = Mathf.PI / 6f;
+
+            // Act
+            float actual = Mathf.Sin(angle);
+
+            // Assert
+            Assert.That(actual, Is.EqualTo(0.5f).Within(allowedError));
+        }
+
+        [Test]
+        public void EqualityOperator_IfStatementEqualAngles_ReturnsTrue()
+        {
+            // Arrange
+            Angle angleOne = Angle.HalfTurn;
+            Angle angleTwo = Angle.HalfTurn;
+
+            // Act
+            bool areEqual;
+            if (angleOne == angleTwo)
+                areEqual = true;
+            else
+                areEqual = false;
+
+            // Assert
+            Assert.That(areEqual, Is.EqualTo(true));
+        }
+
+        [Test]
+        public void EqualityOperator_2PISplitSpecialCase_ReturnsTrue()
+        {
+            // Arrange
+            Angle angleOne = Angle.Zero;
+            Angle angleTwo = Angle.MaxAngle;
+
+            // Act
+            bool areEqual;
+            if (angleOne == angleTwo)
+                areEqual = true;
+            else
+                areEqual = false;
+
+            // Assert
+            Assert.That(areEqual, Is.EqualTo(true));
+        }
+
+        [Test]
+        public void InequalityOperator_IfStatementUnequalAngles_ReturnsTrue()
+        {
+            // Arrange
+            Angle angleOne = Angle.QuarterTurn;
+            Angle angleTwo = Angle.HalfTurn;
+
+            // Act
+            bool areNotEqual;
+            if (angleOne != angleTwo)
+                areNotEqual = true;
+            else
+                areNotEqual = false;
+
+            // Assert
+            Assert.That(areNotEqual, Is.EqualTo(true));
+        }
+
+        [Test]
+        public void InequalityOperator_2PISplitSpecialCase_ReturnsFalse()
+        {
+            // Arrange
+            Angle angleOne = Angle.Zero;
+            Angle angleTwo = Angle.MaxAngle;
+
+            // Act
+            bool areNotEqual;
+            if (angleOne != angleTwo)
+                areNotEqual = true;
+            else
+                areNotEqual = false;
+
+            // Assert
+            Assert.That(areNotEqual, Is.EqualTo(false));
+        }
+
+        [Test]
+        public void AdditionOperator_ThreeQuarterTurnAddedToHalfTurn_EqualsQuarterTurn()
+        {
+            // Arrange
+            Angle angleOne = Angle.ThreeQuartersTurn;
+            Angle angleTwo = Angle.HalfTurn;
+
+            // Act
+            Angle angleSum = angleOne + angleTwo;
+
+            // Assert
+            Assert.That(angleSum.RadValue, Is.EqualTo(Angle.QuarterTurn.RadValue).Within(0.001f).Percent);
+        }
+
+        [Test]
+        public void SubtractionOperator_QuarterTurnMinusHalfTurn_EqualsThreeQuarterTurn()
+        {
+            // Arrange
+            Angle angleOne = Angle.QuarterTurn;
+            Angle angleTwo = Angle.HalfTurn;
+
+            // Act
+            Angle angleSub = angleOne - angleTwo;
+
+            // Assert
+            Assert.That(angleSub, Is.EqualTo(Angle.ThreeQuartersTurn));
+        }
+
+        [Test]
+        public void LessThanOperator_HalfTurnLessThanQuarterTurn_ReturnsFalse()
+        {
+            // Arrange
+            Angle angleOne = Angle.HalfTurn;
+            Angle angleTwo = Angle.QuarterTurn;
+
+            // Act
+            bool actual = angleOne < angleTwo;
+
+            // Assert
+            Assert.That(actual, Is.EqualTo(false));
+        }
+
+        [Test]
+        public void GreaterThanOperator_QuarterTurnGreaterThanHalfTurn_ReturnsFalse()
+        {
+            // Arrange
+            Angle angleOne = Angle.QuarterTurn;
+            Angle angleTwo = Angle.HalfTurn;
+
+            // Act
+            bool actual = angleOne > angleTwo;
+
+            // Assert
+            Assert.That(actual, Is.EqualTo(false));
+        }
+
+        [Test]
+        public void UnaryMinusOperator_MinusQuarterTurn_ReturnsThreeQuartersTurn()
+        {
+            // Arrange
+            Angle angle = Angle.QuarterTurn;
+
+            // Act
+            Angle actual = -angle;
+
+            // Assert
+            Assert.That(actual.RadValue, Is.EqualTo(Angle.ThreeQuartersTurn.RadValue));
+        }
+
+        [Test]
+        public void Expel_NoForbiddenRegion_ReturnsOriginalAngle()
+        {
+            // Arrange
+            Angle lower = Angle.Zero;
+            Angle upper = 2f * Mathf.PI - 0.000001f;
+            Angle angle = Angle.QuarterTurn;
+
+            // Act
+            Angle actual = Angle.Expel(angle, lower, upper);
+
+            // Assert
+            Assert.That(actual, Is.EqualTo(angle));
+        }
+
+        [Test]
+        public void Expel_OutsideForbiddenRegionNormalHierarchy_ReturnsOriginalAngle()
+        {
+            // Arrange
+            Angle angle = Mathf.PI / 4f;
+            Angle lower = Angle.QuarterTurn;
+            Angle upper = Angle.ThreeQuartersTurn;
+
+            // Act
+            Angle actual = Angle.Expel(angle, lower, upper);
+
+            // Assert
+            Assert.That(actual, Is.EqualTo(angle));
+        }
+
+        [Test]
+        public void Expel_OutsideForbiddenRegionInvertedHierarchy_ReturnsOriginalAngle()
+        {
+            // Arrange
+            Angle angle = Mathf.PI;
+            Angle lower = Angle.ThreeQuartersTurn;
+            Angle upper = Angle.QuarterTurn;
+
+            // Act
+            Angle actual = Angle.Expel(angle, lower, upper);
+
+            // Assert
+            Assert.That(actual, Is.EqualTo(angle));
+        }
+
+        [Test]
+        public void Expel_WithinForbiddenCloserToLowerNormalHierarchy_ReturnsLowerBound()
+        {
+            // Arrange
+            Angle angle = Mathf.PI * 3f / 4f;
+            Angle lower = Angle.QuarterTurn;
+            Angle upper = Angle.ThreeQuartersTurn;
+
+            // Act
+            Angle actual = Angle.Expel(angle, lower, upper);
+
+            // Assert
+            Assert.That(actual, Is.EqualTo(lower));
+        }
+
+        [Test]
+        public void Expel_WithinForbiddenCloserToUpperInvertedHierarchy_ReturnsUpperBound()
+        {
+            // Arrange
+            Angle angle = Mathf.PI / 4f;
+            Angle lower = Angle.ThreeQuartersTurn;
+            Angle upper = Angle.QuarterTurn;
+
+            // Act
+            Angle actual = Angle.Expel(angle, lower, upper);
+
+            // Assert
+            Assert.That(actual, Is.EqualTo(upper));
+        }
+
+        [Test]
+        public void IsBetween_HalfTurn_IsBetweenQuarterTurnAndThreeQuartersTurn()
+        {
+            // Arrange
+            Angle angle = Angle.HalfTurn;
+            Angle lower = Angle.QuarterTurn;
+            Angle upper = Angle.ThreeQuartersTurn;
+
+            // Act
+            bool actual = angle.IsBetween(lower, upper);
+
+            // Assert
+            Assert.That(actual, Is.EqualTo(true));
+        }
+
+        [Test]
+        public void IsBetween_HalfTurn_IsNotBetweenThreeQuartersTurnAndQuarterTurn()
+        {
+            // Arrange
+            Angle angle = Angle.HalfTurn;
+            Angle lower = Angle.ThreeQuartersTurn;
+            Angle upper = Angle.QuarterTurn;
+
+            // Act
+            bool actual = angle.IsBetween(lower, upper);
+
+            // Assert
+            Assert.That(actual, Is.EqualTo(false));
+        }
+
+        [Test]
+        public void IsBetween_ZeroTurn_IsBetweenThreeQuartersTurnAndQuarterTurn()
+        {
+            // Arrange
+            Angle angle = Angle.Zero;
+            Angle lower = Angle.ThreeQuartersTurn;
+            Angle upper = Angle.QuarterTurn;
+
+            // Act
+            bool actual = angle.IsBetween(lower, upper);
+
+            // Assert
+            Assert.That(actual, Is.EqualTo(true));
+        }
+
+        [Test]
+        public void IsBetween_ZeroTurn_IsNotBetweenQuaterTurnAndThreeQuartersTurn()
+        {
+            // Arrange
+            Angle angle = Angle.Zero;
+            Angle lower = Angle.QuarterTurn;
+            Angle upper = Angle.ThreeQuartersTurn;
+
+            // Act
+            bool actual = angle.IsBetween(lower, upper);
+
+            // Assert
+            Assert.That(actual, Is.EqualTo(false));
+        }
+
+        [Test]
+        public void IsBetween_NullInput_ReturnsFalse()
+        {
+            // Arrange
+            Angle angle = Angle.Zero;
+            Angle? lower = Angle.QuarterTurn;
+            Angle? upper = null;
+
+            // Act
+            bool actual = angle.IsBetween(lower, upper);
+
+            // Assert
+            Assert.That(actual, Is.EqualTo(false));
+        }
+
+        [Test]
+        public void Closer_QuarterTurn_IsCloserToHalfTurnThanThreeQuartersTurn()
+        {
+            // Arrange
+            Angle angle = Angle.QuarterTurn;
+            Angle angleOne = Angle.HalfTurn;
+            Angle angleTwo = Angle.ThreeQuartersTurn;
+
+            // Act
+            Angle actual = angle.Closer(angleOne, angleTwo);
+
+            // Assert
+            Assert.That(actual.RadValue, Is.EqualTo(angleOne.RadValue));
+        }
+
+        [Test]
+        public void Closer_OneNullInputAngle_ReturnsOtherValidAngle()
+        {
+            // Arrange
+            Angle angle = Angle.Zero;
+            Angle angleOne = Angle.HalfTurn;
+            Angle? angleNull = null;
+
+            // Act
+            Angle actual = angle.Closer(angleOne, angleNull);
+
+            // Assert
+            Assert.That(actual.RadValue, Is.EqualTo(angleOne.RadValue));
+        }
+
+        [Test]
+        public void Closer_BothInputsNull_ReturnsOriginalAngle()
+        {
+            // Arrange
+            Angle angle = Angle.Zero;
+            Angle? nullOne = null;
+            Angle? nullTwo = null;
+
+            // Act
+            Angle actual = angle.Closer(nullOne, nullTwo);
+
+            // Assert
+            Assert.That(actual.RadValue, Is.EqualTo(angle.RadValue));
+        }
+    }
+}

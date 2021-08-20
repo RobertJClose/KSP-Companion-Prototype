@@ -1,0 +1,4 @@
+﻿[*.{cs,vb}]
+
+# IDE0054: Use compound assignment
+dotnet_diagnostic.IDE0054.severity = none
