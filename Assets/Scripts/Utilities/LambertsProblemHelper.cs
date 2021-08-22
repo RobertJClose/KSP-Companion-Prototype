@@ -5,7 +5,7 @@ using UnityEngine;
 
 public static class LambertsProblemHelper
 {
-    public static Orbit Solver(GravitationalBody body, Vector3 positionOne, float timeOne, Vector3 positionTwo, float timeTwo)
+    public static Orbit Solver(GravitationalBody body, Vector3 positionOne, double timeOne, Vector3 positionTwo, double timeTwo)
     {
         double chordLength = (positionTwo - positionOne).magnitude;
         double semiPerimeter = 0.5 * (positionOne.magnitude + positionTwo.magnitude + chordLength);

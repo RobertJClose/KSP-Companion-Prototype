@@ -53,7 +53,7 @@ public class MissionTimeline : MonoBehaviour
         // Create a new ManeuverStep and add it in where the AddButton used to be.
         ManeuverTransitionStep firstManeuver = Instantiate(prefab_ManeuverStep, transform);
         firstManeuver.transform.SetSiblingIndex(addButtonIndex);
-        firstManeuver.TransitionTime = float.NegativeInfinity;
+        firstManeuver.TransitionTime = double.NegativeInfinity;
         missionTimeline.Insert(addButtonIndex, firstManeuver);
 
         // Create a new OrbitalStep and set it up as a transfer orbit. Add it after the first ManeuverStep
@@ -66,7 +66,7 @@ public class MissionTimeline : MonoBehaviour
         // Create the second new ManeuverStep and add it after the transfer OrbitalStep
         ManeuverTransitionStep secondManeuver = Instantiate(prefab_ManeuverStep, transform);
         secondManeuver.transform.SetSiblingIndex(addButtonIndex + 2);
-        secondManeuver.TransitionTime = float.PositiveInfinity;
+        secondManeuver.TransitionTime = double.PositiveInfinity;
         missionTimeline.Insert(addButtonIndex + 2, secondManeuver);
 
         UpdateAllSurroundingSteps();
@@ -175,7 +175,7 @@ public class MissionTimeline : MonoBehaviour
 
     public void ValidateTransitionTimes()
     {
-        // This method guarantees that their will be proper ordering of the TransitionTimes for each TransitionStep
+        // This method guarantees that there will be proper ordering of the TransitionTimes for each TransitionStep
         // along the missionTimeline. So a TransitionStep cannot end up with a TransitionTime that is earlier(later)
         // than another TransitionStep that is before(after) it in the timeline.
 
@@ -186,7 +186,8 @@ public class MissionTimeline : MonoBehaviour
             TimelineStep step = missionTimeline[forwardIndex];
             if (step is TransitionStep && forwardIndex != 0)
             {
-                (step as TransitionStep).TransitionTime = Mathf.Clamp((step as TransitionStep).TransitionTime, (step as TransitionStep).EarlierTransitionStep.TransitionTime, float.PositiveInfinity);
+                if ((step as TransitionStep).TransitionTime < (step as TransitionStep).EarlierTransitionStep.TransitionTime)
+                    (step as TransitionStep).TransitionTime = (step as TransitionStep).EarlierTransitionStep.TransitionTime;
             }
         }
 
@@ -197,7 +198,8 @@ public class MissionTimeline : MonoBehaviour
             TimelineStep step = missionTimeline[backwardIndex];
             if (step is TransitionStep && backwardIndex != missionTimeline.Count - 1)
             {
-                (step as TransitionStep).TransitionTime = Mathf.Clamp((step as TransitionStep).TransitionTime, float.NegativeInfinity, (step as TransitionStep).LaterTransitionStep.TransitionTime);
+                if ((step as TransitionStep).TransitionTime > (step as TransitionStep).LaterTransitionStep.TransitionTime)
+                    (step as TransitionStep).TransitionTime = (step as TransitionStep).LaterTransitionStep.TransitionTime;
             }
         }
     }
@@ -226,7 +228,7 @@ public class MissionTimeline : MonoBehaviour
     {
         // Add the mission start step
         StartFinishTransitionStep startStep = Instantiate(prefab_StartStep, transform);
-        startStep.TransitionTime = 0.0f;
+        startStep.TransitionTime = 0.0;
         missionTimeline.Add(startStep);
 
         // Add the initial free orbital step
@@ -251,7 +253,7 @@ public class MissionTimeline : MonoBehaviour
 
         // Add the mission finish step
         StartFinishTransitionStep finishStep = Instantiate(prefab_FinishStep, transform);
-        finishStep.TransitionTime = 2.0f * 60f * 60f; // 2 hours after the mission start.
+        finishStep.TransitionTime = 2.0 * 60.0 * 60.0; // 2 hours after the mission start.
         missionTimeline.Add(finishStep);
     }
 

@@ -12,10 +12,10 @@ namespace Tests
             Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
 
             // Act
-            orbit.RPE = -1f;
+            orbit.RPE = -1.0;
 
             // Assert
-            Assert.That(orbit.RPE, Is.EqualTo(0f));
+            Assert.That(orbit.RPE, Is.EqualTo(0.0));
         }
         
         [Test]
@@ -25,10 +25,10 @@ namespace Tests
             Orbit closedOrbit = GravitationalBody.Kerbin.DefaultOrbit;
 
             // Act
-            closedOrbit.ECC = -1f;
+            closedOrbit.ECC = -1.0;
 
             // Assert
-            Assert.That(closedOrbit.ECC, Is.EqualTo(0f));
+            Assert.That(closedOrbit.ECC, Is.EqualTo(0.0));
         }
 
         [Test]
@@ -36,18 +36,18 @@ namespace Tests
         {
             // Arrange
             Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
-            orbit.RPE = 1e+8f;
-            orbit.TPP = 1000f;
-            orbit.ECC = 0.2f;
+            orbit.RPE = 1e+8;
+            orbit.TPP = 1000.0;
+            orbit.ECC = 0.2;
             
             Angle trueAnomaly = 3f * Mathf.PI / 4f;
-            float result = 143887.2589f;
+            double result = 143887.2589;
 
             // Act
-            float actual = orbit.TrueAnomaly2Time(trueAnomaly);
+            double actual = orbit.TrueAnomaly2Time(trueAnomaly);
 
             // Assert
-            Assert.That(actual, Is.EqualTo(result).Within(0.01f).Percent);
+            Assert.That(actual, Is.EqualTo(result).Within(0.01).Percent);
         }
 
         [Test]
@@ -55,18 +55,18 @@ namespace Tests
         {
             // Arrange
             Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
-            orbit.RPE = 1e+8f;
-            orbit.TPP = 1000f;
-            orbit.ECC = 1f;
+            orbit.RPE = 1e+8;
+            orbit.TPP = 1000.0;
+            orbit.ECC = 1.0;
 
             Angle trueAnomaly = 3f * Mathf.PI / 4f;
-            float result = 504250.3872f;
+            double result = 504250.3872;
 
             // Act
-            float actual = orbit.TrueAnomaly2Time(trueAnomaly);
+            double actual = orbit.TrueAnomaly2Time(trueAnomaly);
 
             // Assert
-            Assert.That(actual, Is.EqualTo(result).Within(0.01f).Percent);
+            Assert.That(actual, Is.EqualTo(result).Within(0.01).Percent);
         }
 
         [Test]
@@ -74,13 +74,13 @@ namespace Tests
         {
             // Arrange
             Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
-            orbit.ECC = 1f;
+            orbit.ECC = 1.0;
 
             Angle trueAnomaly = Mathf.PI;
-            float result = float.PositiveInfinity;
+            double result = double.PositiveInfinity;
 
             // Act
-            float actual = orbit.TrueAnomaly2Time(trueAnomaly);
+            double actual = orbit.TrueAnomaly2Time(trueAnomaly);
 
             // Assert
             Assert.That(actual, Is.EqualTo(result));
@@ -91,18 +91,18 @@ namespace Tests
         {
             // Arrange
             Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
-            orbit.RPE = 1e+8f;
-            orbit.TPP = 1000f;
-            orbit.ECC = 1.1f;
+            orbit.RPE = 1e+8;
+            orbit.TPP = 1000.0;
+            orbit.ECC = 1.1;
 
             Angle trueAnomaly = 3f * Mathf.PI / 4f;
-            float result = 686502.5948f;
+            double result = 686502.5948;
 
             // Act
-            float actual = orbit.TrueAnomaly2Time(trueAnomaly);
+            double actual = orbit.TrueAnomaly2Time(trueAnomaly);
 
             // Assert
-            Assert.That(actual, Is.EqualTo(result).Within(0.01f).Percent);
+            Assert.That(actual, Is.EqualTo(result).Within(0.01).Percent);
         }
 
         [Test]
@@ -110,14 +110,14 @@ namespace Tests
         {
             // Arrange
             Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
-            orbit.ECC = 1.5f;
+            orbit.ECC = 1.5;
 
             Angle trueAnomaly = orbit.MaxTrueAnomaly ?? Angle.Zero;
 
-            float result = float.PositiveInfinity;
+            double result = double.PositiveInfinity;
 
             // Act
-            float actual = orbit.TrueAnomaly2Time(trueAnomaly);
+            double actual = orbit.TrueAnomaly2Time(trueAnomaly);
 
             // Assert
             Assert.That(actual, Is.EqualTo(result));
@@ -128,14 +128,14 @@ namespace Tests
         {
             // Arrange
             Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
-            orbit.ECC = 1.5f;
+            orbit.ECC = 1.5;
 
             Angle trueAnomaly = Angle.Zero - (orbit.MaxTrueAnomaly ?? Angle.Zero).RadValue;
 
-            float result = float.NegativeInfinity;
+            double result = double.NegativeInfinity;
 
             // Act
-            float actual = orbit.TrueAnomaly2Time(trueAnomaly);
+            double actual = orbit.TrueAnomaly2Time(trueAnomaly);
 
             // Assert
             Assert.That(actual, Is.EqualTo(result));
@@ -146,14 +146,14 @@ namespace Tests
         {
             // Arrange
             Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
-            orbit.ECC = 1.5f;
+            orbit.ECC = 1.5;
 
             Angle trueAnomaly = ((orbit.MaxTrueAnomaly ?? Angle.Zero).RadValue + Mathf.PI) / 2f;
 
-            float result = float.PositiveInfinity;
+            double result = double.PositiveInfinity;
 
             // Act
-            float actual = orbit.TrueAnomaly2Time(trueAnomaly);
+            double actual = orbit.TrueAnomaly2Time(trueAnomaly);
 
             // Assert
             Assert.That(actual, Is.EqualTo(result));
@@ -168,10 +168,10 @@ namespace Tests
 
             Angle trueAnomaly = (3f * Mathf.PI - (orbit.MaxTrueAnomaly ?? Angle.Zero).RadValue) / 2f;
 
-            float result = float.NegativeInfinity;
+            double result = double.NegativeInfinity;
 
             // Act
-            float actual = orbit.TrueAnomaly2Time(trueAnomaly);
+            double actual = orbit.TrueAnomaly2Time(trueAnomaly);
 
             // Assert
             Assert.That(actual, Is.EqualTo(result));
@@ -182,11 +182,11 @@ namespace Tests
         {
             // Arrange
             Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
-            orbit.RPE = 1e+7f;
-            orbit.ECC = 0.4f;
-            orbit.TPP = 1500f;
+            orbit.RPE = 1e+7;
+            orbit.ECC = 0.4;
+            orbit.TPP = 1500.0;
 
-            float time = -10000f;
+            double time = -10000.0;
             Angle result = 3.032453601f;
 
             // Act
@@ -201,11 +201,11 @@ namespace Tests
         {
             // Arrange
             Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
-            orbit.RPE = 1e+7f;
-            orbit.ECC = 0.95f;
-            orbit.TPP = 1500f;
+            orbit.RPE = 1e+7;
+            orbit.ECC = 0.95;
+            orbit.TPP = 1500.0;
 
-            float time = -10000f;
+            double time = -10000.0;
             Angle result = -2.284620281f;
 
             // Act
@@ -220,11 +220,11 @@ namespace Tests
         {
             // Arrange
             Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
-            orbit.RPE = 1e+7f;
-            orbit.ECC = 0.9999f;
-            orbit.TPP = 1500f;
+            orbit.RPE = 1e+7;
+            orbit.ECC = 0.9999;
+            orbit.TPP = 1_500.0;
 
-            float time = -10000f;
+            double time = -10000.0;
             Angle result = -2.249168754f;
 
             // Act
@@ -239,11 +239,11 @@ namespace Tests
         {
             // Arrange
             Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
-            orbit.RPE = 1e+7f;
-            orbit.ECC = 1.0f;
-            orbit.TPP = 3_000f;
+            orbit.RPE = 1e+7;
+            orbit.ECC = 1.0;
+            orbit.TPP = 3_000.0;
 
-            float time = 5_000f;
+            double time = 5_000.0;
             Angle result = 1.288831085f;
 
             // Act
@@ -258,9 +258,9 @@ namespace Tests
         {
             // Arrange
             Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
-            orbit.ECC = 1.0f;
+            orbit.ECC = 1.0;
 
-            float time = float.PositiveInfinity;
+            double time = double.PositiveInfinity;
             Angle result = Angle.HalfTurn;
 
             // Act
@@ -275,9 +275,9 @@ namespace Tests
         {
             // Arrange
             Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
-            orbit.ECC = 1.0f;
+            orbit.ECC = 1.0;
 
-            float time = float.NegativeInfinity;
+            double time = double.NegativeInfinity;
             Angle result = Angle.HalfTurn;
 
             // Act
@@ -292,9 +292,9 @@ namespace Tests
         {
             // Arrange
             Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
-            orbit.ECC = 1.0f;
+            orbit.ECC = 1.0;
 
-            float time = 1e+35f;
+            double time = 1e+35;
             Angle result = Angle.HalfTurn;
 
             // Act
@@ -309,9 +309,9 @@ namespace Tests
         {
             // Arrange
             Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
-            orbit.ECC = 1.0f;
+            orbit.ECC = 1.0;
 
-            float time = -1e+35f;
+            double time = -1e+35;
             Angle result = Angle.HalfTurn;
 
             // Act
@@ -326,11 +326,11 @@ namespace Tests
         {
             // Arrange
             Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
-            orbit.RPE = 1e+7f;
-            orbit.ECC = 1.5f;
-            orbit.TPP = 2_000f;
+            orbit.RPE = 1e+7;
+            orbit.ECC = 1.5;
+            orbit.TPP = 2_000.0;
 
-            float time = 100f;
+            double time = 100.0;
             Angle result = -1.269606064f;
 
             // Act
@@ -345,9 +345,9 @@ namespace Tests
         {
             // Arrange
             Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
-            orbit.ECC = 1.5f;
+            orbit.ECC = 1.5;
 
-            float time = float.PositiveInfinity;
+            double time = double.PositiveInfinity;
             Angle result = orbit.MaxTrueAnomaly ?? Angle.Zero;
 
             // Act
@@ -362,9 +362,9 @@ namespace Tests
         {
             // Arrange
             Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
-            orbit.ECC = 1.5f;
+            orbit.ECC = 1.5;
 
-            float time = float.NegativeInfinity;
+            double time = double.NegativeInfinity;
             Angle result = 2f * Mathf.PI - (orbit.MaxTrueAnomaly ?? Angle.Zero);
 
             // Act
@@ -379,9 +379,9 @@ namespace Tests
         {
             // Arrange
             Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
-            orbit.ECC = 1.5f;
+            orbit.ECC = 1.5;
 
-            float time = 1e+30f;
+            double time = 1e+30;
             Angle result = orbit.MaxTrueAnomaly ?? Angle.Zero;
 
             // Act
@@ -396,9 +396,9 @@ namespace Tests
         {
             // Arrange
             Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
-            orbit.ECC = 1.5f;
+            orbit.ECC = 1.5;
 
-            float time = -1e+30f;
+            double time = -1e+30;
             Angle result = 2f * Mathf.PI - (orbit.MaxTrueAnomaly ?? Angle.Zero);
 
             // Act
@@ -413,8 +413,8 @@ namespace Tests
         {
             // Arrange 
             Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
-            orbit.RPE = 1e+6f;
-            orbit.ECC = 0.5f;
+            orbit.RPE = 1e+6;
+            orbit.ECC = 0.5;
             orbit.INC = Mathf.PI / 4.0f;
             orbit.APE = Mathf.PI / 2.0f;
             orbit.LAN = Mathf.PI;
@@ -429,9 +429,9 @@ namespace Tests
             Vector3 actual = orbit.TrueAnomaly2Point(trueAnomaly);
 
             // Assert
-            Assert.That(actual.x, Is.EqualTo(xResult).Within(0.01f).Percent);
-            Assert.That(actual.y, Is.EqualTo(yResult).Within(0.01f).Percent);
-            Assert.That(actual.z, Is.EqualTo(zResult).Within(0.01f).Percent);
+            Assert.That(actual.x, Is.EqualTo(xResult).Within(0.01).Percent);
+            Assert.That(actual.y, Is.EqualTo(yResult).Within(0.01).Percent);
+            Assert.That(actual.z, Is.EqualTo(zResult).Within(0.01).Percent);
         }
 
         [Test]
@@ -439,8 +439,8 @@ namespace Tests
         {
             // Arrange 
             Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
-            orbit.RPE = 1e+6f;
-            orbit.ECC = 1f;
+            orbit.RPE = 1e+6;
+            orbit.ECC = 1.0;
             orbit.INC = Mathf.PI / 4.0f;
             orbit.APE = Mathf.PI / 2.0f;
             orbit.LAN = Mathf.PI;
@@ -455,9 +455,9 @@ namespace Tests
             Vector3 actual = orbit.TrueAnomaly2Point(trueAnomaly);
 
             // Assert
-            Assert.That(actual.x, Is.EqualTo(xResult).Within(0.01f).Percent);
-            Assert.That(actual.y, Is.EqualTo(yResult).Within(0.01f).Percent);
-            Assert.That(actual.z, Is.EqualTo(zResult).Within(0.01f).Percent);
+            Assert.That(actual.x, Is.EqualTo(xResult).Within(0.01).Percent);
+            Assert.That(actual.y, Is.EqualTo(yResult).Within(0.01).Percent);
+            Assert.That(actual.z, Is.EqualTo(zResult).Within(0.01).Percent);
         }
 
         [Test]
@@ -465,8 +465,8 @@ namespace Tests
         {
             // Arrange 
             Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
-            orbit.RPE = 1e+6f;
-            orbit.ECC = 3.0f;
+            orbit.RPE = 1e+6;
+            orbit.ECC = 3.0;
             orbit.INC = Mathf.PI / 4.0f;
             orbit.APE = Mathf.PI / 2.0f;
             orbit.LAN = Mathf.PI;
@@ -481,9 +481,9 @@ namespace Tests
             Vector3 actual = orbit.TrueAnomaly2Point(trueAnomaly);
 
             // Assert
-            Assert.That(actual.x, Is.EqualTo(xResult).Within(0.01f).Percent);
-            Assert.That(actual.y, Is.EqualTo(yResult).Within(0.01f).Percent);
-            Assert.That(actual.z, Is.EqualTo(zResult).Within(0.01f).Percent);
+            Assert.That(actual.x, Is.EqualTo(xResult).Within(0.01).Percent);
+            Assert.That(actual.y, Is.EqualTo(yResult).Within(0.01).Percent);
+            Assert.That(actual.z, Is.EqualTo(zResult).Within(0.01).Percent);
         }
 
         [Test]
@@ -491,7 +491,7 @@ namespace Tests
         {
             // Arrange
             Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
-            orbit.ECC = 1.0f;
+            orbit.ECC = 1.0;
 
             Angle trueAnomaly = Mathf.PI;
 
@@ -507,7 +507,7 @@ namespace Tests
         {
             // Arrange
             Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
-            orbit.ECC = 3.0f;
+            orbit.ECC = 3.0;
 
             Angle trueAnomaly = orbit.MaxTrueAnomaly ?? Angle.Zero;
 
@@ -523,7 +523,7 @@ namespace Tests
         {
             // Arrange
             Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
-            orbit.ECC = 3.0f;
+            orbit.ECC = 3.0;
 
             Angle trueAnomaly = - (orbit.MaxTrueAnomaly ?? Angle.Zero);
 
@@ -539,7 +539,7 @@ namespace Tests
         {
             // Arrange
             Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
-            orbit.ECC = 3.0f;
+            orbit.ECC = 3.0;
 
             Angle trueAnomaly = (Mathf.PI + (orbit.MaxTrueAnomaly ?? Angle.Zero).RadValue) / 2.0f;
 
@@ -555,7 +555,7 @@ namespace Tests
         {
             // Arrange
             Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
-            orbit.ECC = 3.0f;
+            orbit.ECC = 3.0;
 
             Angle trueAnomaly = (Mathf.PI + - (orbit.MaxTrueAnomaly ?? Angle.Zero)) / 2.0f;
 
@@ -571,14 +571,14 @@ namespace Tests
         {
             // Arrange
             Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
-            orbit.RPE = 2_500_000f;
-            orbit.ECC = 0.75f;
+            orbit.RPE = 2_500_000.0;
+            orbit.ECC = 0.75;
             orbit.INC = 0.0f;
             orbit.APE = 0.0f;
             orbit.LAN = 0.0f;
-            orbit.TPP = 6000f;
+            orbit.TPP = 6000.0;
 
-            float time = 7500f;
+            double time = 7500.0;
             Vector3 position = orbit.Time2Point(time);
             Vector3 velocity = orbit.Time2Velocity(time);
 
@@ -586,12 +586,12 @@ namespace Tests
             Orbit actual = Orbit.StateVectors2Orbit(GravitationalBody.Earth, position, velocity, time);
 
             // Assert
-            Assert.That(actual.RPE, Is.EqualTo(orbit.RPE).Within(0.01f).Percent);
-            Assert.That(actual.ECC, Is.EqualTo(orbit.ECC).Within(0.01f));
-            Assert.That(actual.INC.RadValueMinusPiToPiRange, Is.EqualTo(orbit.INC.RadValueMinusPiToPiRange).Within(0.01f));
-            Assert.That(actual.APE.RadValueMinusPiToPiRange, Is.EqualTo(orbit.APE.RadValueMinusPiToPiRange).Within(0.01f));
-            Assert.That(actual.LAN.RadValueMinusPiToPiRange, Is.EqualTo(orbit.LAN.RadValueMinusPiToPiRange).Within(0.01f));
-            Assert.That(actual.TPP, Is.EqualTo(orbit.TPP).Within(0.01f).Percent);
+            Assert.That(actual.RPE, Is.EqualTo(orbit.RPE).Within(0.01).Percent);
+            Assert.That(actual.ECC, Is.EqualTo(orbit.ECC).Within(0.01));
+            Assert.That(actual.INC.RadValueMinusPiToPiRange, Is.EqualTo(orbit.INC.RadValueMinusPiToPiRange).Within(0.01));
+            Assert.That(actual.APE.RadValueMinusPiToPiRange, Is.EqualTo(orbit.APE.RadValueMinusPiToPiRange).Within(0.01));
+            Assert.That(actual.LAN.RadValueMinusPiToPiRange, Is.EqualTo(orbit.LAN.RadValueMinusPiToPiRange).Within(0.01));
+            Assert.That(actual.TPP, Is.EqualTo(orbit.TPP).Within(0.01).Percent);
         }
 
         [Test]
@@ -599,14 +599,14 @@ namespace Tests
         {
             // Arrange
             Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
-            orbit.RPE = 1_125_000f;
-            orbit.ECC = 0.5f;
+            orbit.RPE = 1_125_000.0;
+            orbit.ECC = 0.5;
             orbit.INC = 6.0f;
             orbit.APE = 5.5f;
             orbit.LAN = 4.5f;
-            orbit.TPP = 6000f;
+            orbit.TPP = 6000.0;
 
-            float time = 6200f;
+            double time = 6200.0;
             Vector3 position = orbit.Time2Point(time);
             Vector3 velocity = orbit.Time2Velocity(time);
 
@@ -614,12 +614,12 @@ namespace Tests
             Orbit actual = Orbit.StateVectors2Orbit(GravitationalBody.Earth, position, velocity, time);
 
             // Assert
-            Assert.That(actual.RPE, Is.EqualTo(orbit.RPE).Within(0.01f).Percent);
-            Assert.That(actual.ECC, Is.EqualTo(orbit.ECC).Within(0.01f));
-            Assert.That(actual.INC.RadValueMinusPiToPiRange, Is.EqualTo(orbit.INC.RadValueMinusPiToPiRange).Within(0.01f));
-            Assert.That(actual.APE.RadValueMinusPiToPiRange, Is.EqualTo(orbit.APE.RadValueMinusPiToPiRange).Within(0.01f));
-            Assert.That(actual.LAN.RadValueMinusPiToPiRange, Is.EqualTo(orbit.LAN.RadValueMinusPiToPiRange).Within(0.01f));
-            Assert.That(actual.TPP, Is.EqualTo(orbit.TPP).Within(0.01f).Percent);
+            Assert.That(actual.RPE, Is.EqualTo(orbit.RPE).Within(0.01).Percent);
+            Assert.That(actual.ECC, Is.EqualTo(orbit.ECC).Within(0.01));
+            Assert.That(actual.INC.RadValueMinusPiToPiRange, Is.EqualTo(orbit.INC.RadValueMinusPiToPiRange).Within(0.01));
+            Assert.That(actual.APE.RadValueMinusPiToPiRange, Is.EqualTo(orbit.APE.RadValueMinusPiToPiRange).Within(0.01));
+            Assert.That(actual.LAN.RadValueMinusPiToPiRange, Is.EqualTo(orbit.LAN.RadValueMinusPiToPiRange).Within(0.01));
+            Assert.That(actual.TPP, Is.EqualTo(orbit.TPP).Within(0.01).Percent);
         }
 
         [Test]
@@ -627,14 +627,14 @@ namespace Tests
         {
             // Arrange
             Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
-            orbit.RPE = 2_500_000f;
-            orbit.ECC = 0.75f;
+            orbit.RPE = 2_500_000.0;
+            orbit.ECC = 0.75;
             orbit.INC = 0.0f;
             orbit.APE = 0.0f;
             orbit.LAN = 2.5f;
-            orbit.TPP = 6000f;
+            orbit.TPP = 6000.0;
 
-            float time = 7500f;
+            double time = 7500.0;
             Vector3 position = orbit.Time2Point(time);
             Vector3 velocity = orbit.Time2Velocity(time);
 
@@ -642,12 +642,12 @@ namespace Tests
             Orbit actual = Orbit.StateVectors2Orbit(GravitationalBody.Earth, position, velocity, time);
 
             // Assert
-            Assert.That(actual.RPE, Is.EqualTo(orbit.RPE).Within(0.01f).Percent);
-            Assert.That(actual.ECC, Is.EqualTo(orbit.ECC).Within(0.01f));
-            Assert.That(actual.INC.RadValueMinusPiToPiRange, Is.EqualTo(orbit.INC.RadValueMinusPiToPiRange).Within(0.01f));
-            Assert.That(actual.APE.RadValueMinusPiToPiRange, Is.EqualTo(orbit.APE.RadValueMinusPiToPiRange).Within(0.01f));
-            Assert.That(actual.LAN.RadValueMinusPiToPiRange, Is.EqualTo(orbit.LAN.RadValueMinusPiToPiRange).Within(0.01f));
-            Assert.That(actual.TPP, Is.EqualTo(orbit.TPP).Within(0.01f).Percent);
+            Assert.That(actual.RPE, Is.EqualTo(orbit.RPE).Within(0.01).Percent);
+            Assert.That(actual.ECC, Is.EqualTo(orbit.ECC).Within(0.01));
+            Assert.That(actual.INC.RadValueMinusPiToPiRange, Is.EqualTo(orbit.INC.RadValueMinusPiToPiRange).Within(0.01));
+            Assert.That(actual.APE.RadValueMinusPiToPiRange, Is.EqualTo(orbit.APE.RadValueMinusPiToPiRange).Within(0.01));
+            Assert.That(actual.LAN.RadValueMinusPiToPiRange, Is.EqualTo(orbit.LAN.RadValueMinusPiToPiRange).Within(0.01));
+            Assert.That(actual.TPP, Is.EqualTo(orbit.TPP).Within(0.01).Percent);
         }
 
         [Test]
@@ -655,14 +655,14 @@ namespace Tests
         {
             // Arrange
             Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
-            orbit.RPE = 2_500_000f;
-            orbit.ECC = 1f;
+            orbit.RPE = 2_500_000.0;
+            orbit.ECC = 1.0;
             orbit.INC = 0.0f;
             orbit.APE = 0.0f;
             orbit.LAN = 0.0f;
-            orbit.TPP = 6000f;
+            orbit.TPP = 6000.0;
 
-            float time = 6200f;
+            double time = 6200.0;
             Vector3 position = orbit.Time2Point(time);
             Vector3 velocity = orbit.Time2Velocity(time);
 
@@ -670,12 +670,12 @@ namespace Tests
             Orbit actual = Orbit.StateVectors2Orbit(GravitationalBody.Earth, position, velocity, time);
 
             // Assert
-            Assert.That(actual.RPE, Is.EqualTo(orbit.RPE).Within(0.01f).Percent);
-            Assert.That(actual.ECC, Is.EqualTo(orbit.ECC).Within(0.01f));
-            Assert.That(actual.INC.RadValueMinusPiToPiRange, Is.EqualTo(orbit.INC.RadValueMinusPiToPiRange).Within(0.01f));
-            Assert.That(actual.APE.RadValueMinusPiToPiRange, Is.EqualTo(orbit.APE.RadValueMinusPiToPiRange).Within(0.01f));
-            Assert.That(actual.LAN.RadValueMinusPiToPiRange, Is.EqualTo(orbit.LAN.RadValueMinusPiToPiRange).Within(0.01f));
-            Assert.That(actual.TPP, Is.EqualTo(orbit.TPP).Within(0.01f).Percent);
+            Assert.That(actual.RPE, Is.EqualTo(orbit.RPE).Within(0.01).Percent);
+            Assert.That(actual.ECC, Is.EqualTo(orbit.ECC).Within(0.01));
+            Assert.That(actual.INC.RadValueMinusPiToPiRange, Is.EqualTo(orbit.INC.RadValueMinusPiToPiRange).Within(0.01));
+            Assert.That(actual.APE.RadValueMinusPiToPiRange, Is.EqualTo(orbit.APE.RadValueMinusPiToPiRange).Within(0.01));
+            Assert.That(actual.LAN.RadValueMinusPiToPiRange, Is.EqualTo(orbit.LAN.RadValueMinusPiToPiRange).Within(0.01));
+            Assert.That(actual.TPP, Is.EqualTo(orbit.TPP).Within(0.01).Percent);
         }
 
         [Test]
@@ -683,14 +683,14 @@ namespace Tests
         {
             // Arrange
             Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
-            orbit.RPE = 2_500_000f;
-            orbit.ECC = 1.4f;
+            orbit.RPE = 2_500_000;
+            orbit.ECC = 1.4;
             orbit.INC = 0.5f;
             orbit.APE = 3f;
             orbit.LAN = 5f;
-            orbit.TPP = 2500f;
+            orbit.TPP = 2500.0;
 
-            float time = 7500f;
+            double time = 7500.0;
             Vector3 position = orbit.Time2Point(time);
             Vector3 velocity = orbit.Time2Velocity(time);
 
@@ -698,12 +698,12 @@ namespace Tests
             Orbit actual = Orbit.StateVectors2Orbit(GravitationalBody.Earth, position, velocity, time);
 
             // Assert
-            Assert.That(actual.RPE, Is.EqualTo(orbit.RPE).Within(0.01f).Percent);
-            Assert.That(actual.ECC, Is.EqualTo(orbit.ECC).Within(0.01f));
-            Assert.That(actual.INC.RadValueMinusPiToPiRange, Is.EqualTo(orbit.INC.RadValueMinusPiToPiRange).Within(0.01f));
-            Assert.That(actual.APE.RadValueMinusPiToPiRange, Is.EqualTo(orbit.APE.RadValueMinusPiToPiRange).Within(0.01f));
-            Assert.That(actual.LAN.RadValueMinusPiToPiRange, Is.EqualTo(orbit.LAN.RadValueMinusPiToPiRange).Within(0.01f));
-            Assert.That(actual.TPP, Is.EqualTo(orbit.TPP).Within(0.01f).Percent);
+            Assert.That(actual.RPE, Is.EqualTo(orbit.RPE).Within(0.01).Percent);
+            Assert.That(actual.ECC, Is.EqualTo(orbit.ECC).Within(0.01));
+            Assert.That(actual.INC.RadValueMinusPiToPiRange, Is.EqualTo(orbit.INC.RadValueMinusPiToPiRange).Within(0.01));
+            Assert.That(actual.APE.RadValueMinusPiToPiRange, Is.EqualTo(orbit.APE.RadValueMinusPiToPiRange).Within(0.01));
+            Assert.That(actual.LAN.RadValueMinusPiToPiRange, Is.EqualTo(orbit.LAN.RadValueMinusPiToPiRange).Within(0.01));
+            Assert.That(actual.TPP, Is.EqualTo(orbit.TPP).Within(0.01).Percent);
         }
 
         [Test]
@@ -714,27 +714,27 @@ namespace Tests
             // The inputs
             Vector3 position = new Vector3(1_000_000f, 100_000f, 10_000f);
             Vector3 velocity = new Vector3(1_500f, 2_000f, 881.929_010_7f);
-            float time = 500f;
+            double time = 500.0;
 
             // The correct final orbit
             Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
-            orbit.RPE = 591_617.833_5f;
-            orbit.ECC = 1.0f;
+            orbit.RPE = 591_617.833_5;
+            orbit.ECC = 1.0;
             orbit.INC = 0.4394082206f;
             orbit.APE = 4.914028278f;
             orbit.LAN = 0.07849867002f;
-            orbit.TPP = 147.0558678f;
+            orbit.TPP = 147.0558678;
 
             // Act
             Orbit actual = Orbit.StateVectors2Orbit(GravitationalBody.Kerbin, position, velocity, time);
 
             // Assert
-            Assert.That(actual.RPE, Is.EqualTo(orbit.RPE).Within(0.01f).Percent);
-            Assert.That(actual.ECC, Is.EqualTo(orbit.ECC).Within(0.01f));
-            Assert.That(actual.INC.RadValueMinusPiToPiRange, Is.EqualTo(orbit.INC.RadValueMinusPiToPiRange).Within(0.01f));
-            Assert.That(actual.APE.RadValueMinusPiToPiRange, Is.EqualTo(orbit.APE.RadValueMinusPiToPiRange).Within(0.01f));
-            Assert.That(actual.LAN.RadValueMinusPiToPiRange, Is.EqualTo(orbit.LAN.RadValueMinusPiToPiRange).Within(0.01f));
-            Assert.That(actual.TPP, Is.EqualTo(orbit.TPP).Within(0.01f).Percent);
+            Assert.That(actual.RPE, Is.EqualTo(orbit.RPE).Within(0.01).Percent);
+            Assert.That(actual.ECC, Is.EqualTo(orbit.ECC).Within(0.01));
+            Assert.That(actual.INC.RadValueMinusPiToPiRange, Is.EqualTo(orbit.INC.RadValueMinusPiToPiRange).Within(0.01));
+            Assert.That(actual.APE.RadValueMinusPiToPiRange, Is.EqualTo(orbit.APE.RadValueMinusPiToPiRange).Within(0.01));
+            Assert.That(actual.LAN.RadValueMinusPiToPiRange, Is.EqualTo(orbit.LAN.RadValueMinusPiToPiRange).Within(0.01));
+            Assert.That(actual.TPP, Is.EqualTo(orbit.TPP).Within(0.01).Percent);
         }
 
         [Test]
@@ -742,15 +742,15 @@ namespace Tests
         {
             // Arrange
             Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
-            orbit.RPE = 1e+7f;
-            orbit.ECC = 0.25f;
+            orbit.RPE = 1e+7;
+            orbit.ECC = 0.25;
             orbit.INC = 0.4f;
             orbit.APE = 4.5f;
             orbit.LAN = 2.0f;
-            orbit.TPP = 500f;
+            orbit.TPP = 500.0;
 
-            float timeOne = 1_000f;
-            float timeTwo = 3_236.312_736f;
+            double timeOne = 1_000.0;
+            double timeTwo = 3_236.312_736;
 
             Vector3 positionOne = orbit.Time2Point(timeOne);
             Vector3 positionTwo = orbit.Time2Point(timeTwo);
@@ -759,12 +759,12 @@ namespace Tests
             Orbit actual = Orbit.FindTransferOrbit(GravitationalBody.Earth, positionOne, timeOne, positionTwo, timeTwo);
 
             // Assert
-            Assert.That(actual.RPE, Is.EqualTo(orbit.RPE).Within(0.01f).Percent);
-            Assert.That(actual.ECC, Is.EqualTo(orbit.ECC).Within(0.01f));
-            Assert.That(actual.INC.RadValueMinusPiToPiRange, Is.EqualTo(orbit.INC.RadValueMinusPiToPiRange).Within(0.01f));
-            Assert.That(actual.APE.RadValueMinusPiToPiRange, Is.EqualTo(orbit.APE.RadValueMinusPiToPiRange).Within(0.01f));
-            Assert.That(actual.LAN.RadValueMinusPiToPiRange, Is.EqualTo(orbit.LAN.RadValueMinusPiToPiRange).Within(0.01f));
-            Assert.That(actual.TPP, Is.EqualTo(orbit.TPP).Within(0.01f).Percent);
+            Assert.That(actual.RPE, Is.EqualTo(orbit.RPE).Within(0.01).Percent);
+            Assert.That(actual.ECC, Is.EqualTo(orbit.ECC).Within(0.01));
+            Assert.That(actual.INC.RadValueMinusPiToPiRange, Is.EqualTo(orbit.INC.RadValueMinusPiToPiRange).Within(0.01));
+            Assert.That(actual.APE.RadValueMinusPiToPiRange, Is.EqualTo(orbit.APE.RadValueMinusPiToPiRange).Within(0.01));
+            Assert.That(actual.LAN.RadValueMinusPiToPiRange, Is.EqualTo(orbit.LAN.RadValueMinusPiToPiRange).Within(0.01));
+            Assert.That(actual.TPP, Is.EqualTo(orbit.TPP).Within(0.01).Percent);
         }
     }
 }

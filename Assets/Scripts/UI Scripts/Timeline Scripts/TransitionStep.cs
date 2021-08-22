@@ -7,8 +7,8 @@ using UnityEngine.EventSystems;
 public abstract class TransitionStep : TimelineStep, IInspectable, IPlottable
 {
     // Members
-    float transitionTime;
-    public float TransitionTime 
+    double transitionTime;
+    public double TransitionTime 
     { 
         get 
         {
@@ -19,11 +19,11 @@ public abstract class TransitionStep : TimelineStep, IInspectable, IPlottable
             if (earlierTransitionStep == null && laterTransitionStep == null)
                 transitionTime = value;
             else if (earlierTransitionStep == null && laterTransitionStep != null)
-                transitionTime = Mathf.Clamp(value, float.NegativeInfinity, laterTransitionStep.transitionTime);
+                transitionTime = Mathd.Clamp(value, double.NegativeInfinity, laterTransitionStep.transitionTime);
             else if (earlierTransitionStep != null && laterTransitionStep == null)
-                transitionTime = Mathf.Clamp(value, earlierTransitionStep.transitionTime, float.PositiveInfinity);
+                transitionTime = Mathd.Clamp(value, earlierTransitionStep.transitionTime, double.PositiveInfinity);
             else
-                transitionTime = Mathf.Clamp(value, earlierTransitionStep.transitionTime, laterTransitionStep.transitionTime);
+                transitionTime = Mathd.Clamp(value, earlierTransitionStep.transitionTime, laterTransitionStep.transitionTime);
         }
     }
     public Vector3? TransitionPoint
