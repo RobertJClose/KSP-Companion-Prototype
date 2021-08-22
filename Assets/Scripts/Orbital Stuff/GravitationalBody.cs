@@ -27,12 +27,12 @@ public class GravitationalBody
     {
         get
         {
-            float periapsisRadius = Mathf.Ceil((Radius + AtmosphereHeight) * 1.05f / 25000f) * 25000f; // The Ceil() call and factors of 25,000 make the default radius round up to a multiple of 25km
-            float eccentricity = 0.2f;
+            double periapsisRadius = Mathf.Ceil((Radius + AtmosphereHeight) * 1.05f / 25000f) * 25000f; // The Ceil() call and factors of 25,000 make the default radius round up to a multiple of 25km
+            double eccentricity = 0.2f;
             Angle inclination = 0f;
             Angle argumentOfPeriapsis = 0f;
             Angle longitudeOfAscendingNode = 0f;
-            float timeOfPeriapsisPassage = 0f;
+            double timeOfPeriapsisPassage = 0f;
 
             return new Orbit(periapsisRadius, eccentricity, inclination, argumentOfPeriapsis, longitudeOfAscendingNode, timeOfPeriapsisPassage, this);
         }

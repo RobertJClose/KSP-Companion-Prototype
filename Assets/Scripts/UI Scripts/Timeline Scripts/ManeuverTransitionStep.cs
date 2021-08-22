@@ -9,7 +9,7 @@ public class ManeuverTransitionStep : TransitionStep
     {
         inspector.SetHeader("Maneuver:");
         InspectorPropertyBlock blockOne = inspector.AddPropertyBlock();
-        blockOne.AddFloatProperty("Maneuver Time (s UT)", () => TransitionTime);
+        blockOne.AddDoubleProperty("Maneuver Time (s UT)", () => TransitionTime);
     }
 
     private void OnDestroy()

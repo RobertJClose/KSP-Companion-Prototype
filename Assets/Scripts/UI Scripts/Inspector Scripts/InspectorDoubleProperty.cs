@@ -6,12 +6,12 @@ using TMPro;
 using UnityEngine.UI;
 using UnityEngine.Events;
 
-public class InspectorFloatProperty : InspectorProperty
+public class InspectorDoubleProperty : InspectorProperty
 {
     TMP_InputField inputFieldComponent;
-    float defaultValue;
-    Func<float> ValueGetter;
-    Action<float> ValueSetter;
+    double defaultValue;
+    Func<double> ValueGetter;
+    Action<double> ValueSetter;
     public bool IsEditable { get; set; }
 
     protected override void Awake()
@@ -27,12 +27,12 @@ public class InspectorFloatProperty : InspectorProperty
         this.defaultValue = defaultValue;
     }
 
-    public void SetValueGetter(Func<float> ValueGetter)
+    public void SetValueGetter(Func<double> ValueGetter)
     {
         this.ValueGetter = ValueGetter;
     }
 
-    public void SetValueSetter(Action<float> ValueSetter)
+    public void SetValueSetter(Action<double> ValueSetter)
     {
         this.ValueSetter = ValueSetter;
     }
