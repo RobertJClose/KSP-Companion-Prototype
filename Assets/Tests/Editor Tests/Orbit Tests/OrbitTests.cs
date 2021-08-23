@@ -426,7 +426,7 @@ namespace Tests
             float zResult = 646943.6416f;
 
             // Act
-            Vector3 actual = orbit.TrueAnomaly2Point(trueAnomaly);
+            Vector3d actual = orbit.TrueAnomaly2Point(trueAnomaly);
 
             // Assert
             Assert.That(actual.x, Is.EqualTo(xResult).Within(0.01).Percent);
@@ -452,7 +452,7 @@ namespace Tests
             float zResult = 661003.7749f;
 
             // Act
-            Vector3 actual = orbit.TrueAnomaly2Point(trueAnomaly);
+            Vector3d actual = orbit.TrueAnomaly2Point(trueAnomaly);
 
             // Assert
             Assert.That(actual.x, Is.EqualTo(xResult).Within(0.01).Percent);
@@ -478,7 +478,7 @@ namespace Tests
             float zResult = 683278.4815f;
 
             // Act
-            Vector3 actual = orbit.TrueAnomaly2Point(trueAnomaly);
+            Vector3d actual = orbit.TrueAnomaly2Point(trueAnomaly);
 
             // Assert
             Assert.That(actual.x, Is.EqualTo(xResult).Within(0.01).Percent);
@@ -496,10 +496,10 @@ namespace Tests
             Angle trueAnomaly = Mathf.PI;
 
             // Act
-            Vector3 actual = orbit.TrueAnomaly2Point(trueAnomaly);
+            Vector3d actual = orbit.TrueAnomaly2Point(trueAnomaly);
 
             // Assert
-            Assert.That(actual.magnitude, Is.EqualTo(float.PositiveInfinity));
+            Assert.That(actual.magnitude, Is.EqualTo(double.PositiveInfinity));
         }
 
         [Test]
@@ -512,10 +512,10 @@ namespace Tests
             Angle trueAnomaly = orbit.MaxTrueAnomaly ?? Angle.Zero;
 
             // Act
-            Vector3 actual = orbit.TrueAnomaly2Point(trueAnomaly);
+            Vector3d actual = orbit.TrueAnomaly2Point(trueAnomaly);
 
             // Assert
-            Assert.That(actual.magnitude, Is.EqualTo(float.PositiveInfinity));
+            Assert.That(actual.magnitude, Is.EqualTo(double.PositiveInfinity));
         }
 
         [Test]
@@ -528,10 +528,10 @@ namespace Tests
             Angle trueAnomaly = - (orbit.MaxTrueAnomaly ?? Angle.Zero);
 
             // Act
-            Vector3 actual = orbit.TrueAnomaly2Point(trueAnomaly);
+            Vector3d actual = orbit.TrueAnomaly2Point(trueAnomaly);
 
             // Assert
-            Assert.That(actual.magnitude, Is.EqualTo(float.PositiveInfinity));
+            Assert.That(actual.magnitude, Is.EqualTo(double.PositiveInfinity));
         }
 
         [Test]
@@ -544,10 +544,10 @@ namespace Tests
             Angle trueAnomaly = (Mathf.PI + (orbit.MaxTrueAnomaly ?? Angle.Zero).RadValue) / 2.0f;
 
             // Act
-            Vector3 actual = orbit.TrueAnomaly2Point(trueAnomaly);
+            Vector3d actual = orbit.TrueAnomaly2Point(trueAnomaly);
 
             // Assert
-            Assert.That(actual.magnitude, Is.EqualTo(float.PositiveInfinity));
+            Assert.That(actual.magnitude, Is.EqualTo(double.PositiveInfinity));
         }
 
         [Test]
@@ -560,10 +560,10 @@ namespace Tests
             Angle trueAnomaly = (Mathf.PI + - (orbit.MaxTrueAnomaly ?? Angle.Zero)) / 2.0f;
 
             // Act
-            Vector3 actual = orbit.TrueAnomaly2Point(trueAnomaly);
+            Vector3d actual = orbit.TrueAnomaly2Point(trueAnomaly);
 
             // Assert
-            Assert.That(actual.magnitude, Is.EqualTo(float.PositiveInfinity));
+            Assert.That(actual.magnitude, Is.EqualTo(double.PositiveInfinity));
         }
 
         [Test]
@@ -579,8 +579,8 @@ namespace Tests
             orbit.TPP = 6000.0;
 
             double time = 7500.0;
-            Vector3 position = orbit.Time2Point(time);
-            Vector3 velocity = orbit.Time2Velocity(time);
+            Vector3d position = orbit.Time2Point(time);
+            Vector3d velocity = orbit.Time2Velocity(time);
 
             // Act
             Orbit actual = Orbit.StateVectors2Orbit(GravitationalBody.Earth, position, velocity, time);
@@ -607,8 +607,8 @@ namespace Tests
             orbit.TPP = 6000.0;
 
             double time = 6200.0;
-            Vector3 position = orbit.Time2Point(time);
-            Vector3 velocity = orbit.Time2Velocity(time);
+            Vector3d position = orbit.Time2Point(time);
+            Vector3d velocity = orbit.Time2Velocity(time);
 
             // Act
             Orbit actual = Orbit.StateVectors2Orbit(GravitationalBody.Earth, position, velocity, time);
@@ -635,8 +635,8 @@ namespace Tests
             orbit.TPP = 6000.0;
 
             double time = 7500.0;
-            Vector3 position = orbit.Time2Point(time);
-            Vector3 velocity = orbit.Time2Velocity(time);
+            Vector3d position = orbit.Time2Point(time);
+            Vector3d velocity = orbit.Time2Velocity(time);
 
             // Act
             Orbit actual = Orbit.StateVectors2Orbit(GravitationalBody.Earth, position, velocity, time);
@@ -663,8 +663,8 @@ namespace Tests
             orbit.TPP = 6000.0;
 
             double time = 6200.0;
-            Vector3 position = orbit.Time2Point(time);
-            Vector3 velocity = orbit.Time2Velocity(time);
+            Vector3d position = orbit.Time2Point(time);
+            Vector3d velocity = orbit.Time2Velocity(time);
 
             // Act
             Orbit actual = Orbit.StateVectors2Orbit(GravitationalBody.Earth, position, velocity, time);
@@ -691,8 +691,8 @@ namespace Tests
             orbit.TPP = 2500.0;
 
             double time = 7500.0;
-            Vector3 position = orbit.Time2Point(time);
-            Vector3 velocity = orbit.Time2Velocity(time);
+            Vector3d position = orbit.Time2Point(time);
+            Vector3d velocity = orbit.Time2Velocity(time);
 
             // Act
             Orbit actual = Orbit.StateVectors2Orbit(GravitationalBody.Earth, position, velocity, time);
@@ -712,8 +712,8 @@ namespace Tests
             // Arrange
 
             // The inputs
-            Vector3 position = new Vector3(1_000_000f, 100_000f, 10_000f);
-            Vector3 velocity = new Vector3(1_500f, 2_000f, 881.929_010_7f);
+            Vector3d position = new Vector3d(1_000_000.0, 100_000.0, 10_000.0);
+            Vector3d velocity = new Vector3d(1_500.0, 2_000.0, 881.929_010_7);
             double time = 500.0;
 
             // The correct final orbit
@@ -752,8 +752,8 @@ namespace Tests
             double timeOne = 1_000.0;
             double timeTwo = 3_236.312_736;
 
-            Vector3 positionOne = orbit.Time2Point(timeOne);
-            Vector3 positionTwo = orbit.Time2Point(timeTwo);
+            Vector3d positionOne = orbit.Time2Point(timeOne);
+            Vector3d positionTwo = orbit.Time2Point(timeTwo);
 
             // Act
             Orbit actual = Orbit.FindTransferOrbit(GravitationalBody.Earth, positionOne, timeOne, positionTwo, timeTwo);
