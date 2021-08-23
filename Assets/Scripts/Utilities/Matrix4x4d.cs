@@ -32,43 +32,26 @@ namespace UnityEngine
         {
             get
             {
-                switch (index)
+                return index switch
                 {
-                    case 0:
-                        return m00;
-                    case 1:
-                        return m10;
-                    case 2:
-                        return m20;
-                    case 3:
-                        return m30;
-                    case 4:
-                        return m01;
-                    case 5:
-                        return m11;
-                    case 6:
-                        return m21;
-                    case 7:
-                        return m31;
-                    case 8:
-                        return m02;
-                    case 9:
-                        return m12;
-                    case 10:
-                        return m22;
-                    case 11:
-                        return m32;
-                    case 12:
-                        return m03;
-                    case 13:
-                        return m13;
-                    case 14:
-                        return m23;
-                    case 15:
-                        return m33;
-                    default:
-                        throw new IndexOutOfRangeException("Invalid matrixd index!");
-                }
+                    0 => m00,
+                    1 => m10,
+                    2 => m20,
+                    3 => m30,
+                    4 => m01,
+                    5 => m11,
+                    6 => m21,
+                    7 => m31,
+                    8 => m02,
+                    9 => m12,
+                    10 => m22,
+                    11 => m32,
+                    12 => m03,
+                    13 => m13,
+                    14 => m23,
+                    15 => m33,
+                    _ => throw new IndexOutOfRangeException("Invalid matrixd index!"),
+                };
             }
             set
             {
@@ -139,11 +122,11 @@ namespace UnityEngine
             }
         }
 
-        public static Matrix4x4d identity
+        public static Matrix4x4d Identity
         {
             get
             {
-                Matrix4x4d temp = new Matrix4x4d();
+                Matrix4x4d temp = new();
                 temp[0, 0] = 1;
                 temp[1, 1] = 1;
                 temp[2, 2] = 1;
@@ -152,7 +135,7 @@ namespace UnityEngine
                 return temp;
             }
         }
-        public static Matrix4x4d zero
+        public static Matrix4x4d Zero
         {
             get
             {
@@ -162,7 +145,7 @@ namespace UnityEngine
         /// <summary>
         /// 行列式
         /// </summary>
-        public double determinant
+        public double Determinant
         {
             get
             {
@@ -180,7 +163,7 @@ namespace UnityEngine
         /// <summary>
         /// 逆矩阵
         /// </summary>
-        public Matrix4x4d inverse
+        public Matrix4x4d Inverse
         {
             get
             {
@@ -238,7 +221,7 @@ namespace UnityEngine
                         }
                     }
                 }
-                Matrix4x4d result = new Matrix4x4d();
+                Matrix4x4d result = new();
                 for (int x = 0; x < m; x++)
                 {
                     for (int y = n; y < 2 * n; y++)
@@ -249,21 +232,21 @@ namespace UnityEngine
                 return result;
             }
         }
-        public bool isIdentity
+        public bool IsIdentity
         {
             get
             {
-                return this == identity;
+                return this == Identity;
             }
         }
         /// <summary>
         /// 转置矩阵
         /// </summary>
-        public Matrix4x4d transpose
+        public Matrix4x4d Transpose
         {
             get
             {
-                Matrix4x4d temp = new Matrix4x4d();
+                Matrix4x4d temp = new();
                 temp.m00 = m00; temp.m10 = m01; temp.m20 = m02; temp.m30 = m03;
                 temp.m01 = m10; temp.m11 = m11; temp.m21 = m12; temp.m31 = m13;
                 temp.m02 = m20; temp.m12 = m21; temp.m22 = m22; temp.m32 = m23;
@@ -275,29 +258,6 @@ namespace UnityEngine
         #endregion
 
         #region public functions
-
-        /// <summary>
-        /// 行列式
-        /// </summary>
-        /// <param name="m"></param>
-        /// <returns></returns>
-        public static double Determinant(Matrix4x4d m)
-        {
-            return m.determinant;
-        }
-        /// <summary>
-        /// 逆矩阵
-        /// </summary>
-        /// <param name="m"></param>
-        /// <returns></returns>
-        public static Matrix4x4d Inverse(Matrix4x4d m)
-        {
-            return m.inverse;
-        }
-        /// <summary>
-        /// 尚未实现
-        /// </summary>
-        /// <returns></returns>
         public static Matrix4x4d LookAt(Vector3d from, Vector3d to, Vector3d up)
         {
             throw new IndexOutOfRangeException("Not Available!");
@@ -314,7 +274,7 @@ namespace UnityEngine
         /// <returns></returns>
         public static Matrix4x4d Ortho(double left, double right, double bottom, double top, double zNear, double zFar)
         {
-            Matrix4x4d result = identity;
+            Matrix4x4d result = Identity;
 
             double deltax = right - left;
             double deltay = top - bottom;
@@ -338,7 +298,7 @@ namespace UnityEngine
         /// <returns></returns>
         public static Matrix4x4d Perspective(double fov, double aspect, double zNear, double zFar)
         {
-            Matrix4x4d result = new Matrix4x4d();
+            Matrix4x4d result = new();
 
             double cotangent, deltaZ;
             double radians = (fov / 2.0) * (Math.PI / 180);
@@ -377,15 +337,6 @@ namespace UnityEngine
 
         }
         /// <summary>
-        /// 转置矩阵
-        /// </summary>
-        /// <param name="m"></param>
-        /// <returns></returns>
-        public static Matrix4x4d Transpose(Matrix4x4d m)
-        {
-            return m.transpose;
-        }
-        /// <summary>
         /// 平移旋转缩放矩阵
         /// </summary>
         /// <param name="pos"></param>
@@ -420,24 +371,14 @@ namespace UnityEngine
         /// <returns></returns>
         public Vector4d GetColumn(int i)
         {
-            Vector4d result;
-            switch (i)
+            var result = i switch
             {
-                case 0:
-                    result = new Vector4d(m00, m10, m20, m30);
-                    break;
-                case 1:
-                    result = new Vector4d(m01, m11, m21, m31);
-                    break;
-                case 2:
-                    result = new Vector4d(m02, m12, m22, m32);
-                    break;
-                case 3:
-                    result = new Vector4d(m03, m13, m23, m33);
-                    break;
-                default:
-                    throw new IndexOutOfRangeException("Invalid column index!");
-            }
+                0 => new Vector4d(m00, m10, m20, m30),
+                1 => new Vector4d(m01, m11, m21, m31),
+                2 => new Vector4d(m02, m12, m22, m32),
+                3 => new Vector4d(m03, m13, m23, m33),
+                _ => throw new IndexOutOfRangeException("Invalid column index!"),
+            };
             return result;
         }
         /// <summary>
@@ -447,24 +388,14 @@ namespace UnityEngine
         /// <returns></returns>
         public Vector4d GetRow(int i)
         {
-            Vector4d result;
-            switch (i)
+            var result = i switch
             {
-                case 0:
-                    result = new Vector4d(m00, m01, m02, m03);
-                    break;
-                case 1:
-                    result = new Vector4d(m10, m11, m12, m13);
-                    break;
-                case 2:
-                    result = new Vector4d(m20, m21, m22, m23);
-                    break;
-                case 3:
-                    result = new Vector4d(m30, m31, m32, m33);
-                    break;
-                default:
-                    throw new IndexOutOfRangeException("Invalid row index!");
-            }
+                0 => new Vector4d(m00, m01, m02, m03),
+                1 => new Vector4d(m10, m11, m12, m13),
+                2 => new Vector4d(m20, m21, m22, m23),
+                3 => new Vector4d(m30, m31, m32, m33),
+                _ => throw new IndexOutOfRangeException("Invalid row index!"),
+            };
             return result;
 
         }

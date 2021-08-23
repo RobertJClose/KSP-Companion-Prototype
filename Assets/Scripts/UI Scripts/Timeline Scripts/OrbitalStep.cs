@@ -209,7 +209,7 @@ public class OrbitalStep : TimelineStep, IInspectable, IPlottable
             PolylinePoint nextPoint;
             Angle nextPointTrueAnomaly;
             int pointIndex = 0;
-            List<PolylinePoint> polylinePoints = new List<PolylinePoint>(orbitPoints.Count);
+            List<PolylinePoint> polylinePoints = new(orbitPoints.Count);
             foreach (Vector3 point in orbitPoints)
             {
                 nextPointTrueAnomaly = trueAnomalies[pointIndex];

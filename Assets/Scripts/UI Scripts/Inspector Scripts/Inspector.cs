@@ -6,7 +6,7 @@ using UnityEngine.Events;
 public class Inspector : MonoBehaviour
 {
     // Members
-    readonly List<InspectorPropertyBlock> propertyBlocks = new List<InspectorPropertyBlock>();
+    readonly List<InspectorPropertyBlock> propertyBlocks = new();
 
     // Prefabs
     [SerializeField]
