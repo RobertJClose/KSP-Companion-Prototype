@@ -185,10 +185,7 @@ public class MissionTimeline : MonoBehaviour
             // Ignore the first step in the list as the first TransitionStep has no earlier TransitionStep.
             TimelineStep step = missionTimeline[forwardIndex];
             if (step is TransitionStep && forwardIndex != 0)
-            {
-                if ((step as TransitionStep).TransitionTime < (step as TransitionStep).EarlierTransitionStep.TransitionTime)
-                    (step as TransitionStep).TransitionTime = (step as TransitionStep).EarlierTransitionStep.TransitionTime;
-            }
+                (step as TransitionStep).TransitionTime = Mathd.Clamp((step as TransitionStep).TransitionTime, (step as TransitionStep).EarlierTransitionStep.TransitionTime, float.PositiveInfinity);
         }
 
         for (int backwardIndex = missionTimeline.Count - 1; backwardIndex > -1; backwardIndex--)
@@ -197,10 +194,7 @@ public class MissionTimeline : MonoBehaviour
             // Ignore the final step in the list as the final TransitionStep has no later TransitionStep.
             TimelineStep step = missionTimeline[backwardIndex];
             if (step is TransitionStep && backwardIndex != missionTimeline.Count - 1)
-            {
-                if ((step as TransitionStep).TransitionTime > (step as TransitionStep).LaterTransitionStep.TransitionTime)
-                    (step as TransitionStep).TransitionTime = (step as TransitionStep).LaterTransitionStep.TransitionTime;
-            }
+                (step as TransitionStep).TransitionTime = Mathd.Clamp((step as TransitionStep).TransitionTime, float.NegativeInfinity, (step as TransitionStep).LaterTransitionStep.TransitionTime);
         }
     }
 
