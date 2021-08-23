@@ -52,7 +52,7 @@ public class InspectorDoubleProperty : InspectorProperty
         else
         {
             // Update the stored value for the float with the newValue.
-            float value = float.Parse(newValue, System.Globalization.CultureInfo.InvariantCulture);
+            double value = double.Parse(newValue, System.Globalization.CultureInfo.InvariantCulture);
             ValueSetter?.Invoke(value);
         }
 
