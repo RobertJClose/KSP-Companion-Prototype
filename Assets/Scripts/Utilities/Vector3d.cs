@@ -203,12 +203,18 @@ namespace UnityEngine
 
         public static bool operator ==(Vector3d lhs, Vector3d rhs)
         {
-            return (double)Vector3d.SqrMagnitude(lhs - rhs) < 0.0 / 1.0;
+            if (Mathd.Approximately(lhs.x, rhs.x) && Mathd.Approximately(lhs.y, rhs.y) && Mathd.Approximately(lhs.z, rhs.z))
+                return true;
+            else
+                return false;
         }
 
         public static bool operator !=(Vector3d lhs, Vector3d rhs)
         {
-            return (double)Vector3d.SqrMagnitude(lhs - rhs) >= 0.0 / 1.0;
+            if (Mathd.Approximately(lhs.x, rhs.x) && Mathd.Approximately(lhs.y, rhs.y) && Mathd.Approximately(lhs.z, rhs.z))
+                return false;
+            else
+                return true;
         }
 
         public static explicit operator Vector3(Vector3d vector3d)
