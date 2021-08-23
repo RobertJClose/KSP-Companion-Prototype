@@ -27,7 +27,7 @@ public static class LambertsProblemHelper
         // Compute the velocity vector at t = timeOne on the transfer orbit from (xFinal, yFinal)
         // First compute the necessary unit vectors
         Vector3d orbitalPlaneNormalVector = Vector3d.Cross(positionOne, positionTwo).normalized;
-        Vector3d tangentialUnitVector = Vector3d.Cross(orbitalPlaneNormalVector, positionOne);
+        Vector3d tangentialUnitVector = Vector3d.Cross(orbitalPlaneNormalVector, positionOne).normalized;
         if (lambda < 0)
             tangentialUnitVector = -tangentialUnitVector;
 
