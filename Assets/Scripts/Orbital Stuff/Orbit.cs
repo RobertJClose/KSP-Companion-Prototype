@@ -66,36 +66,36 @@ public class Orbit
     }
 
     // Orbital vectors
-    public Vector3 NVector
+    public Vector3d NVector
     {
         // The nodal vector points to the point where the orbiting body crosses the reference XY plane from below, with a magnitude of Sin(inclination).
         get
         {
-            float magnitude = Mathf.Sin(inclination);
-            Quaternion rotation = Quaternion.AngleAxis(longitudeOfAscendingNode.DegValue, Vector3.forward);
-            return magnitude * (rotation * Vector3.right);
+            double magnitude = Mathf.Sin(inclination);
+            Quaterniond rotation = Quaterniond.AngleAxis(longitudeOfAscendingNode.DegValue, Vector3d.forward);
+            return magnitude * (rotation * Vector3d.right);
         }
     }
 
-    public Vector3 HVector
+    public Vector3d HVector
     {
         // The specific angular momentum vector that is normal to the orbital plane, with a magnitude equal to the specific angular momentum h.
         get
         {
-            float magnitude = (float)Math.Sqrt(SemiLatusRectum * MU);
-            Quaternion rotation = Quaternion.AngleAxis(inclination.DegValue, Vector3.right) * Quaternion.AngleAxis(longitudeOfAscendingNode.DegValue, Vector3.forward);
-            return magnitude * (rotation * Vector3.forward);
+            double magnitude = Math.Sqrt(SemiLatusRectum * MU);
+            Quaterniond rotation = Quaterniond.AngleAxis(inclination.DegValue, Vector3d.right) * Quaterniond.AngleAxis(longitudeOfAscendingNode.DegValue, Vector3d.forward);
+            return magnitude * (rotation * Vector3d.forward);
         }
     }
 
-    public Vector3 EVector
+    public Vector3d EVector
     {
         // The eccentricty vector that points at the point of periapsis, with a magnitude equal to the eccentricity e.
         get
         {
-            float magnitude = (float)eccentricity;
-            Quaternion rotation = Quaternion.AngleAxis(longitudeOfAscendingNode.DegValue, Vector3.forward) * Quaternion.AngleAxis(argumentOfPeriapsis.DegValue, HVector);
-            return magnitude * (rotation * Vector3.right);
+            double magnitude = eccentricity;
+            Quaterniond rotation = Quaterniond.AngleAxis(longitudeOfAscendingNode.DegValue, Vector3d.forward) * Quaterniond.AngleAxis(argumentOfPeriapsis.DegValue, HVector);
+            return magnitude * (rotation * Vector3d.right);
         }
     }
 
@@ -509,7 +509,7 @@ public class Orbit
 
     public Vector3 TrueAnomaly2Velocity(Angle trueAnomaly)
     {
-        float angMomentum = HVector.magnitude;
+        double angMomentum = HVector.magnitude;
 
         Vector3 output;
         output.x = (float)(-MU / angMomentum * (Mathf.Cos(longitudeOfAscendingNode) * (Mathf.Sin(argumentOfPeriapsis + trueAnomaly) + eccentricity * Mathf.Sin(argumentOfPeriapsis)) + Mathf.Sin(longitudeOfAscendingNode) * (Mathf.Cos(argumentOfPeriapsis + trueAnomaly) + ECC * Mathf.Cos(argumentOfPeriapsis)) * Mathf.Cos(inclination)));
