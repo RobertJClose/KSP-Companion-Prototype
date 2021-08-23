@@ -26,7 +26,7 @@ public abstract class TransitionStep : TimelineStep, IInspectable, IPlottable
                 transitionTime = Mathd.Clamp(value, earlierTransitionStep.transitionTime, laterTransitionStep.transitionTime);
         }
     }
-    public Vector3? TransitionPoint
+    public Vector3d? TransitionPoint
     {
         get
         {
@@ -68,7 +68,7 @@ public abstract class TransitionStep : TimelineStep, IInspectable, IPlottable
         if (plot != null)
         {
             if (TransitionPoint.HasValue && TransitionPoint.Value.magnitude != float.PositiveInfinity)
-                plot.transform.position = (TransitionPoint ?? Vector3.zero) * Constants.PlotRescaleFactor;
+                plot.transform.position = (Vector3)((TransitionPoint ?? Vector3d.zero) * Constants.PlotRescaleFactor);
             else
                 plot.transform.position = Vector3.zero;
         }       
