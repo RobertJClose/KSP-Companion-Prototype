@@ -289,11 +289,7 @@ public class Orbit
 
     public static Orbit FindTransferOrbit(GravitationalBody body, Vector3d positionOne, double timeOne, Vector3d positionTwo, double timeTwo)
     {
-        Orbit orbit = LambertsProblemHelper.Solver(body, positionOne, timeOne, positionTwo, timeTwo);
-
-        Debug.Log(orbit);
-
-        return orbit;
+        return LambertsProblemHelper.Solver(body, positionOne, timeOne, positionTwo, timeTwo);
     }
 
     public double TrueAnomaly2Time(Angle trueAnomaly)

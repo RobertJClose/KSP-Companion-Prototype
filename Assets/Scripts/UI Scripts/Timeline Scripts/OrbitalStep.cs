@@ -236,7 +236,7 @@ public class OrbitalStep : TimelineStep, IInspectable, IPlottable
                 pointIndex++;
             }
 
-            plot.SetPlotPoints(polylinePoints, (Vector3)orbit.PeriapsisPoint, (Vector3)orbit.ApoapsisPoint, (Vector3)orbit.AscendingNode, (Vector3)orbit.DescendingNode);
+            plot.SetPlotPoints(polylinePoints, (Vector3)orbit.PeriapsisPoint, (Vector3?)orbit.ApoapsisPoint, (Vector3?)orbit.AscendingNode, (Vector3?)orbit.DescendingNode);
             if (orbit.OrbitType == Orbit.ConicSection.Elliptical)
                 plot.SetClosedPlot(true);
             else

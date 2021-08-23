@@ -31,11 +31,6 @@ public static class LambertsProblemHelper
         if (lambda < 0)
             tangentialUnitVector = -tangentialUnitVector;
 
-        Debug.Log("Position one: " + positionOne);
-        Debug.Log("Position two: " + positionTwo);
-        Debug.Log("h normalised vector:\n" + orbitalPlaneNormalVector);
-        Debug.Log("tUnit Vector:\n" + tangentialUnitVector);
-
         double gamma = Math.Sqrt(body.GravParameter * semiPerimeter / 2.0);
         double rho = (positionOne.magnitude - positionTwo.magnitude) / chordLength;
         double sigma = Math.Sqrt(1.0 - rho * rho);
@@ -46,40 +41,6 @@ public static class LambertsProblemHelper
         Vector3d velocityAtPositionOne = componentOne * positionOne.normalized + componentTwo * tangentialUnitVector;
 
         return Orbit.StateVectors2Orbit(body, positionOne, velocityAtPositionOne, timeOne);
-
-        //double posOneMag = positionOne.magnitude;
-        //double posTwoMag = positionTwo.magnitude;
-        //double planeNormalX = 1.0 / (posOneMag * posTwoMag) * (positionOne.y * positionTwo.z - positionOne.z * positionTwo.y);
-        //double planeNormalY = 1.0 / (posOneMag * posTwoMag) * (positionOne.z * positionTwo.x - positionOne.x * positionTwo.z);
-        //double planeNormalZ = 1.0 / (posOneMag * posTwoMag) * (positionOne.x * positionTwo.y - positionOne.y * positionTwo.x);
-        //double tUnitVectorX = 1.0 / posOneMag * (planeNormalY * positionOne.z - planeNormalZ * positionOne.y);
-        //double tUnitVectorY = 1.0 / posOneMag * (planeNormalZ * positionOne.x - planeNormalX * positionOne.z);
-        //double tUnitVectorZ = 1.0 / posOneMag * (planeNormalX * positionOne.y - planeNormalY * positionOne.x);
-        //if (lambda < 0)
-        //{
-        //    tUnitVectorX *= -1.0;
-        //    tUnitVectorY *= -1.0;
-        //    tUnitVectorZ *= -1.0;
-        //}
-
-        //Debug.Log("Position one: " + positionOne);
-        //Debug.Log("Position two: " + positionTwo);
-        //Debug.Log("h normalised vector:\n" + planeNormalX + '\n' + planeNormalY + '\n' + planeNormalZ);
-        //Debug.Log("tUnit Vector:\n" + tUnitVectorX + '\n' + tUnitVectorY + '\n' + tUnitVectorZ);
-
-        //double gamma = Math.Sqrt(body.GravParameter * semiPerimeter / 2.0);
-        //double rho = (positionOne.magnitude - positionTwo.magnitude) / chordLength;
-        //double sigma = Math.Sqrt(1.0 - rho * rho);
-
-        //double componentOne = gamma / positionOne.magnitude * (lambda * yFinal - xFinal - rho * (lambda * yFinal + xFinal));
-        //double componentTwo = gamma * sigma / positionOne.magnitude * (yFinal + lambda * xFinal);
-
-        //Vector3 velocityAtPositionOne;
-        //velocityAtPositionOne.x = (float)(componentOne * positionOne.x / positionOne.magnitude) + (float)(componentTwo * tUnitVectorX);
-        //velocityAtPositionOne.y = (float)(componentOne * positionOne.y / positionOne.magnitude) + (float)(componentTwo * tUnitVectorY);
-        //velocityAtPositionOne.z = (float)(componentOne * positionOne.z / positionOne.magnitude) + (float)(componentTwo * tUnitVectorZ);
-
-        //return Orbit.StateVectors2Orbit(body, positionOne, velocityAtPositionOne, timeOne);
     }
 
     private static double FindXThatProducesTStar(double lambda, double TStar)
@@ -132,7 +93,7 @@ public static class LambertsProblemHelper
             x = x - (T - TStar) * (Td * Td - 0.5 * (T - TStar) * Tdd) / (Td * (Td * Td - (T - TStar) * Tdd) + 1.0 / 6.0 * (T - TStar) * (T - TStar) * Tddd);
         }
 
-        Debug.Log("Lambert Solver Householder iteration output: \nx = " + x + "\nT(x) = " + TOfX(x, X2Y(x, lambda), lambda) + "\nTStar = " + TStar);
+        // Debug.Log("Lambert Solver Householder iteration output: \nx = " + x + "\nT(x) = " + TOfX(x, X2Y(x, lambda), lambda) + "\nTStar = " + TStar);
         return x;
     }
 
