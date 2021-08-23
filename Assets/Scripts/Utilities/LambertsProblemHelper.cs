@@ -5,7 +5,10 @@ using UnityEngine;
 
 public static class LambertsProblemHelper
 {
-    public static Orbit Solver(GravitationalBody body, Vector3 positionOne, double timeOne, Vector3 positionTwo, double timeTwo)
+    // Reference paper:
+    // Revisiting Lambert's Problem - Dario Izzo (2014)
+
+    public static Orbit Solver(GravitationalBody body, Vector3d positionOne, double timeOne, Vector3d positionTwo, double timeTwo)
     {
         double chordLength = (positionTwo - positionOne).magnitude;
         double semiPerimeter = 0.5 * (positionOne.magnitude + positionTwo.magnitude + chordLength);
@@ -23,25 +26,15 @@ public static class LambertsProblemHelper
 
         // Compute the velocity vector at t = timeOne on the transfer orbit from (xFinal, yFinal)
         // First compute the necessary unit vectors
-        double posOneMagDouble = Math.Sqrt((double)positionOne.x * positionOne.x + (double)positionOne.y * positionOne.y + (double)positionOne.z * positionOne.z);
-        double posTwoMagDouble = Math.Sqrt((double)positionTwo.x * positionTwo.x + (double)positionTwo.y * positionTwo.y + (double)positionTwo.z * positionTwo.z);
-        double planeNormalX = 1.0 / (posOneMagDouble * posTwoMagDouble) * ((double)positionOne.y * positionTwo.z - (double)positionOne.z * positionTwo.y);
-        double planeNormalY = 1.0 / (posOneMagDouble * posTwoMagDouble) * ((double)positionOne.z * positionTwo.x - (double)positionOne.x * positionTwo.z);
-        double planeNormalZ = 1.0 / (posOneMagDouble * posTwoMagDouble) * ((double)positionOne.x * positionTwo.y - (double)positionOne.y * positionTwo.x);
-        double tUnitVectorX = 1.0 / posOneMagDouble * (planeNormalY * positionOne.z - planeNormalZ * positionOne.y);
-        double tUnitVectorY = 1.0 / posOneMagDouble * (planeNormalZ * positionOne.x - planeNormalX * positionOne.z);
-        double tUnitVectorZ = 1.0 / posOneMagDouble * (planeNormalX * positionOne.y - planeNormalY * positionOne.x);
+        Vector3d orbitalPlaneNormalVector = Vector3d.Cross(positionOne, positionTwo).normalized;
+        Vector3d tangentialUnitVector = Vector3d.Cross(orbitalPlaneNormalVector, positionOne);
         if (lambda < 0)
-        {
-            tUnitVectorX *= -1.0;
-            tUnitVectorY *= -1.0;
-            tUnitVectorZ *= -1.0;
-        }
+            tangentialUnitVector = -tangentialUnitVector;
 
         Debug.Log("Position one: " + positionOne);
         Debug.Log("Position two: " + positionTwo);
-        Debug.Log("h normalised vector:\n" + planeNormalX + '\n' + planeNormalY + '\n' + planeNormalZ);
-        Debug.Log("tUnit Vector:\n" + tUnitVectorX + '\n' + tUnitVectorY + '\n' + tUnitVectorZ);
+        Debug.Log("h normalised vector:\n" + orbitalPlaneNormalVector);
+        Debug.Log("tUnit Vector:\n" + tangentialUnitVector);
 
         double gamma = Math.Sqrt(body.GravParameter * semiPerimeter / 2.0);
         double rho = (positionOne.magnitude - positionTwo.magnitude) / chordLength;
@@ -50,12 +43,43 @@ public static class LambertsProblemHelper
         double componentOne = gamma / positionOne.magnitude * (lambda * yFinal - xFinal - rho * (lambda * yFinal + xFinal));
         double componentTwo = gamma * sigma / positionOne.magnitude * (yFinal + lambda * xFinal);
 
-        Vector3 velocityAtPositionOne;
-        velocityAtPositionOne.x = (float)(componentOne * positionOne.x / positionOne.magnitude) + (float)(componentTwo * tUnitVectorX);
-        velocityAtPositionOne.y = (float)(componentOne * positionOne.y / positionOne.magnitude) + (float)(componentTwo * tUnitVectorY);
-        velocityAtPositionOne.z = (float)(componentOne * positionOne.z / positionOne.magnitude) + (float)(componentTwo * tUnitVectorZ);
+        Vector3d velocityAtPositionOne = componentOne * positionOne.normalized + componentTwo * tangentialUnitVector;
 
         return Orbit.StateVectors2Orbit(body, positionOne, velocityAtPositionOne, timeOne);
+
+        //double posOneMag = positionOne.magnitude;
+        //double posTwoMag = positionTwo.magnitude;
+        //double planeNormalX = 1.0 / (posOneMag * posTwoMag) * (positionOne.y * positionTwo.z - positionOne.z * positionTwo.y);
+        //double planeNormalY = 1.0 / (posOneMag * posTwoMag) * (positionOne.z * positionTwo.x - positionOne.x * positionTwo.z);
+        //double planeNormalZ = 1.0 / (posOneMag * posTwoMag) * (positionOne.x * positionTwo.y - positionOne.y * positionTwo.x);
+        //double tUnitVectorX = 1.0 / posOneMag * (planeNormalY * positionOne.z - planeNormalZ * positionOne.y);
+        //double tUnitVectorY = 1.0 / posOneMag * (planeNormalZ * positionOne.x - planeNormalX * positionOne.z);
+        //double tUnitVectorZ = 1.0 / posOneMag * (planeNormalX * positionOne.y - planeNormalY * positionOne.x);
+        //if (lambda < 0)
+        //{
+        //    tUnitVectorX *= -1.0;
+        //    tUnitVectorY *= -1.0;
+        //    tUnitVectorZ *= -1.0;
+        //}
+
+        //Debug.Log("Position one: " + positionOne);
+        //Debug.Log("Position two: " + positionTwo);
+        //Debug.Log("h normalised vector:\n" + planeNormalX + '\n' + planeNormalY + '\n' + planeNormalZ);
+        //Debug.Log("tUnit Vector:\n" + tUnitVectorX + '\n' + tUnitVectorY + '\n' + tUnitVectorZ);
+
+        //double gamma = Math.Sqrt(body.GravParameter * semiPerimeter / 2.0);
+        //double rho = (positionOne.magnitude - positionTwo.magnitude) / chordLength;
+        //double sigma = Math.Sqrt(1.0 - rho * rho);
+
+        //double componentOne = gamma / positionOne.magnitude * (lambda * yFinal - xFinal - rho * (lambda * yFinal + xFinal));
+        //double componentTwo = gamma * sigma / positionOne.magnitude * (yFinal + lambda * xFinal);
+
+        //Vector3 velocityAtPositionOne;
+        //velocityAtPositionOne.x = (float)(componentOne * positionOne.x / positionOne.magnitude) + (float)(componentTwo * tUnitVectorX);
+        //velocityAtPositionOne.y = (float)(componentOne * positionOne.y / positionOne.magnitude) + (float)(componentTwo * tUnitVectorY);
+        //velocityAtPositionOne.z = (float)(componentOne * positionOne.z / positionOne.magnitude) + (float)(componentTwo * tUnitVectorZ);
+
+        //return Orbit.StateVectors2Orbit(body, positionOne, velocityAtPositionOne, timeOne);
     }
 
     private static double FindXThatProducesTStar(double lambda, double TStar)
