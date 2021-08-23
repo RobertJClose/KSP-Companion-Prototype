@@ -188,13 +188,13 @@ public readonly struct Angle : System.IEquatable<Angle>, System.IComparable<Angl
     }
 
     // ********** Static Members **********
-    public static Angle Zero => new Angle(0f);
-    public static Angle QuarterTurn => new Angle(Mathf.PI / 2f);
-    public static Angle HalfTurn => new Angle(Mathf.PI);
-    public static Angle ThreeQuartersTurn => new Angle(3f * Mathf.PI / 2f);
+    public static Angle Zero => new(0f);
+    public static Angle QuarterTurn => new(Mathf.PI / 2f);
+    public static Angle HalfTurn => new(Mathf.PI);
+    public static Angle ThreeQuartersTurn => new(3f * Mathf.PI / 2f);
 
-    public static Angle MaxAngle => new Angle(6.283185243f); // The largest value before becoming Angle(0f). Found through horrible trial and error.
-    public static Angle Tiny => new Angle(0.000001f);
+    public static Angle MaxAngle => new(6.283185243f); // The largest value before becoming Angle(0f). Found through horrible trial and error.
+    public static Angle Tiny => new(0.000001f);
 
     // ********** Constructors ************
     public Angle(float f, bool isDeg = false)
@@ -256,7 +256,7 @@ public readonly struct Angle : System.IEquatable<Angle>, System.IComparable<Angl
     }
 
     // ********** Conversions ************
-    public static implicit operator Angle(float f) => new Angle(f);  // float to Angle conversion, where the float value is interpreted as an angle in radians.
+    public static implicit operator Angle(float f) => new(f);  // float to Angle conversion, where the float value is interpreted as an angle in radians.
 
     public static implicit operator float(Angle angle) => angle.RadValue; // Angle to float conversion, where the implied request is the angle in radians.
 }
