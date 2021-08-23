@@ -7,8 +7,8 @@ using UnityEngine.EventSystems;
 public abstract class TransitionStep : TimelineStep, IInspectable, IPlottable
 {
     // Members
-    float transitionTime;
-    public float TransitionTime 
+    double transitionTime;
+    public double TransitionTime 
     { 
         get 
         {
@@ -19,19 +19,19 @@ public abstract class TransitionStep : TimelineStep, IInspectable, IPlottable
             if (earlierTransitionStep == null && laterTransitionStep == null)
                 transitionTime = value;
             else if (earlierTransitionStep == null && laterTransitionStep != null)
-                transitionTime = Mathf.Clamp(value, float.NegativeInfinity, laterTransitionStep.transitionTime);
+                transitionTime = Mathd.Clamp(value, double.NegativeInfinity, laterTransitionStep.transitionTime);
             else if (earlierTransitionStep != null && laterTransitionStep == null)
-                transitionTime = Mathf.Clamp(value, earlierTransitionStep.transitionTime, float.PositiveInfinity);
+                transitionTime = Mathd.Clamp(value, earlierTransitionStep.transitionTime, double.PositiveInfinity);
             else
-                transitionTime = Mathf.Clamp(value, earlierTransitionStep.transitionTime, laterTransitionStep.transitionTime);
+                transitionTime = Mathd.Clamp(value, earlierTransitionStep.transitionTime, laterTransitionStep.transitionTime);
         }
     }
-    public Vector3? TransitionPoint
+    public Vector3d? TransitionPoint
     {
         get
         {
-            if (PreceedingStep is OrbitalStep)
-                return (PreceedingStep as OrbitalStep).Orbit.Time2Point(TransitionTime);
+            if (PreviousStep is OrbitalStep)
+                return (PreviousStep as OrbitalStep).Orbit.Time2Point(TransitionTime);
             else if (NextStep is OrbitalStep)
                 return (NextStep as OrbitalStep).Orbit.Time2Point(TransitionTime);
             else
@@ -68,7 +68,7 @@ public abstract class TransitionStep : TimelineStep, IInspectable, IPlottable
         if (plot != null)
         {
             if (TransitionPoint.HasValue && TransitionPoint.Value.magnitude != float.PositiveInfinity)
-                plot.transform.position = (TransitionPoint ?? Vector3.zero) * Constants.PlotRescaleFactor;
+                plot.transform.position = (Vector3)((TransitionPoint ?? Vector3d.zero) * Constants.PlotRescaleFactor);
             else
                 plot.transform.position = Vector3.zero;
         }       

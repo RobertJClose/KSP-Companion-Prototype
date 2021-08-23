@@ -9,7 +9,7 @@ public class InspectorPropertyBlock : MonoBehaviour
 {
     // Prefabs
     [SerializeField]
-    InspectorFloatProperty prefab_FloatProperty;
+    InspectorDoubleProperty prefab_DoubleProperty;
     [SerializeField]
     InspectorDropdownProperty prefab_DropdownProperty;
 
@@ -26,7 +26,7 @@ public class InspectorPropertyBlock : MonoBehaviour
         // The number of columns of the grid layout group is then set so that as many properties as possible will fit into the parent transform
         // of the property block, given the amount of padding and spacing along the x direction
         gridLayoutGroup = GetComponent<GridLayoutGroup>();
-        gridLayoutGroup.cellSize = prefab_FloatProperty.GetComponent<RectTransform>().rect.size;
+        gridLayoutGroup.cellSize = prefab_DoubleProperty.GetComponent<RectTransform>().rect.size;
         gridLayoutGroup.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
         float availableSpace = (transform.parent as RectTransform).rect.width;
         float xPadding = gridLayoutGroup.padding.left + gridLayoutGroup.padding.right;
@@ -35,44 +35,44 @@ public class InspectorPropertyBlock : MonoBehaviour
         gridLayoutGroup.constraintCount = Mathf.FloorToInt((availableSpace - xPadding + xSpacing) / (cellWidth + xSpacing)); // Do some inequality maths for why this formula works
     }
 
-    public void AddFloatProperty(string text, Func<float> ValueGetter)
+    public void AddDoubleProperty(string text, Func<double> ValueGetter)
     {
-        AddFloatProperty(text, ValueGetter, null, null, true);
+        AddDoubleProperty(text, ValueGetter, null, null, true);
     }
 
-    public void AddFloatProperty(string text, Func<float> ValueGetter, Func<bool> DisplayCondition)
+    public void AddDoubleProperty(string text, Func<double> ValueGetter, Func<bool> DisplayCondition)
     {
-        AddFloatProperty(text, ValueGetter, null, DisplayCondition, true);
+        AddDoubleProperty(text, ValueGetter, null, DisplayCondition, true);
     }
 
-    public void AddFloatProperty(string text, Func<float> ValueGetter, Action<float> ValueSetter)
+    public void AddDoubleProperty(string text, Func<double> ValueGetter, Action<double> ValueSetter)
     {
-        AddFloatProperty(text, ValueGetter, ValueSetter, null, true);
+        AddDoubleProperty(text, ValueGetter, ValueSetter, null, true);
     }
 
-    public void AddFloatProperty(string text, Func<float> ValueGetter, Action<float> ValueSetter, Func<bool> DisplayCondition)
+    public void AddDoubleProperty(string text, Func<double> ValueGetter, Action<double> ValueSetter, Func<bool> DisplayCondition)
     {
-        AddFloatProperty(text, ValueGetter, ValueSetter, DisplayCondition, true);
+        AddDoubleProperty(text, ValueGetter, ValueSetter, DisplayCondition, true);
     }
 
-    public void AddFloatProperty(string text, Func<float> ValueGetter, bool isEditable)
+    public void AddDoubleProperty(string text, Func<double> ValueGetter, bool isEditable)
     {
-        AddFloatProperty(text, ValueGetter, null, null, isEditable);
+        AddDoubleProperty(text, ValueGetter, null, null, isEditable);
     }
 
-    public void AddFloatProperty(string text, Func<float> ValueGetter, Func<bool> DisplayCondition, bool isEditable)
+    public void AddDoubleProperty(string text, Func<double> ValueGetter, Func<bool> DisplayCondition, bool isEditable)
     {
-        AddFloatProperty(text, ValueGetter, null, DisplayCondition, isEditable);
+        AddDoubleProperty(text, ValueGetter, null, DisplayCondition, isEditable);
     }
 
-    public void AddFloatProperty(string text, Func<float> ValueGetter, Action<float> ValueSetter, bool isEditable)
+    public void AddDoubleProperty(string text, Func<double> ValueGetter, Action<double> ValueSetter, bool isEditable)
     {
-        AddFloatProperty(text, ValueGetter, ValueSetter, null, isEditable);
+        AddDoubleProperty(text, ValueGetter, ValueSetter, null, isEditable);
     }
 
-    public void AddFloatProperty(string text, Func<float> ValueGetter, Action<float> ValueSetter, Func<bool> DisplayCondition, bool isEditable)
+    public void AddDoubleProperty(string text, Func<double> ValueGetter, Action<double> ValueSetter, Func<bool> DisplayCondition, bool isEditable)
     {
-        InspectorFloatProperty newFloat = Instantiate(prefab_FloatProperty, transform);
+        InspectorDoubleProperty newFloat = Instantiate(prefab_DoubleProperty, transform);
 
         newFloat.SetPropertyText(text);
         newFloat.SetValueGetter(ValueGetter);

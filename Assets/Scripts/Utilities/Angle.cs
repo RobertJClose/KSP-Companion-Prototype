@@ -5,23 +5,23 @@ using UnityEngine;
 public readonly struct Angle : System.IEquatable<Angle>, System.IComparable<Angle>
 {
     // This class is used to represent an angle in radians: 0 < angle < 2PI
-    private readonly float value; // The angle stored in radians
+    private readonly float angle; // The angle stored in radians
 
     public float RadValue
     {
-        get => value;
+        get => angle;
     }
 
     public float DegValue
     {
-        get => value * Mathf.Rad2Deg;
+        get => angle * Mathf.Rad2Deg;
     }
 
     public float RadValueMinusPiToPiRange
     {
         get
         {
-            return (value < Mathf.PI) ? (value) : (-2.0f * Mathf.PI + value);
+            return (angle < Mathf.PI) ? (angle) : (-2.0f * Mathf.PI + angle);
         }
     }
 
@@ -51,14 +51,14 @@ public readonly struct Angle : System.IEquatable<Angle>, System.IComparable<Angl
 
         // Check if the region is non-existant
         if (lowerBound == upperBound)
-            return value == lowerBound;
+            return angle == lowerBound;
         else if (lowerBound == null || upperBound == null)
             return false;
 
         if (lowerBound < upperBound)
         {
             // Normal hierarchy.
-            if (!(lowerBound < value) || !(value < upperBound))
+            if (!(lowerBound < angle) || !(angle < upperBound))
             {
                 // The angle is not within the region.
                 return false;
@@ -68,7 +68,7 @@ public readonly struct Angle : System.IEquatable<Angle>, System.IComparable<Angl
         if (lowerBound > upperBound)
         {
             // Inverted hierarchy.
-            if (!(lowerBound < value) && !(value < upperBound))
+            if (!(lowerBound < angle) && !(angle < upperBound))
             {
                 // The angle is not within the region.
                 return false;
@@ -86,11 +86,11 @@ public readonly struct Angle : System.IEquatable<Angle>, System.IComparable<Angl
         else if (angleOne != null && angleTwo == null)
             return angleOne.Value;
         else if (angleOne == null && angleTwo == null)
-            return value;
+            return angle;
         else
         {
-            float diffOne = Mathf.Abs(value - angleOne.Value);
-            float diffTwo = Mathf.Abs(value - angleTwo.Value);
+            float diffOne = Mathf.Abs(angle - angleOne.Value);
+            float diffTwo = Mathf.Abs(angle - angleTwo.Value);
             return (diffOne < diffTwo) ? angleOne.Value : angleTwo.Value;
         }
     }
@@ -151,7 +151,7 @@ public readonly struct Angle : System.IEquatable<Angle>, System.IComparable<Angl
 
     public override int GetHashCode()
     {
-        return value.GetHashCode();
+        return angle.GetHashCode();
     }
 
     public override string ToString()
@@ -171,7 +171,7 @@ public readonly struct Angle : System.IEquatable<Angle>, System.IComparable<Angl
         // These two angles are approximately equal, but sit on either side of the 0/2PI divide, and so will return 
         // false from the Approximately() method.
 
-        float difference = Mathf.Abs(value - other.RadValue);
+        float difference = Mathf.Abs(angle - other.RadValue);
 
         if (Mathf.Approximately(difference, 2f * Mathf.PI)) // Special case checking
             return true;
@@ -184,7 +184,7 @@ public readonly struct Angle : System.IEquatable<Angle>, System.IComparable<Angl
         if (other == null)
             return 1;
 
-        return value.CompareTo(other.RadValue);
+        return angle.CompareTo(other.RadValue);
     }
 
     // ********** Static Members **********
@@ -200,9 +200,9 @@ public readonly struct Angle : System.IEquatable<Angle>, System.IComparable<Angl
     public Angle(float f, bool isDeg = false)
     {
         if (isDeg)
-            value = EquivalentDeg(f) * Mathf.Deg2Rad;
+            angle = EquivalentDeg(f) * Mathf.Deg2Rad;
         else
-            value = EquivalentRad(f);
+            angle = EquivalentRad(f);
     }
 
     // ********** Operator Overloads
@@ -252,7 +252,7 @@ public readonly struct Angle : System.IEquatable<Angle>, System.IComparable<Angl
 
     public static Angle operator-(Angle angle)
     {
-        return new Angle(2.0f * Mathf.PI - angle.value);
+        return new Angle(2.0f * Mathf.PI - angle.angle);
     }
 
     // ********** Conversions ************
