@@ -18,17 +18,17 @@ public class OrbitalStep : TimelineStep, IInspectable, IPlottable
     List<NamedColour> namedColours;
     public NamedColour StepColour { get; set; }
     public NamedColour NotTravelledColour { get { return namedColours[namedColours.Count - 1]; } }
-    public float? StartTime
+    public double? StartTime
     {
         get
         {
-            if (PreceedingStep is TransitionStep)
-                return (PreceedingStep as TransitionStep).TransitionTime;
+            if (PreviousStep is TransitionStep)
+                return (PreviousStep as TransitionStep).TransitionTime;
             else
                 return null;
         }
     }
-    public float? FinalTime
+    public double? FinalTime
     {
         get
         {
@@ -38,7 +38,7 @@ public class OrbitalStep : TimelineStep, IInspectable, IPlottable
                 return null;
         }
     }
-    public float? Duration
+    public double? Duration
     {
         get
         {
@@ -49,8 +49,8 @@ public class OrbitalStep : TimelineStep, IInspectable, IPlottable
     {
         get
         {
-            if (PreceedingStep is TransitionStep)
-                return orbit.Time2TrueAnomaly((PreceedingStep as TransitionStep).TransitionTime);
+            if (PreviousStep is TransitionStep)
+                return orbit.Time2TrueAnomaly((PreviousStep as TransitionStep).TransitionTime);
             else
                 return null;
         }
@@ -129,11 +129,11 @@ public class OrbitalStep : TimelineStep, IInspectable, IPlottable
     {
         if (!isFreeOrbit)
         {
-            float departureTime = earlierTransitionStep.TransitionTime;
-            float arrivalTime = laterTransitionStep.TransitionTime;
+            double departureTime = earlierTransitionStep.TransitionTime;
+            double arrivalTime = laterTransitionStep.TransitionTime;
 
-            Vector3 departurePosition = previousOrbitalStep.Orbit.Time2Point(departureTime);
-            Vector3 arrivalPosition = followingOrbitalStep.Orbit.Time2Point(arrivalTime);
+            Vector3d departurePosition = previousOrbitalStep.Orbit.Time2Point(departureTime);
+            Vector3d arrivalPosition = followingOrbitalStep.Orbit.Time2Point(arrivalTime);
 
             orbit = Orbit.FindTransferOrbit(orbit.GravitationalBody, departurePosition, departureTime, arrivalPosition, arrivalTime);
         }
@@ -164,8 +164,8 @@ public class OrbitalStep : TimelineStep, IInspectable, IPlottable
         if (!isFreeOrbit)
         {
             InspectorPropertyBlock porkChopPropertyBlock = inspector.AddPorkChopPropertyBlock();
-            porkChopPropertyBlock.AddFloatProperty("Departure Time (s UT)", () => (preceedingStep as TransitionStep).TransitionTime, (float newDepartureTime) => { (preceedingStep as TransitionStep).TransitionTime = newDepartureTime; UpdateTransferOrbit(); });
-            porkChopPropertyBlock.AddFloatProperty("Arrival Time (s UT)", () => (nextStep as TransitionStep).TransitionTime, (float newArrivalTime) => { (nextStep as TransitionStep).TransitionTime = newArrivalTime; UpdateTransferOrbit(); });
+            porkChopPropertyBlock.AddDoubleProperty("Departure Time (s UT)",    () => (preceedingStep as TransitionStep).TransitionTime,    (double newDepartureTime)   => { (preceedingStep as TransitionStep).TransitionTime = newDepartureTime;  UpdateTransferOrbit(); });
+            porkChopPropertyBlock.AddDoubleProperty("Arrival Time (s UT)",      () => (nextStep as TransitionStep).TransitionTime,          (double newArrivalTime)     => { (nextStep as TransitionStep).TransitionTime = newArrivalTime;          UpdateTransferOrbit(); });
         }
 
         // Set-up of the Inspector property blocks:
@@ -173,20 +173,20 @@ public class OrbitalStep : TimelineStep, IInspectable, IPlottable
         blockOne.AddDropdownProperty("Colour", () => StepColour, (NamedColour namedColour) => SetOrbitalStepColour(namedColour), namedColours, NamedColour.TMPDropdownOptionDataConverter, DisplayCondition: () => isFreeOrbit); ;
 
         InspectorPropertyBlock blockTwo = inspector.AddPropertyBlock();
-        blockTwo.AddFloatProperty("Periapsis Radius (m)",               () => orbit.RPE,                            (float newRPE) => orbit.RPE = newRPE, isFreeOrbit);
-        blockTwo.AddFloatProperty("Eccentricity",                       () => orbit.ECC,                            (float newECC) => orbit.ECC = newECC, isFreeOrbit);
-        blockTwo.AddFloatProperty("Inclination (deg)",                  () => orbit.INC.DegValueMinus180To180Range, (float newINCd) => orbit.INC = newINCd * Mathf.Deg2Rad, isFreeOrbit);
-        blockTwo.AddFloatProperty("Argument Of Periapsis (deg)",        () => orbit.APE.DegValue,                   (float newAPEd) => orbit.APE = newAPEd * Mathf.Deg2Rad, isFreeOrbit);
-        blockTwo.AddFloatProperty("Longitude Of Ascending Node (deg)",  () => orbit.LAN.DegValue,                   (float newLANd) => orbit.LAN = newLANd * Mathf.Deg2Rad, isFreeOrbit);
-        blockTwo.AddFloatProperty("Time Of Periapsis Passage (s UT)",   () => orbit.TPP,                            (float newTPP) => orbit.TPP = newTPP, isFreeOrbit);
+        blockTwo.AddDoubleProperty("Periapsis Radius (m)",               () => orbit.RPE,                            (double newRPE)    => { orbit.RPE = newRPE;                            PreviousOrbitalStep?.UpdateTransferOrbit(); NextOrbitalStep?.UpdateTransferOrbit(); }, isEditable: IsFreeOrbit);
+        blockTwo.AddDoubleProperty("Eccentricity",                       () => orbit.ECC,                            (double newECC)    => { orbit.ECC = newECC;                            PreviousOrbitalStep?.UpdateTransferOrbit(); NextOrbitalStep?.UpdateTransferOrbit(); }, isEditable: IsFreeOrbit);
+        blockTwo.AddDoubleProperty("Inclination (deg)",                  () => orbit.INC.DegValueMinus180To180Range, (double newINCd)   => { orbit.INC = (float)newINCd * Mathf.Deg2Rad;    PreviousOrbitalStep?.UpdateTransferOrbit(); NextOrbitalStep?.UpdateTransferOrbit(); }, isEditable: IsFreeOrbit);
+        blockTwo.AddDoubleProperty("Argument Of Periapsis (deg)",        () => orbit.APE.DegValue,                   (double newAPEd)   => { orbit.APE = (float)newAPEd * Mathf.Deg2Rad;    PreviousOrbitalStep?.UpdateTransferOrbit(); NextOrbitalStep?.UpdateTransferOrbit(); }, isEditable: IsFreeOrbit);
+        blockTwo.AddDoubleProperty("Longitude Of Ascending Node (deg)",  () => orbit.LAN.DegValue,                   (double newLANd)   => { orbit.LAN = (float)newLANd * Mathf.Deg2Rad;    PreviousOrbitalStep?.UpdateTransferOrbit(); NextOrbitalStep?.UpdateTransferOrbit(); }, isEditable: IsFreeOrbit);
+        blockTwo.AddDoubleProperty("Time Of Periapsis Passage (s UT)",   () => orbit.TPP,                            (double newTPP)    => { orbit.TPP = newTPP;                            PreviousOrbitalStep?.UpdateTransferOrbit(); NextOrbitalStep?.UpdateTransferOrbit(); }, isEditable: IsFreeOrbit);
 
         InspectorPropertyBlock blockThree = inspector.AddPropertyBlock();
-        blockThree.AddFloatProperty("Semimajor Axis (m)",       () => orbit.SMA);
-        blockThree.AddFloatProperty("Specific energy (J/kg)",   () => orbit.SpecificEnergy);
-        blockThree.AddFloatProperty("Period (s)",               () => orbit.Period,                                     DisplayCondition: () => orbit.OrbitType == Orbit.ConicSection.Elliptical);
-        blockThree.AddFloatProperty("Apoapsis Radius (m)",      () => orbit.ApoapsisRadius,                             DisplayCondition: () => orbit.OrbitType == Orbit.ConicSection.Elliptical);
-        blockThree.AddFloatProperty("Start True Anomaly (deg)", () => orbit.Time2TrueAnomaly(StartTime ?? 0f).DegValue, DisplayCondition: () => StartTime != null);
-        blockThree.AddFloatProperty("Final True Anomaly (deg)", () => orbit.Time2TrueAnomaly(FinalTime ?? 0f).DegValue, DisplayCondition: () => FinalTime != null);
+        blockThree.AddDoubleProperty("Semimajor Axis (m)",       () => orbit.SMA);
+        blockThree.AddDoubleProperty("Specific energy (J/kg)",   () => orbit.SpecificEnergy);
+        blockThree.AddDoubleProperty("Period (s)",               () => orbit.Period,                                     DisplayCondition: () => orbit.OrbitType == Orbit.ConicSection.Elliptical);
+        blockThree.AddDoubleProperty("Apoapsis Radius (m)",      () => orbit.ApoapsisRadius,                             DisplayCondition: () => orbit.OrbitType == Orbit.ConicSection.Elliptical);
+        blockThree.AddDoubleProperty("Start True Anomaly (deg)", () => orbit.Time2TrueAnomaly(StartTime ?? 0f).DegValue, DisplayCondition: () => StartTime != null);
+        blockThree.AddDoubleProperty("Final True Anomaly (deg)", () => orbit.Time2TrueAnomaly(FinalTime ?? 0f).DegValue, DisplayCondition: () => FinalTime != null);
 
         plot.HighlightPlot(true);
     }
@@ -203,26 +203,26 @@ public class OrbitalStep : TimelineStep, IInspectable, IPlottable
         if (plot != null)
         {
             // First get a list of Vector3 points along the orbital trajectory.
-            List<Vector3> orbitPoints = orbit.OrbitalPoints(-orbit.MaxTrueAnomaly, orbit.MaxTrueAnomaly, out List<Angle> trueAnomalies);
+            List<Vector3d> orbitPoints = orbit.OrbitalPoints(-orbit.MaxTrueAnomaly, orbit.MaxTrueAnomaly, out List<Angle> trueAnomalies);
 
             // Now each one of these points must be turned into a PolylinePoint and added to the Polyline plot.
             PolylinePoint nextPoint;
             Angle nextPointTrueAnomaly;
             int pointIndex = 0;
             List<PolylinePoint> polylinePoints = new List<PolylinePoint>(orbitPoints.Count);
-            foreach (Vector3 point in orbitPoints)
+            foreach (Vector3d point in orbitPoints)
             {
                 nextPointTrueAnomaly = trueAnomalies[pointIndex];
 
                 // If a point is at an infinite/NaN radius, don't add it to the plot. And remove its true anomaly value from the 'trueAnomalies' list.
                 // This maintains equivalent indexing between the 'polylinePoints' list and the 'trueAnomalies' list.
-                if (point.magnitude == float.PositiveInfinity || point.magnitude == float.NaN || point.magnitude == float.NegativeInfinity)
+                if (point.magnitude == double.PositiveInfinity || point.magnitude == double.NaN || point.magnitude == double.NegativeInfinity)
                 {
                     trueAnomalies.Remove(nextPointTrueAnomaly);
                     continue;
                 }
                 else
-                    nextPoint.point = point;
+                    nextPoint.point = (Vector3)point;
 
                 // Colour the point according to whether it is actually travelled on during this orbital step.
                 if (DetermineIfPointIsTravelledOn(nextPointTrueAnomaly))
@@ -236,7 +236,7 @@ public class OrbitalStep : TimelineStep, IInspectable, IPlottable
                 pointIndex++;
             }
 
-            plot.SetPlotPoints(polylinePoints, orbit.PeriapsisPoint, orbit.ApoapsisPoint, orbit.AscendingNode, orbit.DescendingNode);
+            plot.SetPlotPoints(polylinePoints, (Vector3)orbit.PeriapsisPoint, (Vector3?)orbit.ApoapsisPoint, (Vector3?)orbit.AscendingNode, (Vector3?)orbit.DescendingNode);
             if (orbit.OrbitType == Orbit.ConicSection.Elliptical)
                 plot.SetClosedPlot(true);
             else

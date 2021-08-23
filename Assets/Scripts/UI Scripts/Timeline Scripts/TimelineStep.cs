@@ -8,17 +8,17 @@ public abstract class TimelineStep : MonoBehaviour
     // Members
     public int IndexInTimeline { get { return missionTimeline.GetMissionTimeline().IndexOf(this); } }
     [SerializeField] protected TimelineStep preceedingStep;
-    public TimelineStep PreceedingStep { get { return preceedingStep; } }
+    public TimelineStep PreviousStep { get { return preceedingStep; } }
     [SerializeField] protected TimelineStep nextStep;
     public TimelineStep NextStep { get { return nextStep; } }
     [SerializeField] protected TransitionStep earlierTransitionStep;
-    public TransitionStep EarlierTransitionStep { get { return earlierTransitionStep; } }
+    public TransitionStep PreviousTransitionStep { get { return earlierTransitionStep; } }
     [SerializeField] protected TransitionStep laterTransitionStep;
-    public TransitionStep LaterTransitionStep { get { return laterTransitionStep; } }
+    public TransitionStep NextTransitionStep { get { return laterTransitionStep; } }
     [SerializeField] protected OrbitalStep previousOrbitalStep;
     public OrbitalStep PreviousOrbitalStep { get { return previousOrbitalStep; } }
     [SerializeField] protected OrbitalStep followingOrbitalStep;
-    public OrbitalStep FollowingOrbitalStep { get { return followingOrbitalStep; } }
+    public OrbitalStep NextOrbitalStep { get { return followingOrbitalStep; } }
 
     // Scene References
     protected Inspector inspector;
