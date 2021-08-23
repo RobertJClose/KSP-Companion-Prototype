@@ -30,8 +30,8 @@ public abstract class TransitionStep : TimelineStep, IInspectable, IPlottable
     {
         get
         {
-            if (PreceedingStep is OrbitalStep)
-                return (PreceedingStep as OrbitalStep).Orbit.Time2Point(TransitionTime);
+            if (PreviousStep is OrbitalStep)
+                return (PreviousStep as OrbitalStep).Orbit.Time2Point(TransitionTime);
             else if (NextStep is OrbitalStep)
                 return (NextStep as OrbitalStep).Orbit.Time2Point(TransitionTime);
             else
