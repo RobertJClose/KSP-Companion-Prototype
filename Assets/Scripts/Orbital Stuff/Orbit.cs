@@ -9,12 +9,12 @@ public class Orbit
     // ********** Backing fields **********
     protected GravitationalBody attractingBody;
 
-    protected double periapsisRadius;            // RPE: Strictly positive, measured in metres.
-    protected double eccentricity;               // ECC: Strictly positive. Elliptical orbit: 0 <= ECC < 1. Parabolic orbit: ECC == 1. Hyperbolic orbit: ECC > 1. 
+    protected double periapsisRadius;           // RPE: Strictly positive, measured in metres.
+    protected double eccentricity;              // ECC: Strictly positive. Elliptical orbit: 0 <= ECC < 1. Parabolic orbit: ECC == 1. Hyperbolic orbit: ECC > 1. 
     protected Angle inclination;                // INC: 0 < INC < PI. Specifies the angle between the orbital plane and the reference XY plane
     protected Angle argumentOfPeriapsis;        // APE: 0 < APE < 2PI. Specifies the angle between the ascending node vector (NVector) and the point of periapsis 
     protected Angle longitudeOfAscendingNode;   // LAN: 0 < LAN < 2PI. Specifies the angle between the reference direction (X axis) and the ascending node vector (NVector)
-    protected double timeOfPeriapsisPassage;     // TPP: Specifies the bodies position in its orbit.
+    protected double timeOfPeriapsisPassage;    // TPP: Specifies the bodies position in its orbit by representing a time at which the body passed through the orbit's periapsis.
 
     // ********** Properties **********
     // *** Properties of the orbit ***
@@ -59,7 +59,7 @@ public class Orbit
         get
         {
             if (OrbitType == ConicSection.Parabolic)
-                return float.PositiveInfinity;
+                return double.PositiveInfinity;
             else
                 return periapsisRadius / (1.0 - eccentricity);
         }

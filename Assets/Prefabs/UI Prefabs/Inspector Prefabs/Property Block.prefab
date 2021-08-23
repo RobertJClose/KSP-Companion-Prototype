@@ -113,5 +113,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82470759ff7fead49bcaca5029301e7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab_FloatProperty: {fileID: 3876904713004873010, guid: c2c42f183715fe348b7cab84c9b4c626, type: 3}
+  prefab_DoubleProperty: {fileID: 3876904713004873010, guid: c2c42f183715fe348b7cab84c9b4c626, type: 3}
   prefab_DropdownProperty: {fileID: 8085648934509714227, guid: 59aff90a708b65941a39d106459e9eb4, type: 3}
