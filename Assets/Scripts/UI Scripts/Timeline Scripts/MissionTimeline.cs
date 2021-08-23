@@ -6,7 +6,7 @@ public class MissionTimeline : MonoBehaviour
 {
     // Members
     [SerializeField]
-    List<TimelineStep> missionTimeline = new();
+    List<TimelineStep> missionTimeline = new List<TimelineStep>();
     public int StepCount { get { return missionTimeline.Count; } }
 
     // Prefab references:

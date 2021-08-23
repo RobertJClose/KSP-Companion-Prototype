@@ -279,7 +279,7 @@ public class Orbit
                 longitudeOfAscendingNode = 2.0f * Mathf.PI - longitudeOfAscendingNode;
         }
 
-        Orbit orbit = new(periapsisRadius, eccentricity, inclination, argumentOfPeriapsis, longitudeOfAscendingNode, 0.0f, body);
+        Orbit orbit = new Orbit(periapsisRadius, eccentricity, inclination, argumentOfPeriapsis, longitudeOfAscendingNode, 0.0f, body);
         double timeFromPeriapsisToTrueAnomaly = orbit.TrueAnomaly2Time(trueAnomaly);
         timeOfPeriapsisPassage = time - timeFromPeriapsisToTrueAnomaly;
         orbit.TPP = timeOfPeriapsisPassage;
@@ -568,7 +568,7 @@ public class Orbit
         Angle actualStep = angularRange.RadValue / numberOfPoints; 
 
         // Create the list to be output and fill it with points
-        List<Vector3> outputPoints = new(numberOfPoints);
+        List<Vector3> outputPoints = new List<Vector3>(numberOfPoints);
         trueAnomalies = new List<Angle>(numberOfPoints);
 
         Angle angle = startTrueAnomaly ?? Angle.Zero;

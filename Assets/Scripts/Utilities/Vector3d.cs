@@ -230,8 +230,8 @@ namespace UnityEngine
 
         public static void OrthoNormalize(ref Vector3d normal, ref Vector3d tangent)
         {
-            Vector3 v3normal = new();
-            Vector3 v3tangent = new();
+            Vector3 v3normal = new Vector3();
+            Vector3 v3tangent = new Vector3();
             v3normal = (Vector3)normal;
             v3tangent = (Vector3)tangent;
             Vector3.OrthoNormalize(ref v3normal, ref v3tangent);
@@ -241,9 +241,9 @@ namespace UnityEngine
 
         public static void OrthoNormalize(ref Vector3d normal, ref Vector3d tangent, ref Vector3d binormal)
         {
-            Vector3 v3normal = new();
-            Vector3 v3tangent = new();
-            Vector3 v3binormal = new();
+            Vector3 v3normal = new Vector3();
+            Vector3 v3tangent = new Vector3();
+            Vector3 v3binormal = new Vector3();
             v3normal = (Vector3)normal;
             v3tangent = (Vector3)tangent;
             v3binormal = (Vector3)binormal;
@@ -397,7 +397,7 @@ namespace UnityEngine
 
         public static double Distance(Vector3d a, Vector3d b)
         {
-            Vector3d vector3d = new(a.x - b.x, a.y - b.y, a.z - b.z);
+            Vector3d vector3d = new Vector3d(a.x - b.x, a.y - b.y, a.z - b.z);
             return Math.Sqrt(vector3d.x * vector3d.x + vector3d.y * vector3d.y + vector3d.z * vector3d.z);
         }
 
