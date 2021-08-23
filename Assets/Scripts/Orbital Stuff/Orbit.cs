@@ -143,7 +143,7 @@ public class Orbit
         }
     }
 
-    public Vector3 PeriapsisPoint
+    public Vector3d PeriapsisPoint
     {
         get
         {
@@ -151,7 +151,7 @@ public class Orbit
         }
     }
 
-    public Vector3? ApoapsisPoint
+    public Vector3d? ApoapsisPoint
     {
         get
         {
@@ -162,11 +162,11 @@ public class Orbit
         }
     }
 
-    public Vector3? AscendingNode
+    public Vector3d? AscendingNode
     {
         get
         {
-            Vector3 node = TrueAnomaly2Point(-argumentOfPeriapsis);
+            Vector3d node = TrueAnomaly2Point(-argumentOfPeriapsis);
             if (node.magnitude == float.PositiveInfinity)
                 return null;
             else
@@ -174,11 +174,11 @@ public class Orbit
         }
     }
 
-    public Vector3? DescendingNode
+    public Vector3d? DescendingNode
     {
         get
         {
-            Vector3 node = TrueAnomaly2Point(-argumentOfPeriapsis + Angle.HalfTurn);
+            Vector3d node = TrueAnomaly2Point(-argumentOfPeriapsis + Angle.HalfTurn);
             if (node.magnitude == float.PositiveInfinity)
                 return null;
             else
@@ -234,7 +234,7 @@ public class Orbit
     public float MU { get { return attractingBody.GravParameter; } }
 
     // ********** Methods **********
-    public static Orbit StateVectors2Orbit(GravitationalBody body, Vector3 position, Vector3 velocity, double time)
+    public static Orbit StateVectors2Orbit(GravitationalBody body, Vector3d position, Vector3d velocity, double time)
     {
         double periapsisRadius;
         double eccentricity;
@@ -244,12 +244,12 @@ public class Orbit
         double timeOfPeriapsisPassage;
         float trueAnomaly;
 
-        Vector3 hVector = Vector3.Cross(position, velocity);
-        Vector3 eVector = 1.0f / body.GravParameter * Vector3.Cross(velocity, hVector) - position.normalized;
-        Vector3 nVector = Vector3.Cross(Vector3.forward, hVector.normalized);
+        Vector3d hVector = Vector3d.Cross(position, velocity);
+        Vector3d eVector = 1.0 / body.GravParameter * Vector3d.Cross(velocity, hVector) - position.normalized;
+        Vector3d nVector = Vector3d.Cross(Vector3d.forward, hVector.normalized);
 
-        trueAnomaly = (float)Math.Acos(Vector3.Dot(eVector, position) / (eVector.magnitude * position.magnitude));
-        if (Vector3.Dot(position, velocity) < 0)
+        trueAnomaly = (float)Math.Acos(Vector3d.Dot(eVector, position) / (eVector.magnitude * position.magnitude));
+        if (Vector3d.Dot(position, velocity) < 0)
             trueAnomaly = 2.0f * Mathf.PI - trueAnomaly;
 
         eccentricity = eVector.magnitude;
@@ -260,17 +260,17 @@ public class Orbit
         // If the orbit has an inclination of zero, then the nVector will equal the zero vector and the argumentOfPeriapsis and the
         // longitudeOfTheAscendingNode become undefined. Their sum remains well defined however. I have choosen that the argumentOfPeriapsis
         // will equal zero while the longitudeOfTheAscendingNode gets a value.
-        if (nVector == Vector3.zero)
+        if (nVector == Vector3d.zero)
         {
             inclination = 0.0f;
             argumentOfPeriapsis = 0.0f;
-            longitudeOfAscendingNode = Vector3.SignedAngle(Vector3.right, eVector, Vector3.forward) * Mathf.Deg2Rad;
+            longitudeOfAscendingNode = Vector3.SignedAngle(Vector3.right, (Vector3)eVector, Vector3.forward) * Mathf.Deg2Rad;
         }
         else
         {
             inclination = (float)Math.Atan2(nVector.magnitude * hVector.magnitude, hVector.z);
             
-            argumentOfPeriapsis = (float)Math.Acos(Vector3.Dot(nVector, eVector) / (nVector.magnitude * eVector.magnitude));
+            argumentOfPeriapsis = (float)Math.Acos(Vector3d.Dot(nVector, eVector) / (nVector.magnitude * eVector.magnitude));
             if (eVector.z < 0)
                 argumentOfPeriapsis = 2.0f * Mathf.PI - argumentOfPeriapsis;
             
@@ -279,7 +279,7 @@ public class Orbit
                 longitudeOfAscendingNode = 2.0f * Mathf.PI - longitudeOfAscendingNode;
         }
 
-        Orbit orbit = new Orbit(periapsisRadius, eccentricity, inclination, argumentOfPeriapsis, longitudeOfAscendingNode, 0.0f, body);
+        Orbit orbit = new(periapsisRadius, eccentricity, inclination, argumentOfPeriapsis, longitudeOfAscendingNode, 0.0f, body);
         double timeFromPeriapsisToTrueAnomaly = orbit.TrueAnomaly2Time(trueAnomaly);
         timeOfPeriapsisPassage = time - timeFromPeriapsisToTrueAnomaly;
         orbit.TPP = timeOfPeriapsisPassage;
@@ -287,7 +287,7 @@ public class Orbit
         return orbit;
     }
 
-    public static Orbit FindTransferOrbit(GravitationalBody body, Vector3 positionOne, double timeOne, Vector3 positionTwo, double timeTwo)
+    public static Orbit FindTransferOrbit(GravitationalBody body, Vector3d positionOne, double timeOne, Vector3d positionTwo, double timeTwo)
     {
         Orbit orbit = LambertsProblemHelper.Solver(body, positionOne, timeOne, positionTwo, timeTwo);
 
@@ -490,65 +490,65 @@ public class Orbit
         return hyperbolicAnomaly;
     }
 
-    public Vector3 TrueAnomaly2Point(Angle trueAnomaly)
+    public Vector3d TrueAnomaly2Point(Angle trueAnomaly)
     {
         trueAnomaly = Angle.Expel(trueAnomaly, MaxTrueAnomaly ?? Angle.Zero, -(MaxTrueAnomaly ?? Angle.Zero));
 
         double radius;
         if (trueAnomaly >= MaxTrueAnomaly && trueAnomaly <= - MaxTrueAnomaly)
-            return Vector3.positiveInfinity;
+            return new Vector3d(Vector3.positiveInfinity);
         
-        radius = periapsisRadius * (1.0f + eccentricity) / (1.0f + eccentricity * Mathf.Cos(trueAnomaly));
+        radius = periapsisRadius * (1.0 + eccentricity) / (1.0 + eccentricity * Mathf.Cos(trueAnomaly));
 
-        Vector3 output;
-        output.x = (float)(radius * (Mathf.Cos(longitudeOfAscendingNode) * Mathf.Cos(argumentOfPeriapsis + trueAnomaly) - Mathf.Sin(longitudeOfAscendingNode) * Mathf.Sin(argumentOfPeriapsis + trueAnomaly) * Mathf.Cos(inclination)));
-        output.y = (float)(radius * (Mathf.Sin(longitudeOfAscendingNode) * Mathf.Cos(argumentOfPeriapsis + trueAnomaly) + Mathf.Cos(longitudeOfAscendingNode) * Mathf.Sin(argumentOfPeriapsis + trueAnomaly) * Mathf.Cos(inclination)));
-        output.z = (float)(radius * Mathf.Sin(argumentOfPeriapsis + trueAnomaly) * Mathf.Sin(inclination));
+        Vector3d output;
+        output.x = radius * (Mathf.Cos(longitudeOfAscendingNode) * Mathf.Cos(argumentOfPeriapsis + trueAnomaly) - Mathf.Sin(longitudeOfAscendingNode) * Mathf.Sin(argumentOfPeriapsis + trueAnomaly) * Mathf.Cos(inclination));
+        output.y = radius * (Mathf.Sin(longitudeOfAscendingNode) * Mathf.Cos(argumentOfPeriapsis + trueAnomaly) + Mathf.Cos(longitudeOfAscendingNode) * Mathf.Sin(argumentOfPeriapsis + trueAnomaly) * Mathf.Cos(inclination));
+        output.z = radius * Mathf.Sin(argumentOfPeriapsis + trueAnomaly) * Mathf.Sin(inclination);
         return output;
     }
 
-    public Vector3 TrueAnomaly2Velocity(Angle trueAnomaly)
+    public Vector3d TrueAnomaly2Velocity(Angle trueAnomaly)
     {
         double angMomentum = HVector.magnitude;
 
-        Vector3 output;
-        output.x = (float)(-MU / angMomentum * (Mathf.Cos(longitudeOfAscendingNode) * (Mathf.Sin(argumentOfPeriapsis + trueAnomaly) + eccentricity * Mathf.Sin(argumentOfPeriapsis)) + Mathf.Sin(longitudeOfAscendingNode) * (Mathf.Cos(argumentOfPeriapsis + trueAnomaly) + ECC * Mathf.Cos(argumentOfPeriapsis)) * Mathf.Cos(inclination)));
-        output.y = (float)(-MU / angMomentum * (Mathf.Sin(longitudeOfAscendingNode) * (Mathf.Sin(argumentOfPeriapsis + trueAnomaly) + eccentricity * Mathf.Sin(argumentOfPeriapsis)) - Mathf.Cos(longitudeOfAscendingNode) * (Mathf.Cos(argumentOfPeriapsis + trueAnomaly) + ECC * Mathf.Cos(argumentOfPeriapsis)) * Mathf.Cos(inclination)));
-        output.z = (float)(MU / angMomentum * (Mathf.Cos(argumentOfPeriapsis + trueAnomaly) + eccentricity * Mathf.Cos(argumentOfPeriapsis)) * Mathf.Sin(inclination));
+        Vector3d output;
+        output.x = -MU / angMomentum * (Mathf.Cos(longitudeOfAscendingNode) * (Mathf.Sin(argumentOfPeriapsis + trueAnomaly) + eccentricity * Mathf.Sin(argumentOfPeriapsis)) + Mathf.Sin(longitudeOfAscendingNode) * (Mathf.Cos(argumentOfPeriapsis + trueAnomaly) + ECC * Mathf.Cos(argumentOfPeriapsis)) * Mathf.Cos(inclination));
+        output.y = -MU / angMomentum * (Mathf.Sin(longitudeOfAscendingNode) * (Mathf.Sin(argumentOfPeriapsis + trueAnomaly) + eccentricity * Mathf.Sin(argumentOfPeriapsis)) - Mathf.Cos(longitudeOfAscendingNode) * (Mathf.Cos(argumentOfPeriapsis + trueAnomaly) + ECC * Mathf.Cos(argumentOfPeriapsis)) * Mathf.Cos(inclination));
+        output.z = MU / angMomentum * (Mathf.Cos(argumentOfPeriapsis + trueAnomaly) + eccentricity * Mathf.Cos(argumentOfPeriapsis)) * Mathf.Sin(inclination);
         return output;
     }
 
-    public Vector3 Time2Point(double time)
+    public Vector3d Time2Point(double time)
     {
         Angle trueAnomaly = Time2TrueAnomaly(time);
         return TrueAnomaly2Point(trueAnomaly);
     }
 
-    public Vector3 Time2Velocity(double time)
+    public Vector3d Time2Velocity(double time)
     {
         Angle trueAnomaly = Time2TrueAnomaly(time);
         return TrueAnomaly2Velocity(trueAnomaly);
     }
 
-    public List<Vector3> OrbitalPoints(Angle? startTrueAnomaly, Angle? endTrueAnomaly)
+    public List<Vector3d> OrbitalPoints(Angle? startTrueAnomaly, Angle? endTrueAnomaly)
     {
         // This method exists purely to avoid an optional paramter in OrbitalPoints(Angle?, Angle?, Angle, Angle[]). Read its documentation below.
         return OrbitalPoints(startTrueAnomaly, endTrueAnomaly, Constants.OrbitDefaultStepRad, out _);
     }
 
-    public List<Vector3> OrbitalPoints(Angle? startTrueAnomaly, Angle? endTrueAnomaly, Angle stepRad)
+    public List<Vector3d> OrbitalPoints(Angle? startTrueAnomaly, Angle? endTrueAnomaly, Angle stepRad)
     {
         // This method exists purely to avoid an optional paramter in OrbitalPoints(Angle?, Angle?, Angle, Angle[]). Read its documentation below.
         return OrbitalPoints(startTrueAnomaly, endTrueAnomaly, stepRad, out _);
     }
 
-    public List<Vector3> OrbitalPoints(Angle? startTrueAnomaly, Angle? endTrueAnomaly, out List<Angle> trueAnomalies)
+    public List<Vector3d> OrbitalPoints(Angle? startTrueAnomaly, Angle? endTrueAnomaly, out List<Angle> trueAnomalies)
     {
         // This method exists purely to avoid an optional paramter in OrbitalPoints(Angle?, Angle?, Angle, Angle[]). Read its documentation below.
         return OrbitalPoints(startTrueAnomaly, endTrueAnomaly, Constants.OrbitDefaultStepRad, out trueAnomalies);
     }
 
-    public List<Vector3> OrbitalPoints(Angle? startTrueAnomaly, Angle? endTrueAnomaly, Angle stepRad, out List<Angle> trueAnomalies)
+    public List<Vector3d> OrbitalPoints(Angle? startTrueAnomaly, Angle? endTrueAnomaly, Angle stepRad, out List<Angle> trueAnomalies)
     {
         // This method returns a List containing 3D points that trace the trajectory of this orbit, starting at the 'startTrueAnomaly' 
         // and ending at the 'endTrueAnomaly'. If the start and end points are the same then the whole orbit is output.
@@ -568,11 +568,11 @@ public class Orbit
         Angle actualStep = angularRange.RadValue / numberOfPoints; 
 
         // Create the list to be output and fill it with points
-        List<Vector3> outputPoints = new List<Vector3>(numberOfPoints);
+        List<Vector3d> outputPoints = new(numberOfPoints);
         trueAnomalies = new List<Angle>(numberOfPoints);
 
         Angle angle = startTrueAnomaly ?? Angle.Zero;
-        Vector3 newPoint;
+        Vector3d newPoint;
         for (int index = 0; index < outputPoints.Capacity; index++)
         {
             if (angle > MaxTrueAnomaly && angle < -MaxTrueAnomaly)
