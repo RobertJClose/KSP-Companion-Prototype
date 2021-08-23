@@ -32,14 +32,19 @@ namespace UnityEngine
         {
             get
             {
-                return index switch
+                switch (index)
                 {
-                    0 => x,
-                    1 => y,
-                    2 => z,
-                    3 => w,
-                    _ => throw new IndexOutOfRangeException("Invalid Quaterniond index!"),
-                };
+                    case 0:
+                        return x;
+                    case 1:
+                        return y;
+                    case 2:
+                        return z;
+                    case 3:
+                        return w;
+                    default:
+                        throw new IndexOutOfRangeException("Invalid Quaterniond index!");
+                }
             }
             set
             {
@@ -63,7 +68,7 @@ namespace UnityEngine
             }
         }
 
-        public static Quaterniond Identity
+        public static Quaterniond identity
         {
             get
             {
@@ -71,7 +76,7 @@ namespace UnityEngine
             }
         }
 
-        public Vector3d EulerAngles
+        public Vector3d eulerAngles
         {
             get
             {
@@ -110,7 +115,7 @@ namespace UnityEngine
             axis = axis.normalized;
             angle = angle / 180D * Math.PI;
 
-            Quaterniond q = new();
+            Quaterniond q = new Quaterniond();
 
             double halfAngle = angle * 0.5D;
             double s = Math.Sin(halfAngle);
@@ -159,9 +164,9 @@ namespace UnityEngine
             double cZ = Math.Cos(z * Math.PI / 360);
             double sZ = Math.Sin(z * Math.PI / 360);
 
-            Quaterniond qX = new(sX, 0, 0, cX);
-            Quaterniond qY = new(0, sY, 0, cY);
-            Quaterniond qZ = new(0, 0, sZ, cZ);
+            Quaterniond qX = new Quaterniond(sX, 0, 0, cX);
+            Quaterniond qY = new Quaterniond(0, sY, 0, cY);
+            Quaterniond qZ = new Quaterniond(0, 0, sZ, cZ);
 
             Quaterniond q = (qY * qX) * qZ;
 
@@ -214,7 +219,7 @@ namespace UnityEngine
         /// <returns></returns>
         public static Quaterniond LerpUnclamped(Quaterniond a, Quaterniond b, double t)
         {
-            Quaterniond tmpQuat = new();
+            Quaterniond tmpQuat = new Quaterniond();
             if (Dot(a, b) < 0.0F)
             {
                 tmpQuat.Set(a.x + t * (-b.x - a.x),
@@ -263,7 +268,7 @@ namespace UnityEngine
         public static Quaterniond RotateTowards(Quaterniond from, Quaterniond to, double maxDegreesDelta)
         {
             double num = Quaterniond.Angle(from, to);
-            Quaterniond result;
+            Quaterniond result = new Quaterniond();
             if (num == 0f)
             {
                 result = to;
@@ -305,7 +310,7 @@ namespace UnityEngine
         {
             double dot = Dot(q1, q2);
 
-            Quaterniond tmpQuat = new();
+            Quaterniond tmpQuat = new Quaterniond();
             if (dot < 0)
             {
                 dot = -dot;
@@ -416,7 +421,7 @@ namespace UnityEngine
 
         private Vector3d MatrixToEuler(Matrix4x4d m)
         {
-            Vector3d v = new();
+            Vector3d v = new Vector3d();
             if (m[1, 2] < 1)
             {
                 if (m[1, 2] > -1)
@@ -455,7 +460,7 @@ namespace UnityEngine
         }
         public static Matrix4x4d QuaternionToMatrix(Quaterniond quat)
         {
-            Matrix4x4d m = new();
+            Matrix4x4d m = new Matrix4x4d();
 
             double x = quat.x * 2;
             double y = quat.y * 2;
@@ -494,7 +499,7 @@ namespace UnityEngine
         }
         private static Quaterniond MatrixToQuaternion(Matrix4x4d m)
         {
-            Quaterniond quat = new();
+            Quaterniond quat = new Quaterniond();
 
             double fTrace = m[0, 0] + m[1, 1] + m[2, 2];
             double root;
@@ -542,12 +547,12 @@ namespace UnityEngine
         private static Matrix4x4d LookRotationToMatrix(Vector3d viewVec, Vector3d upVec)
         {
             Vector3d z = viewVec;
-            Matrix4x4d m = new();
+            Matrix4x4d m = new Matrix4x4d();
 
             double mag = Vector3d.Magnitude(z);
             if (mag < 0)
             {
-                m = Matrix4x4d.Identity;
+                m = Matrix4x4d.identity;
             }
             z /= mag;
 
@@ -555,7 +560,7 @@ namespace UnityEngine
             mag = Vector3d.Magnitude(x);
             if (mag < 0)
             {
-                m = Matrix4x4d.Identity;
+                m = Matrix4x4d.identity;
             }
             x /= mag;
 

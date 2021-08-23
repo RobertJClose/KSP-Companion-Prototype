@@ -44,8 +44,8 @@ public class GravitationalBody
     public static GravitationalBody Earth { get { return new GravitationalBody(1, "Earth", 3.986e+14f, 6371000f); } }
     public static GravitationalBody Jupiter { get { return new GravitationalBody(2, "Jupiter", 1.2669e+17f, 69911000f); } }
 
-    public static List<GravitationalBody> ListOfBodies = new() { Kerbin };
-    public static List<string> ListOfBodyNames = new() { Kerbin.Name };
+    public static List<GravitationalBody> ListOfBodies = new List<GravitationalBody> { Kerbin };
+    public static List<string> ListOfBodyNames = new List<string> { Kerbin.Name };
 
     // *************** Methods ***************
 

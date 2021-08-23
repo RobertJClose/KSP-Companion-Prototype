@@ -46,14 +46,19 @@ namespace UnityEngine
         {
             get
             {
-                return index switch
+                switch (index)
                 {
-                    0 => x,
-                    1 => y,
-                    2 => z,
-                    3 => w,
-                    _ => throw new IndexOutOfRangeException("Invalid Vector4d index!"),
-                };
+                    case 0:
+                        return x;
+                    case 1:
+                        return y;
+                    case 2:
+                        return z;
+                    case 3:
+                        return w;
+                    default:
+                        throw new IndexOutOfRangeException("Invalid Vector4d index!");
+                }
             }
             set
             {
@@ -77,35 +82,35 @@ namespace UnityEngine
             }
         }
 
-        public static Vector4d One
+        public static Vector4d one
         {
             get
             {
                 return new Vector4d(1, 1, 1, 1);
             }
         }
-        public static Vector4d Zero
+        public static Vector4d zero
         {
             get
             {
                 return new Vector4d(0, 0, 0, 0);
             }
         }
-        public double Magnitude
+        public double magnitude
         {
             get
             {
-                return Math.Sqrt(SqrMagnitude);
+                return Math.Sqrt(sqrMagnitude);
             }
         }
-        public Vector4d Normalized
+        public Vector4d normalized
         {
             get
             {
                 return Vector4.Normalize(this);
             }
         }
-        public double SqrMagnitude
+        public double sqrMagnitude
         {
             get
             {
@@ -169,6 +174,15 @@ namespace UnityEngine
             return a + (b - a) * t;
         }
         /// <summary>
+        /// 向量模长
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
+        public static double Magnitude(Vector4d a)
+        {
+            return a.magnitude;
+        }
+        /// <summary>
         /// 最大值(X,Y,Z,W均取最大)
         /// </summary>
         /// <param name="lhs"></param>
@@ -176,7 +190,7 @@ namespace UnityEngine
         /// <returns></returns>
         public static Vector4d Max(Vector4d lhs, Vector4d rhs)
         {
-            Vector4d temp = new();
+            Vector4d temp = new Vector4d();
             temp.x = Math.Max(lhs.x, rhs.x);
             temp.y = Math.Max(lhs.y, rhs.y);
             temp.z = Math.Max(lhs.z, rhs.z);
@@ -191,7 +205,7 @@ namespace UnityEngine
         /// <returns></returns>
         public static Vector4d Min(Vector4d lhs, Vector4d rhs)
         {
-            Vector4d temp = new();
+            Vector4d temp = new Vector4d();
             temp.x = Math.Min(lhs.x, rhs.x);
             temp.y = Math.Min(lhs.y, rhs.y);
             temp.z = Math.Min(lhs.z, rhs.z);
@@ -208,7 +222,7 @@ namespace UnityEngine
         public static Vector4d MoveTowards(Vector4d current, Vector4d target, double maxDistanceDelta)
         {
             Vector4d vector4 = target - current;
-            double single = vector4.Magnitude;
+            double single = vector4.magnitude;
             if (single <= maxDistanceDelta || single == 0f)
             {
                 return target;
@@ -222,17 +236,17 @@ namespace UnityEngine
         /// <returns></returns>
         public static Vector4d Normalize(Vector4d value)
         {
-            if (value == Zero)
+            if (value == zero)
             {
-                return Zero;
+                return zero;
             }
             else
             {
-                Vector4d tempDVec = new();
-                tempDVec.x = value.x / value.Magnitude;
-                tempDVec.y = value.y / value.Magnitude;
-                tempDVec.z = value.z / value.Magnitude;
-                tempDVec.w = value.w / value.Magnitude;
+                Vector4d tempDVec = new Vector4d();
+                tempDVec.x = value.x / value.magnitude;
+                tempDVec.y = value.y / value.magnitude;
+                tempDVec.z = value.z / value.magnitude;
+                tempDVec.w = value.w / value.magnitude;
                 return tempDVec;
             }
         }
@@ -244,11 +258,11 @@ namespace UnityEngine
         /// <returns></returns>
         public static Vector4d Project(Vector4d vector, Vector4d onNormal)
         {
-            if (vector == Zero || onNormal == Zero)
+            if (vector == zero || onNormal == zero)
             {
-                return Zero;
+                return zero;
             }
-            return Dot(vector, onNormal) / (onNormal.Magnitude * onNormal.Magnitude) * onNormal;
+            return Dot(vector, onNormal) / (onNormal.magnitude * onNormal.magnitude) * onNormal;
         }
         /// <summary>
         /// 向量缩放
@@ -258,7 +272,7 @@ namespace UnityEngine
         /// <returns></returns>
         public static Vector4d Scale(Vector4d a, Vector4d b)
         {
-            Vector4d temp = new();
+            Vector4d temp = new Vector4d();
             temp.x = a.x * b.x;
             temp.y = a.y * b.y;
             temp.z = a.z * b.z;
@@ -266,13 +280,22 @@ namespace UnityEngine
             return temp;
         }
         /// <summary>
+        /// 模长平方
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
+        public static double SqrMagnitude(Vector4d a)
+        {
+            return a.sqrMagnitude;
+        }
+        /// <summary>
         /// 单位化
         /// </summary>
         public void Normalize()
         {
-            if (this != Zero)
+            if (this != zero)
             {
-                double length = Magnitude;
+                double length = magnitude;
                 x /= length;
                 y /= length;
                 z /= length;
@@ -303,6 +326,14 @@ namespace UnityEngine
             y = new_y;
             z = new_z;
             w = new_w;
+        }
+        /// <summary>
+        /// 模长平方
+        /// </summary>
+        /// <returns></returns>
+        public double SqrMagnitude()
+        {
+            return sqrMagnitude;
         }
         public override string ToString()
         {

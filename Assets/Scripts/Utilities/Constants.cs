@@ -12,5 +12,5 @@ public static class Constants
     public static readonly float PlotRescaleFactor = 1.0f / 600_000.0f;
     public static readonly float OrbitPlotThickness = 1.0f;
 
-    public static readonly Angle OrbitDefaultStepRad = new(0.05f);
+    public static readonly Angle OrbitDefaultStepRad = new Angle(0.05f);
 }

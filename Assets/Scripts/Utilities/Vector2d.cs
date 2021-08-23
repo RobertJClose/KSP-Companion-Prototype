@@ -45,7 +45,7 @@ namespace UnityEngine
         {
             get
             {
-                Vector2d vector2d = new(this.x, this.y);
+                Vector2d vector2d = new Vector2d(this.x, this.y);
                 vector2d.Normalize();
                 return vector2d;
             }
