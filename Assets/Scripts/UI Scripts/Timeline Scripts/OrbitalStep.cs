@@ -22,8 +22,8 @@ public class OrbitalStep : TimelineStep, IInspectable, IPlottable
     {
         get
         {
-            if (PreceedingStep is TransitionStep)
-                return (PreceedingStep as TransitionStep).TransitionTime;
+            if (PreviousStep is TransitionStep)
+                return (PreviousStep as TransitionStep).TransitionTime;
             else
                 return null;
         }
@@ -49,8 +49,8 @@ public class OrbitalStep : TimelineStep, IInspectable, IPlottable
     {
         get
         {
-            if (PreceedingStep is TransitionStep)
-                return orbit.Time2TrueAnomaly((PreceedingStep as TransitionStep).TransitionTime);
+            if (PreviousStep is TransitionStep)
+                return orbit.Time2TrueAnomaly((PreviousStep as TransitionStep).TransitionTime);
             else
                 return null;
         }
@@ -164,8 +164,8 @@ public class OrbitalStep : TimelineStep, IInspectable, IPlottable
         if (!isFreeOrbit)
         {
             InspectorPropertyBlock porkChopPropertyBlock = inspector.AddPorkChopPropertyBlock();
-            porkChopPropertyBlock.AddDoubleProperty("Departure Time (s UT)", () => (preceedingStep as TransitionStep).TransitionTime, (double newDepartureTime) => { (preceedingStep as TransitionStep).TransitionTime = newDepartureTime; UpdateTransferOrbit(); });
-            porkChopPropertyBlock.AddDoubleProperty("Arrival Time (s UT)", () => (nextStep as TransitionStep).TransitionTime, (double newArrivalTime) => { (nextStep as TransitionStep).TransitionTime = newArrivalTime; UpdateTransferOrbit(); });
+            porkChopPropertyBlock.AddDoubleProperty("Departure Time (s UT)",    () => (preceedingStep as TransitionStep).TransitionTime,    (double newDepartureTime)   => { (preceedingStep as TransitionStep).TransitionTime = newDepartureTime;  UpdateTransferOrbit(); });
+            porkChopPropertyBlock.AddDoubleProperty("Arrival Time (s UT)",      () => (nextStep as TransitionStep).TransitionTime,          (double newArrivalTime)     => { (nextStep as TransitionStep).TransitionTime = newArrivalTime;          UpdateTransferOrbit(); });
         }
 
         // Set-up of the Inspector property blocks:
@@ -173,12 +173,12 @@ public class OrbitalStep : TimelineStep, IInspectable, IPlottable
         blockOne.AddDropdownProperty("Colour", () => StepColour, (NamedColour namedColour) => SetOrbitalStepColour(namedColour), namedColours, NamedColour.TMPDropdownOptionDataConverter, DisplayCondition: () => isFreeOrbit); ;
 
         InspectorPropertyBlock blockTwo = inspector.AddPropertyBlock();
-        blockTwo.AddDoubleProperty("Periapsis Radius (m)",               () => orbit.RPE,                            (double newRPE) => orbit.RPE = newRPE, isFreeOrbit);
-        blockTwo.AddDoubleProperty("Eccentricity",                       () => orbit.ECC,                            (double newECC) => orbit.ECC = newECC, isFreeOrbit);
-        blockTwo.AddDoubleProperty("Inclination (deg)",                  () => orbit.INC.DegValueMinus180To180Range, (double newINCd) => orbit.INC = (float)newINCd * Mathf.Deg2Rad, isFreeOrbit);
-        blockTwo.AddDoubleProperty("Argument Of Periapsis (deg)",        () => orbit.APE.DegValue,                   (double newAPEd) => orbit.APE = (float)newAPEd * Mathf.Deg2Rad, isFreeOrbit);
-        blockTwo.AddDoubleProperty("Longitude Of Ascending Node (deg)",  () => orbit.LAN.DegValue,                   (double newLANd) => orbit.LAN = (float)newLANd * Mathf.Deg2Rad, isFreeOrbit);
-        blockTwo.AddDoubleProperty("Time Of Periapsis Passage (s UT)",   () => orbit.TPP,                            (double newTPP) => orbit.TPP = newTPP, isFreeOrbit);
+        blockTwo.AddDoubleProperty("Periapsis Radius (m)",               () => orbit.RPE,                            (double newRPE)    => { orbit.RPE = newRPE;                            PreviousOrbitalStep?.UpdateTransferOrbit(); NextOrbitalStep?.UpdateTransferOrbit(); }, isFreeOrbit);
+        blockTwo.AddDoubleProperty("Eccentricity",                       () => orbit.ECC,                            (double newECC)    => { orbit.ECC = newECC;                            PreviousOrbitalStep?.UpdateTransferOrbit(); NextOrbitalStep?.UpdateTransferOrbit(); }, isFreeOrbit);
+        blockTwo.AddDoubleProperty("Inclination (deg)",                  () => orbit.INC.DegValueMinus180To180Range, (double newINCd)   => { orbit.INC = (float)newINCd * Mathf.Deg2Rad;    PreviousOrbitalStep?.UpdateTransferOrbit(); NextOrbitalStep?.UpdateTransferOrbit(); }, isFreeOrbit);
+        blockTwo.AddDoubleProperty("Argument Of Periapsis (deg)",        () => orbit.APE.DegValue,                   (double newAPEd)   => { orbit.APE = (float)newAPEd * Mathf.Deg2Rad;    PreviousOrbitalStep?.UpdateTransferOrbit(); NextOrbitalStep?.UpdateTransferOrbit(); }, isFreeOrbit);
+        blockTwo.AddDoubleProperty("Longitude Of Ascending Node (deg)",  () => orbit.LAN.DegValue,                   (double newLANd)   => { orbit.LAN = (float)newLANd * Mathf.Deg2Rad;    PreviousOrbitalStep?.UpdateTransferOrbit(); NextOrbitalStep?.UpdateTransferOrbit(); }, isFreeOrbit);
+        blockTwo.AddDoubleProperty("Time Of Periapsis Passage (s UT)",   () => orbit.TPP,                            (double newTPP)    => { orbit.TPP = newTPP;                            PreviousOrbitalStep?.UpdateTransferOrbit(); NextOrbitalStep?.UpdateTransferOrbit(); }, isFreeOrbit);
 
         InspectorPropertyBlock blockThree = inspector.AddPropertyBlock();
         blockThree.AddDoubleProperty("Semimajor Axis (m)",       () => orbit.SMA);
