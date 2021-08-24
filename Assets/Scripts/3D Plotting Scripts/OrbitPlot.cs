@@ -52,6 +52,9 @@ public class OrbitPlot : InspectablePlot
 
     public void SetPlotPoints(List<PolylinePoint> points, Vector3 periapsisPlotPosition, Vector3 apoapsisPlotPosition, Vector3 ascendingNodePlotPosition, Vector3 descendingNodePlotPosition)
     {
+        // Remove any points that are too far from the origin to be plotted
+        points.RemoveAll((PolylinePoint point) => point.point.magnitude > Constants.MaximumPlotDistance);
+
         mainPlot.SetPoints(points);
         highlightPlot.SetPoints(points.ConvertAll( (PolylinePoint point) => new PolylinePoint(point.point, highlightedColour, Constants.OrbitPlotThickness) ));
 
