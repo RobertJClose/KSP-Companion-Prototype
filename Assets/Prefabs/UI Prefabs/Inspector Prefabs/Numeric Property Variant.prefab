@@ -298,7 +298,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Navigation:
     m_Mode: 0
-    m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -342,7 +341,7 @@ MonoBehaviour:
   m_CharacterValidation: 3
   m_RegexValue: 
   m_GlobalPointSize: 14
-  m_CharacterLimit: 30
+  m_CharacterLimit: 0
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls: []
@@ -561,7 +560,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2208551195143136529, guid: fbc17d238caa4a747939f62fd3235b87, type: 3}
       propertyPath: m_Name
-      value: Numeric Property Variant
+      value: Float Property Variant
       objectReference: {fileID: 0}
     - target: {fileID: 4634534334564353005, guid: fbc17d238caa4a747939f62fd3235b87, type: 3}
       propertyPath: m_text
