@@ -222,7 +222,7 @@ public class OrbitalStep : TimelineStep, IInspectable, IPlottable
                     continue;
                 }
                 else
-                    nextPoint.point = (Vector3)point;
+                    nextPoint.point = (Vector3)point * Constants.PlotRescaleFactor;
 
                 // Colour the point according to whether it is actually travelled on during this orbital step.
                 if (DetermineIfPointIsTravelledOn(nextPointTrueAnomaly))
