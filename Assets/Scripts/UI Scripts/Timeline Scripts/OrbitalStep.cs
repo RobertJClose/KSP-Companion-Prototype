@@ -203,7 +203,7 @@ public class OrbitalStep : TimelineStep, IInspectable, IPlottable
         if (plot != null)
         {
             // First get a list of Vector3 points along the orbital trajectory.
-            List<Vector3d> orbitPoints = orbit.OrbitalPoints(-orbit.MaxTrueAnomaly, orbit.MaxTrueAnomaly, out List<Angle> trueAnomalies);
+            List<Vector3d> orbitPoints = orbit.OrbitalPoints(-orbit.MaxTrueAnomaly, orbit.MaxTrueAnomaly, out List<Angle> trueAnomalies, Constants.OrbitDefaultStepRad);
 
             // Now each one of these points must be turned into a PolylinePoint and added to the Polyline plot.
             PolylinePoint nextPoint;
