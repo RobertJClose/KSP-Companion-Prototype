@@ -9,7 +9,7 @@ using UnityEngine.Events;
 public class InspectorDoubleProperty : InspectorProperty
 {
     TMP_InputField inputFieldComponent;
-    double defaultValue;
+    double defaultValue = 0.0;
     Func<double> ValueGetter;
     Action<double> ValueSetter;
     public bool IsEditable { get; set; }
