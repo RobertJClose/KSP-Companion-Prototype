@@ -40,7 +40,8 @@ public static class LambertsProblemHelper
 
         Vector3d velocityAtPositionOne = componentOne * positionOne.normalized + componentTwo * tangentialUnitVector;
 
-        return Orbit.StateVectors2Orbit(body, positionOne, velocityAtPositionOne, timeOne);
+        Orbit orbit = Orbit.StateVectors2Orbit(body, positionOne, velocityAtPositionOne, timeOne);
+        return orbit;
     }
 
     private static double FindXThatProducesTStar(double lambda, double TStar)
