@@ -526,25 +526,7 @@ public class Orbit
         return TrueAnomaly2Velocity(trueAnomaly);
     }
 
-    public List<Vector3d> OrbitalPoints(Angle? startTrueAnomaly, Angle? endTrueAnomaly)
-    {
-        // This method exists purely to avoid an optional paramter in OrbitalPoints(Angle?, Angle?, Angle, Angle[]). Read its documentation below.
-        return OrbitalPoints(startTrueAnomaly, endTrueAnomaly, Constants.OrbitDefaultStepRad, out _);
-    }
-
-    public List<Vector3d> OrbitalPoints(Angle? startTrueAnomaly, Angle? endTrueAnomaly, Angle stepRad)
-    {
-        // This method exists purely to avoid an optional paramter in OrbitalPoints(Angle?, Angle?, Angle, Angle[]). Read its documentation below.
-        return OrbitalPoints(startTrueAnomaly, endTrueAnomaly, stepRad, out _);
-    }
-
-    public List<Vector3d> OrbitalPoints(Angle? startTrueAnomaly, Angle? endTrueAnomaly, out List<Angle> trueAnomalies)
-    {
-        // This method exists purely to avoid an optional paramter in OrbitalPoints(Angle?, Angle?, Angle, Angle[]). Read its documentation below.
-        return OrbitalPoints(startTrueAnomaly, endTrueAnomaly, Constants.OrbitDefaultStepRad, out trueAnomalies);
-    }
-
-    public List<Vector3d> OrbitalPoints(Angle? startTrueAnomaly, Angle? endTrueAnomaly, Angle stepRad, out List<Angle> trueAnomalies)
+    public List<Vector3d> OrbitalPoints(Angle? startTrueAnomaly, Angle? endTrueAnomaly, out List<Angle> trueAnomalies, Angle stepRad)
     {
         // This method returns a List containing 3D points that trace the trajectory of this orbit, starting at the 'startTrueAnomaly' 
         // and ending at the 'endTrueAnomaly'. If the start and end points are the same then the whole orbit is output.
