@@ -213,16 +213,17 @@ public class OrbitalStep : TimelineStep, IInspectable, IPlottable
             foreach (Vector3d point in orbitPoints)
             {
                 nextPointTrueAnomaly = trueAnomalies[pointIndex];
+                Vector3d rescaledPoint = point * Constants.PlotRescaleFactor;
 
-                // If a point is at an infinite/NaN radius, don't add it to the plot. And remove its true anomaly value from the 'trueAnomalies' list.
+                // If a point is going to be plotted too far from the origin, don't add it to the plot. And remove its true anomaly value from the 'trueAnomalies' list.
                 // This maintains equivalent indexing between the 'polylinePoints' list and the 'trueAnomalies' list.
-                if (point.magnitude == double.PositiveInfinity || point.magnitude == double.NaN || point.magnitude == double.NegativeInfinity)
+                if (rescaledPoint.magnitude > Constants.MaximumPlotDistance)
                 {
                     trueAnomalies.Remove(nextPointTrueAnomaly);
                     continue;
                 }
                 else
-                    nextPoint.point = (Vector3)point * Constants.PlotRescaleFactor;
+                    nextPoint.point = (Vector3)rescaledPoint;
 
                 // Colour the point according to whether it is actually travelled on during this orbital step.
                 if (DetermineIfPointIsTravelledOn(nextPointTrueAnomaly))
@@ -236,7 +237,7 @@ public class OrbitalStep : TimelineStep, IInspectable, IPlottable
                 pointIndex++;
             }
 
-            plot.SetPlotPoints(polylinePoints, (Vector3)orbit.PeriapsisPoint, (Vector3?)orbit.ApoapsisPoint, (Vector3?)orbit.AscendingNode, (Vector3?)orbit.DescendingNode);
+            plot.SetPlotPoints(polylinePoints, (Vector3)orbit.PeriapsisPoint * Constants.PlotRescaleFactor, (Vector3)(orbit.ApoapsisPoint * Constants.PlotRescaleFactor ?? Vector3d.zero), (Vector3)(orbit.AscendingNode * Constants.PlotRescaleFactor ?? Vector3d.zero), (Vector3)(orbit.DescendingNode * Constants.PlotRescaleFactor ?? Vector3d.zero));
             if (orbit.OrbitType == Orbit.ConicSection.Elliptical)
                 plot.SetClosedPlot(true);
             else

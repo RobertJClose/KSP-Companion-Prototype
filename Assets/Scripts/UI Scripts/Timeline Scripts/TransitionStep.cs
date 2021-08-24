@@ -67,10 +67,7 @@ public abstract class TransitionStep : TimelineStep, IInspectable, IPlottable
     {
         if (plot != null)
         {
-            if (TransitionPoint.HasValue && TransitionPoint.Value.magnitude != float.PositiveInfinity)
-                plot.transform.position = (Vector3)((TransitionPoint ?? Vector3d.zero) * Constants.PlotRescaleFactor);
-            else
-                plot.transform.position = Vector3.zero;
+            plot.SetPlotPoint((Vector3?)TransitionPoint * Constants.PlotRescaleFactor ?? Vector3.zero);
         }       
     }
 
