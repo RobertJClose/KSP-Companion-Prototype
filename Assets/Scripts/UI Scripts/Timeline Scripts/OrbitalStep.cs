@@ -215,9 +215,9 @@ public class OrbitalStep : TimelineStep, IInspectable, IPlottable
                 nextPointTrueAnomaly = trueAnomalies[pointIndex];
                 Vector3d rescaledPoint = point * Constants.PlotRescaleFactor;
 
-                // If a point is going to be plotted too far from the origin, don't add it to the plot. And remove its true anomaly value from the 'trueAnomalies' list.
+                // If a point is at an invalid distance, don't add it to the plot. And remove its true anomaly value from the 'trueAnomalies' list.
                 // This maintains equivalent indexing between the 'polylinePoints' list and the 'trueAnomalies' list.
-                if (rescaledPoint.magnitude > Constants.MaximumPlotDistance)
+                if ((float)rescaledPoint.magnitude == float.PositiveInfinity || (float)rescaledPoint.magnitude == float.NegativeInfinity || (float)rescaledPoint.magnitude == float.NaN)
                 {
                     trueAnomalies.Remove(nextPointTrueAnomaly);
                     continue;
