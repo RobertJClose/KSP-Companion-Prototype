@@ -13,4 +13,6 @@ public static class Constants
     public static readonly float OrbitPlotThickness = 1.0f;
 
     public static readonly Angle OrbitDefaultStepRad = new Angle(0.05f);
+
+    public static readonly float MaximumPlotDistance = 1_000.0f;
 }
