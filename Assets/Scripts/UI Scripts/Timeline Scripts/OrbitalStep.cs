@@ -203,26 +203,27 @@ public class OrbitalStep : TimelineStep, IInspectable, IPlottable
         if (plot != null)
         {
             // First get a list of Vector3 points along the orbital trajectory.
-            List<Vector3d> orbitPoints = orbit.OrbitalPoints(-orbit.MaxTrueAnomaly, orbit.MaxTrueAnomaly, out List<Angle> trueAnomalies);
+            List<Vector3> orbitPoints = orbit.OrbitalPointsVector3(-orbit.MaxTrueAnomaly, orbit.MaxTrueAnomaly, out List<Angle> trueAnomalies, Constants.OrbitDefaultStepRad);
 
             // Now each one of these points must be turned into a PolylinePoint and added to the Polyline plot.
             PolylinePoint nextPoint;
             Angle nextPointTrueAnomaly;
             int pointIndex = 0;
             List<PolylinePoint> polylinePoints = new List<PolylinePoint>(orbitPoints.Count);
-            foreach (Vector3d point in orbitPoints)
+            foreach (Vector3 point in orbitPoints)
             {
                 nextPointTrueAnomaly = trueAnomalies[pointIndex];
 
                 // If a point is at an infinite/NaN radius, don't add it to the plot. And remove its true anomaly value from the 'trueAnomalies' list.
                 // This maintains equivalent indexing between the 'polylinePoints' list and the 'trueAnomalies' list.
-                if (point.magnitude == double.PositiveInfinity || point.magnitude == double.NaN || point.magnitude == double.NegativeInfinity)
+                float mag = point.magnitude;
+                if (mag == float.PositiveInfinity || mag == float.NaN || mag == float.NegativeInfinity)
                 {
                     trueAnomalies.Remove(nextPointTrueAnomaly);
                     continue;
                 }
                 else
-                    nextPoint.point = (Vector3)point * Constants.PlotRescaleFactor;
+                    nextPoint.point = point * Constants.PlotRescaleFactor;
 
                 // Colour the point according to whether it is actually travelled on during this orbital step.
                 if (DetermineIfPointIsTravelledOn(nextPointTrueAnomaly))

@@ -526,29 +526,11 @@ public class Orbit
         return TrueAnomaly2Velocity(trueAnomaly);
     }
 
-    public List<Vector3d> OrbitalPoints(Angle? startTrueAnomaly, Angle? endTrueAnomaly)
-    {
-        // This method exists purely to avoid an optional paramter in OrbitalPoints(Angle?, Angle?, Angle, Angle[]). Read its documentation below.
-        return OrbitalPoints(startTrueAnomaly, endTrueAnomaly, Constants.OrbitDefaultStepRad, out _);
-    }
-
-    public List<Vector3d> OrbitalPoints(Angle? startTrueAnomaly, Angle? endTrueAnomaly, Angle stepRad)
-    {
-        // This method exists purely to avoid an optional paramter in OrbitalPoints(Angle?, Angle?, Angle, Angle[]). Read its documentation below.
-        return OrbitalPoints(startTrueAnomaly, endTrueAnomaly, stepRad, out _);
-    }
-
-    public List<Vector3d> OrbitalPoints(Angle? startTrueAnomaly, Angle? endTrueAnomaly, out List<Angle> trueAnomalies)
-    {
-        // This method exists purely to avoid an optional paramter in OrbitalPoints(Angle?, Angle?, Angle, Angle[]). Read its documentation below.
-        return OrbitalPoints(startTrueAnomaly, endTrueAnomaly, Constants.OrbitDefaultStepRad, out trueAnomalies);
-    }
-
-    public List<Vector3d> OrbitalPoints(Angle? startTrueAnomaly, Angle? endTrueAnomaly, Angle stepRad, out List<Angle> trueAnomalies)
+    public List<Vector3d> OrbitalPoints(Angle? startTrueAnomaly, Angle? endTrueAnomaly, out List<Angle> trueAnomalies, Angle stepRad)
     {
         // This method returns a List containing 3D points that trace the trajectory of this orbit, starting at the 'startTrueAnomaly' 
         // and ending at the 'endTrueAnomaly'. If the start and end points are the same then the whole orbit is output.
-        // The 'stepRad' parameter decides the angular spacing of the points in radians. An integer number of points must be output, so the actual
+        // The 'stepRad' parameter decides the approximate angular spacing of the points in radians. An integer number of points must be output, so the actual
         // angular spacing may be slightly adjusted to ensure this. The actual spacing will never be larger than 'stepRad'.
 
         // If the start and end points are the same, or if either of the points are null, output the entire orbit
@@ -563,7 +545,7 @@ public class Orbit
         // Adjust the angular spacing if 'stepRad' doesn't evenly divide the range of angles.
         Angle actualStep = angularRange.RadValue / numberOfPoints; 
 
-        // Create the list to be output and fill it with points
+        // Create the output
         List<Vector3d> outputPoints = new List<Vector3d>(numberOfPoints);
         trueAnomalies = new List<Angle>(numberOfPoints);
 
@@ -585,6 +567,13 @@ public class Orbit
         }
 
         return outputPoints;
+    }
+
+    public List<Vector3> OrbitalPointsVector3(Angle? startTrueAnomaly, Angle? endTrueAnomaly, out List<Angle> trueAnomalies, Angle stepRad)
+    {
+        // This is the same as the OrbitalPoints() method, but the output points are converted to the less precise Vector3s instead.
+        List<Vector3d> points = OrbitalPoints(startTrueAnomaly, endTrueAnomaly, out trueAnomalies, stepRad);
+        return points.ConvertAll((Vector3d point) => (Vector3)point);
     }
 
     // Inverse hyperbolic tangent function
