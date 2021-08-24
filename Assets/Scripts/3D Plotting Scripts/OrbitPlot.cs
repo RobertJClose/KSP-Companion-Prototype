@@ -52,8 +52,8 @@ public class OrbitPlot : InspectablePlot
 
     public void SetPlotPoints(List<PolylinePoint> points, Vector3 periapsisPoint, Vector3? apoapsisPoint, Vector3? ascendingNodePoint, Vector3? descendingNodePoint)
     {
-        mainPlot.SetPoints( points.ConvertAll( (PolylinePoint point) => new PolylinePoint(point.point * Constants.PlotRescaleFactor, point.color, point.thickness) ) );
-        highlightPlot.SetPoints( points.ConvertAll( (PolylinePoint point) => new PolylinePoint(point.point * Constants.PlotRescaleFactor, highlightedColour, Constants.OrbitPlotThickness) ) );
+        mainPlot.SetPoints(points);
+        highlightPlot.SetPoints(points.ConvertAll( (PolylinePoint point) => new PolylinePoint(point.point, highlightedColour, Constants.OrbitPlotThickness) ));
 
         periapsisSphere.transform.position = (periapsisPoint) * Constants.PlotRescaleFactor;
         apoapsisSphere.transform.position = (apoapsisPoint ?? Vector3.zero) * Constants.PlotRescaleFactor;
