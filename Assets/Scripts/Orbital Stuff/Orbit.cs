@@ -254,8 +254,8 @@ public class Orbit
 
         eccentricity = eVector.magnitude;
 
-        double semiLatusRectum = position.magnitude * (1.0f + eccentricity * Mathf.Cos(trueAnomaly));
-        periapsisRadius = semiLatusRectum / (1.0f + eccentricity);
+        double semiLatusRectum = position.magnitude * (1.0 + eccentricity * Mathf.Cos(trueAnomaly));
+        periapsisRadius = semiLatusRectum / (1.0 + eccentricity);
         
         // If the orbit has an inclination of zero, then the nVector will equal the zero vector and the argumentOfPeriapsis and the
         // longitudeOfTheAscendingNode become undefined. Their sum remains well defined however. I have choosen that the argumentOfPeriapsis
@@ -279,7 +279,7 @@ public class Orbit
                 longitudeOfAscendingNode = 2.0f * Mathf.PI - longitudeOfAscendingNode;
         }
 
-        Orbit orbit = new Orbit(periapsisRadius, eccentricity, inclination, argumentOfPeriapsis, longitudeOfAscendingNode, 0.0f, body);
+        Orbit orbit = new Orbit(periapsisRadius, eccentricity, inclination, argumentOfPeriapsis, longitudeOfAscendingNode, 0.0, body);
         double timeFromPeriapsisToTrueAnomaly = orbit.TrueAnomaly2Time(trueAnomaly);
         timeOfPeriapsisPassage = time - timeFromPeriapsisToTrueAnomaly;
         orbit.TPP = timeOfPeriapsisPassage;
