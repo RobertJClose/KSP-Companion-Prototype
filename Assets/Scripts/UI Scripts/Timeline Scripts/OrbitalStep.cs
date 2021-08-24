@@ -129,11 +129,11 @@ public class OrbitalStep : TimelineStep, IInspectable, IPlottable
     {
         if (!isFreeOrbit)
         {
-            double departureTime = earlierTransitionStep.TransitionTime;
-            double arrivalTime = laterTransitionStep.TransitionTime;
+            double departureTime = previousTransitionStep.TransitionTime;
+            double arrivalTime = nextTransitionStep.TransitionTime;
 
             Vector3d departurePosition = previousOrbitalStep.Orbit.Time2Point(departureTime);
-            Vector3d arrivalPosition = followingOrbitalStep.Orbit.Time2Point(arrivalTime);
+            Vector3d arrivalPosition = nextOrbitalStep.Orbit.Time2Point(arrivalTime);
 
             orbit = Orbit.FindTransferOrbit(orbit.GravitationalBody, departurePosition, departureTime, arrivalPosition, arrivalTime);
         }
@@ -164,7 +164,7 @@ public class OrbitalStep : TimelineStep, IInspectable, IPlottable
         if (!isFreeOrbit)
         {
             InspectorPropertyBlock porkChopPropertyBlock = inspector.AddPorkChopPropertyBlock();
-            porkChopPropertyBlock.AddDoubleProperty("Departure Time (s UT)",    () => (preceedingStep as TransitionStep).TransitionTime,    (double newDepartureTime)   => { (preceedingStep as TransitionStep).TransitionTime = newDepartureTime;  UpdateTransferOrbit(); });
+            porkChopPropertyBlock.AddDoubleProperty("Departure Time (s UT)",    () => (previousStep as TransitionStep).TransitionTime,    (double newDepartureTime)   => { (previousStep as TransitionStep).TransitionTime = newDepartureTime;  UpdateTransferOrbit(); });
             porkChopPropertyBlock.AddDoubleProperty("Arrival Time (s UT)",      () => (nextStep as TransitionStep).TransitionTime,          (double newArrivalTime)     => { (nextStep as TransitionStep).TransitionTime = newArrivalTime;          UpdateTransferOrbit(); });
         }
 
