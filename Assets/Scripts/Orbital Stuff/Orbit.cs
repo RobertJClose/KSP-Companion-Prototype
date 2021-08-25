@@ -11,7 +11,7 @@ public class Orbit
 
     protected double periapsisRadius;           // RPE: Strictly positive, measured in metres.
     protected double eccentricity;              // ECC: Strictly positive. Elliptical orbit: 0 <= ECC < 1. Parabolic orbit: ECC == 1. Hyperbolic orbit: ECC > 1. 
-    protected Angle inclination;                // INC: 0 < INC < PI. Specifies the angle between the orbital plane and the reference XY plane
+    protected Angle inclination;                // INC: 0 < INC < PI.  Specifies the angle between the orbital plane and the reference XY plane
     protected Angle argumentOfPeriapsis;        // APE: 0 < APE < 2PI. Specifies the angle between the ascending node vector (NVector) and the point of periapsis 
     protected Angle longitudeOfAscendingNode;   // LAN: 0 < LAN < 2PI. Specifies the angle between the reference direction (X axis) and the ascending node vector (NVector)
     protected double timeOfPeriapsisPassage;    // TPP: Specifies the bodies position in its orbit by representing a time at which the body passed through the orbit's periapsis.
@@ -20,37 +20,17 @@ public class Orbit
     // *** Properties of the orbit ***
     // Orbital elements
     // Periapsis radius
-    public double RPE
-    {
-        get { return periapsisRadius; }
-        set
-        {
-            if (value < 0.0)
-                periapsisRadius = 0.0;
-            else
-                periapsisRadius = value;
-        }
-    }
+    public double   RPE { get { return periapsisRadius; }           set { periapsisRadius = Mathd.Clamp(value, 0.0, double.PositiveInfinity); } }
     // Eccentricity
-    public double ECC
-    {
-        get { return eccentricity; }
-        set
-        {
-            if (value < 0.0)
-                eccentricity = 0.0;
-            else
-                eccentricity = value;
-        }
-    }
+    public double   ECC { get { return eccentricity; }              set { eccentricity = Mathd.Clamp(value, 0.0, double.PositiveInfinity); } }
     // Inclination
-    public Angle INC { get { return inclination; } set { inclination = value % Mathf.PI; } }
+    public Angle    INC { get { return inclination; }               set { inclination = value % Mathf.PI; } }
     // Argument of periapsis
-    public Angle APE { get { return argumentOfPeriapsis; } set { argumentOfPeriapsis = value; } }
+    public Angle    APE { get { return argumentOfPeriapsis; }       set { argumentOfPeriapsis = value; } }
     // Longitude of the ascending node
-    public Angle LAN { get { return longitudeOfAscendingNode; } set { longitudeOfAscendingNode = value; } }
+    public Angle    LAN { get { return longitudeOfAscendingNode; }  set { longitudeOfAscendingNode = value; } }
     // Time of periapsis passage
-    public double TPP { get { return timeOfPeriapsisPassage; } set { timeOfPeriapsisPassage = value; } }
+    public double   TPP { get { return timeOfPeriapsisPassage; }    set { timeOfPeriapsisPassage = value; } }
 
     // Alternative elements
     // Semi-major axis
@@ -289,18 +269,17 @@ public class Orbit
 
     public static Orbit FindTransferOrbit(Orbit initialOrbit, double departureTime, Orbit targetOrbit, double arrivalTime)
     {
-        // First check that the initial and final orbits are around the same body. If they are not, return the Orbit null object
+        // First check that the initial and final orbits are around the same body. This should ALWAYS be the case, and if a
+        // caller is failing to do this that's a bad sign.
         if (initialOrbit.attractingBody != targetOrbit.attractingBody)
-        {
-            return null;
-        }
+            throw new ArgumentException("The initial and target orbits should be around the same gravitational body", "initialOrbit, targetOrbit");
 
         // Calculate the departure and arrival points in space
         Vector3d departurePoint = initialOrbit.Time2Point(departureTime);
         Vector3d arrivalPoint = targetOrbit.Time2Point(arrivalTime);
 
         // If the departure and arrival time are the same, then there is no valid transfer orbit. An exception to this is if the
-        // departure and arrival point are the same, in which case either the initial or target orbit may be used as a transfer.
+        // departure and arrival point are the same, in which case either the initial or target orbit may be used as an instantaneous transfer.
         if (departureTime == arrivalTime)
         {
             if (departurePoint == arrivalPoint)
@@ -309,14 +288,12 @@ public class Orbit
                 return null;
         }
 
-        // If the departure and arrival point are the same, then the transfer orbit may be any elliptical orbit with a period
-        // equal to the time of flight required. The returned elliptical orbit is such that the deltaV required is minimised.
+        // If the departure and arrival point are the same and the time of flight is non-zero, then the transfer orbit may be any elliptical
+        // orbit with a period equal to the time of flight. The returned elliptical orbit is such that the total deltaV required is minimised.
         if (departurePoint == arrivalPoint)
-        {
+            throw new NotImplementedException();
 
-        }
-
-        // For the most general case, Lambert's problem  is solved to find the transfer orbit.
+        // For the most general case, Lambert's problem is solved to find the transfer orbit.
         return LambertsProblemHelper.Solver(initialOrbit.attractingBody, departurePoint, departureTime, arrivalPoint, arrivalTime);
     }
 

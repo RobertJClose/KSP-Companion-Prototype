@@ -808,5 +808,29 @@ namespace Tests
             Assert.That(actual.LAN.RadValueMinusPiToPiRange, Is.EqualTo(original.LAN.RadValueMinusPiToPiRange).Within(0.01));
             Assert.That(actual.TPP, Is.EqualTo(4_111.428195).Within(original.TPP).Percent);
         }
+
+        [Test]
+        public void FindTransferOrbit_OrbitsAroundDifferentBodies_ReturnsNullOrbit()
+        {
+
+        }
+
+        [Test]
+        public void FindTransferOrbit_EqualDepartureAndArrivalTimesWithDistinctDepartureAndArrivalPoints_ReturnsNullOrbit()
+        {
+
+        }
+
+        [Test]
+        public void FindTransferOrbit_EqualDepartureAndArrivalTimesWithEqualDepartureAndArrivalPoints_ReturnsInitialOrbit()
+        {
+
+        }
+
+        [Test]
+        public void FindTransferOrbit_TransferAngleEqualsPI_ReturnsOrbitWithMinimumDeltaVCost()
+        {
+
+        }
     }
 }
