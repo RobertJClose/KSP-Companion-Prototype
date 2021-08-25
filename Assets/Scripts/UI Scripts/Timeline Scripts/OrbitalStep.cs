@@ -128,15 +128,7 @@ public class OrbitalStep : TimelineStep, IInspectable, IPlottable
     public void UpdateTransferOrbit()
     {
         if (!isFreeOrbit)
-        {
-            double departureTime = previousTransitionStep.TransitionTime;
-            double arrivalTime = nextTransitionStep.TransitionTime;
-
-            Vector3d departurePosition = previousOrbitalStep.Orbit.Time2Point(departureTime);
-            Vector3d arrivalPosition = nextOrbitalStep.Orbit.Time2Point(arrivalTime);
-
-            orbit = Orbit.FindTransferOrbit(orbit.GravitationalBody, departurePosition, departureTime, arrivalPosition, arrivalTime);
-        }
+            orbit = Orbit.FindTransferOrbit(previousOrbitalStep.Orbit, previousTransitionStep.TransitionTime, nextOrbitalStep.Orbit, nextTransitionStep.TransitionTime);
     }
 
     public void SetOrbitalStepColour(NamedColour newColour)
