@@ -766,5 +766,33 @@ namespace Tests
             Assert.That(actual.LAN.RadValueMinusPiToPiRange, Is.EqualTo(orbit.LAN.RadValueMinusPiToPiRange).Within(0.01));
             Assert.That(actual.TPP, Is.EqualTo(orbit.TPP).Within(0.01).Percent);
         }
+
+        [Test]
+        public void FindTransferOrbit_HyperbolicOrbit_MatchesHandwrittenWork()
+        {
+            // Arrange
+            Orbit initialOrbit = GravitationalBody.Kerbin.DefaultOrbit;
+            Orbit finalOrbit = GravitationalBody.Kerbin.DefaultOrbit;
+            finalOrbit.RPE = 1_250_000.0;
+            finalOrbit.ECC = 1.5;
+            finalOrbit.TPP = 7_200.0;
+
+            double departureTime = 4_000.0;
+            double arrivalTime = 5_330.0;
+
+            Vector3d positionOne = initialOrbit.Time2Point(departureTime);
+            Vector3d positionTwo = finalOrbit.Time2Point(arrivalTime);
+
+            // Act
+            Orbit actual = Orbit.FindTransferOrbit(GravitationalBody.Kerbin, positionOne, departureTime, positionTwo, arrivalTime);
+
+            // Assert
+            Assert.That(actual.RPE, Is.EqualTo(997_251.612).Within(0.01).Percent);
+            Assert.That(actual.ECC, Is.EqualTo(2.75089362).Within(0.01));
+            Assert.That(actual.INC.RadValueMinusPiToPiRange, Is.EqualTo(0.0).Within(0.01));
+            Assert.That(actual.APE.RadValueMinusPiToPiRange, Is.EqualTo(0.0).Within(0.01));
+            Assert.That(actual.LAN.RadValueMinusPiToPiRange, Is.EqualTo(3.039575).Within(0.01));
+            Assert.That(actual.TPP, Is.EqualTo(4_111.428195).Within(0.01).Percent);
+        }
     }
 }
