@@ -271,21 +271,22 @@ public class Orbit
     {
         // First check that the initial and final orbits are around the same body. This should ALWAYS be the case, and if a
         // caller is failing to do this that's a bad sign.
-        if (initialOrbit.attractingBody != targetOrbit.attractingBody)
-            throw new ArgumentException("The initial and target orbits should be around the same gravitational body", "initialOrbit, targetOrbit");
+        //if (initialOrbit.attractingBody != targetOrbit.attractingBody)
+        //    throw new ArgumentException("The initial and target orbits should be around the same gravitational body", "initialOrbit, targetOrbit");
 
         // Calculate the departure and arrival points in space
         Vector3d departurePoint = initialOrbit.Time2Point(departureTime);
         Vector3d arrivalPoint = targetOrbit.Time2Point(arrivalTime);
 
-        // If the departure and arrival time are the same, then there is no valid transfer orbit. An exception to this is if the
-        // departure and arrival point are the same, in which case either the initial or target orbit may be used as an instantaneous transfer.
+        // If the departure and arrival time are the same, then there is no valid transfer orbit and the ZeroOrbit of the gravitational body is returned.
+        // An exception to this is if the departure and arrival point are the same, in which case either the initial or target orbit may be used as
+        // an instantaneous transfer orbit.
         if (departureTime == arrivalTime)
         {
             if (departurePoint == arrivalPoint)
                 return initialOrbit;
             else
-                return null;
+                return initialOrbit.attractingBody.ZeroOrbit;
         }
 
         // If the departure and arrival point are the same and the time of flight is non-zero, then the transfer orbit may be any elliptical

@@ -38,6 +38,14 @@ public class GravitationalBody
         }
     }
 
+    public Orbit ZeroOrbit
+    {
+        get
+        {
+            return new Orbit(0.0, 0.0, 0.0f, 0.0f, 0.0f, 0.0, this);
+        }
+    }
+
     // *************** Static Members ***************
     public static GravitationalBody Kerbin { get { return new GravitationalBody(1, "Kerbin", 3.5316e+12f, 6e+5f, true, 7e+4f); } }
 
