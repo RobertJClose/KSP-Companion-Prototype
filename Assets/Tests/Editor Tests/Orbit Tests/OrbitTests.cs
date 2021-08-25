@@ -750,7 +750,7 @@ namespace Tests
             Vector3d positionTwo = original.Time2Point(timeTwo);
 
             // Act
-            Orbit actual = Orbit.FindTransferOrbit(GravitationalBody.Kerbin, positionOne, timeOne, positionTwo, timeTwo);
+            Orbit actual = Orbit.FindTransferOrbit(original, timeOne, original, timeTwo);
 
             // Assert
             Assert.That(actual.RPE, Is.EqualTo(original.RPE).Within(0.01).Percent);
@@ -774,7 +774,7 @@ namespace Tests
             Vector3d positionTwo = original.Time2Point(arrivalTime);
 
             // Act
-            Orbit actual = Orbit.FindTransferOrbit(GravitationalBody.Kerbin, positionOne, departureTime, positionTwo, arrivalTime);
+            Orbit actual = Orbit.FindTransferOrbit(original, departureTime, original, arrivalTime);
 
             // Assert
             Assert.That(actual.RPE, Is.EqualTo(original.RPE).Within(0.01).Percent);
@@ -798,7 +798,7 @@ namespace Tests
             Vector3d positionTwo = original.Time2Point(arrivalTime);
 
             // Act
-            Orbit actual = Orbit.FindTransferOrbit(GravitationalBody.Kerbin, positionOne, departureTime, positionTwo, arrivalTime);
+            Orbit actual = Orbit.FindTransferOrbit(original, departureTime, original, arrivalTime);
 
             // Assert
             Assert.That(actual.RPE, Is.EqualTo(original.RPE).Within(0.01).Percent);

@@ -287,9 +287,37 @@ public class Orbit
         return orbit;
     }
 
-    public static Orbit FindTransferOrbit(GravitationalBody body, Vector3d positionOne, double timeOne, Vector3d positionTwo, double timeTwo)
+    public static Orbit FindTransferOrbit(Orbit initialOrbit, double departureTime, Orbit targetOrbit, double arrivalTime)
     {
-        return LambertsProblemHelper.Solver(body, positionOne, timeOne, positionTwo, timeTwo);
+        // First check that the initial and final orbits are around the same body. If they are not, return the Orbit null object
+        if (initialOrbit.attractingBody != targetOrbit.attractingBody)
+        {
+            return null;
+        }
+
+        // Calculate the departure and arrival points in space
+        Vector3d departurePoint = initialOrbit.Time2Point(departureTime);
+        Vector3d arrivalPoint = targetOrbit.Time2Point(arrivalTime);
+
+        // If the departure and arrival time are the same, then there is no valid transfer orbit. An exception to this is if the
+        // departure and arrival point are the same, in which case either the initial or target orbit may be used as a transfer.
+        if (departureTime == arrivalTime)
+        {
+            if (departurePoint == arrivalPoint)
+                return initialOrbit;
+            else
+                return null;
+        }
+
+        // If the departure and arrival point are the same, then the transfer orbit may be any elliptical orbit with a period
+        // equal to the time of flight required. The returned elliptical orbit is such that the deltaV required is minimised.
+        if (departurePoint == arrivalPoint)
+        {
+
+        }
+
+        // For the most general case, Lambert's problem  is solved to find the transfer orbit.
+        return LambertsProblemHelper.Solver(initialOrbit.attractingBody, departurePoint, departureTime, arrivalPoint, arrivalTime);
     }
 
     public double TrueAnomaly2Time(Angle trueAnomaly)
