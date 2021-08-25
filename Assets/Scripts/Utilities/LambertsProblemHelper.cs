@@ -130,7 +130,7 @@ public static class LambertsProblemHelper
             return Math.Acos(x * y + lambda * (1.0 - x * x));
         }
         else
-            return ACosh(x * y - lambda * (1.0 - x * x));
+            return ACosh(x * y - lambda * (x * x - 1.0));
     }
 
     // Inverse hyperbolic cosine function
