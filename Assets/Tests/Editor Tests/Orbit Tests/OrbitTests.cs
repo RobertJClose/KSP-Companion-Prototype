@@ -744,7 +744,7 @@ namespace Tests
             Orbit original = new Orbit(725_000.0, 0.35, 0.436332313f, 0.6981317008f, 1.221730476f, 2_000.0, GravitationalBody.Kerbin);
 
             double timeOne = 1_000.0;
-            double timeTwo = 3_236.312_736;
+            double timeTwo = 3_200.0;
 
             Vector3d positionOne = original.Time2Point(timeOne);
             Vector3d positionTwo = original.Time2Point(timeTwo);
