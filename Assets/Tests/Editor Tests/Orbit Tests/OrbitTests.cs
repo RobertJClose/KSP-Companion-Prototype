@@ -738,61 +738,75 @@ namespace Tests
         }
 
         [Test]
-        public void FindTransferOrbit_EllipticalOrbit_MatchesHandwrittenWorkAndReconstructsOrbit()
+        public void FindTransferOrbit_EllipticalOrbit_ReconstructsOrbit()
         {
             // Arrange
-            Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
-            orbit.RPE = 1e+7;
-            orbit.ECC = 0.25;
-            orbit.INC = 0.4f;
-            orbit.APE = 4.5f;
-            orbit.LAN = 2.0f;
-            orbit.TPP = 500.0;
+            Orbit original = new Orbit(725_000.0, 0.35, 0.436332313f, 0.6981317008f, 1.221730476f, 2_000.0, GravitationalBody.Kerbin);
 
             double timeOne = 1_000.0;
             double timeTwo = 3_236.312_736;
 
-            Vector3d positionOne = orbit.Time2Point(timeOne);
-            Vector3d positionTwo = orbit.Time2Point(timeTwo);
+            Vector3d positionOne = original.Time2Point(timeOne);
+            Vector3d positionTwo = original.Time2Point(timeTwo);
 
             // Act
-            Orbit actual = Orbit.FindTransferOrbit(GravitationalBody.Earth, positionOne, timeOne, positionTwo, timeTwo);
+            Orbit actual = Orbit.FindTransferOrbit(GravitationalBody.Kerbin, positionOne, timeOne, positionTwo, timeTwo);
 
             // Assert
-            Assert.That(actual.RPE, Is.EqualTo(orbit.RPE).Within(0.01).Percent);
-            Assert.That(actual.ECC, Is.EqualTo(orbit.ECC).Within(0.01));
-            Assert.That(actual.INC.RadValueMinusPiToPiRange, Is.EqualTo(orbit.INC.RadValueMinusPiToPiRange).Within(0.01));
-            Assert.That(actual.APE.RadValueMinusPiToPiRange, Is.EqualTo(orbit.APE.RadValueMinusPiToPiRange).Within(0.01));
-            Assert.That(actual.LAN.RadValueMinusPiToPiRange, Is.EqualTo(orbit.LAN.RadValueMinusPiToPiRange).Within(0.01));
-            Assert.That(actual.TPP, Is.EqualTo(orbit.TPP).Within(0.01).Percent);
+            Assert.That(actual.RPE, Is.EqualTo(original.RPE).Within(0.01).Percent);
+            Assert.That(actual.ECC, Is.EqualTo(original.ECC).Within(0.01));
+            Assert.That(actual.INC.RadValueMinusPiToPiRange, Is.EqualTo(original.INC.RadValueMinusPiToPiRange).Within(0.01));
+            Assert.That(actual.APE.RadValueMinusPiToPiRange, Is.EqualTo(original.APE.RadValueMinusPiToPiRange).Within(0.01));
+            Assert.That(actual.LAN.RadValueMinusPiToPiRange, Is.EqualTo(original.LAN.RadValueMinusPiToPiRange).Within(0.01));
+            Assert.That(actual.TPP, Is.EqualTo(original.TPP).Within(0.01).Percent);
         }
 
         [Test]
-        public void FindTransferOrbit_HyperbolicOrbit_MatchesHandwrittenWork()
+        public void FindTransferOrbit_HyperbolicOrbit_ReconstructsOrbit()
         {
             // Arrange
-            Orbit initialOrbit = GravitationalBody.Kerbin.DefaultOrbit;
-            Orbit finalOrbit = GravitationalBody.Kerbin.DefaultOrbit;
-            finalOrbit.RPE = 1_250_000.0;
-            finalOrbit.ECC = 1.5;
-            finalOrbit.TPP = 7_200.0;
+            Orbit original = new Orbit(725_000.0, 1.5, 0.436332313f, 0.6981317008f, 1.221730476f, 2_000.0, GravitationalBody.Kerbin);
 
             double departureTime = 4_000.0;
             double arrivalTime = 5_330.0;
 
-            Vector3d positionOne = initialOrbit.Time2Point(departureTime);
-            Vector3d positionTwo = finalOrbit.Time2Point(arrivalTime);
+            Vector3d positionOne = original.Time2Point(departureTime);
+            Vector3d positionTwo = original.Time2Point(arrivalTime);
 
             // Act
             Orbit actual = Orbit.FindTransferOrbit(GravitationalBody.Kerbin, positionOne, departureTime, positionTwo, arrivalTime);
 
             // Assert
-            Assert.That(actual.RPE, Is.EqualTo(997_251.612).Within(0.01).Percent);
-            Assert.That(actual.ECC, Is.EqualTo(2.75089362).Within(0.01));
-            Assert.That(actual.INC.RadValueMinusPiToPiRange, Is.EqualTo(0.0).Within(0.01));
-            Assert.That(actual.APE.RadValueMinusPiToPiRange, Is.EqualTo(0.0).Within(0.01));
-            Assert.That(actual.LAN.RadValueMinusPiToPiRange, Is.EqualTo(3.039575).Within(0.01));
-            Assert.That(actual.TPP, Is.EqualTo(4_111.428195).Within(0.01).Percent);
+            Assert.That(actual.RPE, Is.EqualTo(original.RPE).Within(0.01).Percent);
+            Assert.That(actual.ECC, Is.EqualTo(original.ECC).Within(0.01));
+            Assert.That(actual.INC.RadValueMinusPiToPiRange, Is.EqualTo(original.INC.RadValueMinusPiToPiRange).Within(0.01));
+            Assert.That(actual.APE.RadValueMinusPiToPiRange, Is.EqualTo(original.APE.RadValueMinusPiToPiRange).Within(0.01));
+            Assert.That(actual.LAN.RadValueMinusPiToPiRange, Is.EqualTo(original.LAN.RadValueMinusPiToPiRange).Within(0.01));
+            Assert.That(actual.TPP, Is.EqualTo(4_111.428195).Within(original.TPP).Percent);
+        }
+
+        [Test]
+        public void FindTransferOrbit_ParabolicOrbit_ReconstructsOrbit()
+        {
+            // Arrange
+            Orbit original = new Orbit(725_000.0, 1.0, 0.436332313f, 0.6981317008f, 1.221730476f, 2_000.0, GravitationalBody.Kerbin);
+
+            double departureTime = 500.0;
+            double arrivalTime = 5_000.0;
+
+            Vector3d positionOne = original.Time2Point(departureTime);
+            Vector3d positionTwo = original.Time2Point(arrivalTime);
+
+            // Act
+            Orbit actual = Orbit.FindTransferOrbit(GravitationalBody.Kerbin, positionOne, departureTime, positionTwo, arrivalTime);
+
+            // Assert
+            Assert.That(actual.RPE, Is.EqualTo(original.RPE).Within(0.01).Percent);
+            Assert.That(actual.ECC, Is.EqualTo(original.ECC).Within(0.01));
+            Assert.That(actual.INC.RadValueMinusPiToPiRange, Is.EqualTo(original.INC.RadValueMinusPiToPiRange).Within(0.01));
+            Assert.That(actual.APE.RadValueMinusPiToPiRange, Is.EqualTo(original.APE.RadValueMinusPiToPiRange).Within(0.01));
+            Assert.That(actual.LAN.RadValueMinusPiToPiRange, Is.EqualTo(original.LAN.RadValueMinusPiToPiRange).Within(0.01));
+            Assert.That(actual.TPP, Is.EqualTo(4_111.428195).Within(original.TPP).Percent);
         }
     }
 }
