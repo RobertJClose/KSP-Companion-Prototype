@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 public abstract class TransitionStep : TimelineStep, IInspectable, IPlottable
 {
     // Members
-    double transitionTime;
+    private double transitionTime;
     public double TransitionTime 
     { 
         get 
@@ -77,5 +77,5 @@ public abstract class TransitionStep : TimelineStep, IInspectable, IPlottable
             plot.SetPlotPoint((Vector3?)TransitionPoint * Constants.PlotRescaleFactor ?? Vector3.zero);
         }       
     }
-
+    
 }
