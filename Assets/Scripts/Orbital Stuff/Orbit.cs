@@ -20,17 +20,95 @@ public class Orbit
     // *** Properties of the orbit ***
     // Orbital elements
     // Periapsis radius
-    public double   RPE { get { return periapsisRadius; }           set { periapsisRadius = Mathd.Clamp(value, 0.0, double.PositiveInfinity); } }
+    public double RPE 
+    { 
+        get 
+        { 
+            return periapsisRadius; 
+        } 
+        set 
+        {
+            if (double.IsNaN(value))
+                throw new ArgumentException("RPE should never be set to NaN", "value");
+
+            periapsisRadius = Mathd.Clamp(value, 0.0, double.PositiveInfinity); 
+        } 
+    }
     // Eccentricity
-    public double   ECC { get { return eccentricity; }              set { eccentricity = Mathd.Clamp(value, 0.0, double.PositiveInfinity); } }
+    public double ECC 
+    { 
+        get 
+        { 
+            return eccentricity; 
+        } 
+        set 
+        {
+            if (double.IsNaN(value))
+                throw new ArgumentException("ECC should never be set to NaN", "value");
+
+            eccentricity = Mathd.Clamp(value, 0.0, double.PositiveInfinity); 
+        } 
+    }
     // Inclination
-    public Angle    INC { get { return inclination; }               set { inclination = value % Mathf.PI; } }
+    public Angle INC 
+    { 
+        get 
+        { 
+            return inclination; 
+        } 
+        set 
+        {
+            if (float.IsNaN(value))
+                throw new ArgumentException("INC should never be set to NaN", "value");
+
+            inclination = value % Mathf.PI; 
+        } 
+    }
     // Argument of periapsis
-    public Angle    APE { get { return argumentOfPeriapsis; }       set { argumentOfPeriapsis = value; } }
+    public Angle APE 
+    { 
+        get 
+        { 
+            return argumentOfPeriapsis; 
+        } 
+        set 
+        {
+            if (float.IsNaN(value))
+                throw new ArgumentException("APE should never be set to NaN", "value");
+
+            argumentOfPeriapsis = value; 
+        } 
+    }
     // Longitude of the ascending node
-    public Angle    LAN { get { return longitudeOfAscendingNode; }  set { longitudeOfAscendingNode = value; } }
+    public Angle LAN 
+    { 
+        get 
+        { 
+            return longitudeOfAscendingNode; 
+        } 
+        set 
+        {
+            if (float.IsNaN(value))
+                throw new ArgumentException("LAN should never be set to NaN", "value");
+
+            longitudeOfAscendingNode = value; 
+        } 
+    }
     // Time of periapsis passage
-    public double   TPP { get { return timeOfPeriapsisPassage; }    set { timeOfPeriapsisPassage = value; } }
+    public double TPP 
+    { 
+        get 
+        { 
+            return timeOfPeriapsisPassage; 
+        } 
+        set 
+        {
+            if (double.IsNaN(value))
+                throw new ArgumentException("TPP should never be set to NaN", "value");
+
+            timeOfPeriapsisPassage = value; 
+        } 
+    }
 
     // Alternative elements
     // Semi-major axis
