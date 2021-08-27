@@ -345,35 +345,48 @@ public class Orbit
         return orbit;
     }
 
-    public static Orbit FindTransferOrbit(Orbit initialOrbit, double departureTime, Orbit targetOrbit, double arrivalTime)
+    public static bool TryFindTransferOrbit(Orbit initialOrbit, double departureTime, Orbit targetOrbit, double arrivalTime, out Orbit transferOrbit)
     {
         // First check that the initial and final orbits are around the same body. This should ALWAYS be the case, and if a
-        // caller is failing to do this that's a bad sign.
+        // caller is failing to do this that's a developer error.
         //if (initialOrbit.attractingBody != targetOrbit.attractingBody)
         //    throw new ArgumentException("The initial and target orbits should be around the same gravitational body", "initialOrbit, targetOrbit");
+
+        transferOrbit = initialOrbit.attractingBody.ZeroOrbit;
 
         // Calculate the departure and arrival points in space
         Vector3d departurePoint = initialOrbit.Time2Point(departureTime);
         Vector3d arrivalPoint = targetOrbit.Time2Point(arrivalTime);
 
-        // If the departure and arrival time are the same, then there is no valid transfer orbit and the ZeroOrbit of the gravitational body is returned.
-        // An exception to this is if the departure and arrival point are the same, in which case either the initial or target orbit may be used as
-        // an instantaneous transfer orbit.
-        if (departureTime == arrivalTime)
+        if (departurePoint == arrivalPoint)
         {
-            if (departurePoint == arrivalPoint)
-                return initialOrbit;
+            if (Mathd.Approximately(departureTime, arrivalTime))
+            {
+                transferOrbit = initialOrbit;
+                return true;
+            }
             else
-                return initialOrbit.attractingBody.ZeroOrbit;
+            {
+                throw new NotImplementedException();
+            }
         }
 
-        // If the departure and arrival point are the same and the time of flight is non-zero, then the transfer orbit may be any elliptical
-        // orbit with a period equal to the time of flight. The returned elliptical orbit is such that the total deltaV required is minimised.
-        if (departurePoint == arrivalPoint)
-            throw new NotImplementedException();
+        Vector3d[] terminalVelocities = LambertsProblemHelper.Solver(initialOrbit.attractingBody, departurePoint, departureTime, arrivalPoint, arrivalTime);
 
-        // For the most general case, Lambert's problem is solved to find the transfer orbit.
-        return LambertsProblemHelper.Solver(initialOrbit.attractingBody, departurePoint, departureTime, arrivalPoint, arrivalTime);
+        // Check if the solver was able to find valid terminal velocity vectors, and thus a transfer orbit may be found
+        foreach (Vector3d velocityVector in terminalVelocities)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                if (double.IsNaN(velocityVector[i]))
+                {
+                    return false;
+                }
+            }
+        }
+
+        transferOrbit = StateVectors2Orbit(initialOrbit.attractingBody, departurePoint, terminalVelocities[0], departureTime);
+        return true;
     }
 
     public double TrueAnomaly2Time(Angle trueAnomaly)
@@ -505,7 +518,10 @@ public class Orbit
 
     private double ParabolicAnomaly2MeanAnomaly(double parabolicAnomaly)
     {
-        return periapsisRadius * parabolicAnomaly + parabolicAnomaly * parabolicAnomaly * parabolicAnomaly / 6.0;
+        if (double.IsInfinity(parabolicAnomaly))
+            return double.PositiveInfinity;
+        else
+            return periapsisRadius * parabolicAnomaly + parabolicAnomaly * parabolicAnomaly * parabolicAnomaly / 6.0;
     }
 
     private double TrueAnomaly2HyperbolicAnomaly(Angle trueAnomaly)

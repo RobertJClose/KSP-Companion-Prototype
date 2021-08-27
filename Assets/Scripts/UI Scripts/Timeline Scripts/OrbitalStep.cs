@@ -128,7 +128,14 @@ public class OrbitalStep : TimelineStep, IInspectable, IPlottable
     public void UpdateTransferOrbit()
     {
         if (!isFreeOrbit)
-            orbit = Orbit.FindTransferOrbit(previousOrbitalStep.Orbit, previousTransitionStep.TransitionTime, nextOrbitalStep.Orbit, nextTransitionStep.TransitionTime);
+        {
+            bool doesTransferExist = Orbit.TryFindTransferOrbit(previousOrbitalStep.Orbit, previousTransitionStep.TransitionTime, nextOrbitalStep.Orbit, nextTransitionStep.TransitionTime, out Orbit transferOrbit);
+
+            if (doesTransferExist == true)
+                orbit = transferOrbit;
+            else
+                orbit = orbit.GravitationalBody.ZeroOrbit;
+        }
     }
 
     public void SetOrbitalStepColour(NamedColour newColour)

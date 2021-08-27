@@ -8,7 +8,7 @@ public static class LambertsProblemHelper
     // Reference paper:
     // Revisiting Lambert's Problem - Dario Izzo (2014)
 
-    public static Orbit Solver(GravitationalBody body, Vector3d positionOne, double timeOne, Vector3d positionTwo, double timeTwo)
+    public static Vector3d[] Solver(GravitationalBody body, Vector3d positionOne, double timeOne, Vector3d positionTwo, double timeTwo)
     {
         double chordLength = (positionTwo - positionOne).magnitude;
         double semiPerimeter = 0.5 * (positionOne.magnitude + positionTwo.magnitude + chordLength);
@@ -35,13 +35,16 @@ public static class LambertsProblemHelper
         double rho = (positionOne.magnitude - positionTwo.magnitude) / chordLength;
         double sigma = Math.Sqrt(1.0 - rho * rho);
 
-        double componentOne = gamma / positionOne.magnitude * (lambda * yFinal - xFinal - rho * (lambda * yFinal + xFinal));
-        double componentTwo = gamma * sigma / positionOne.magnitude * (yFinal + lambda * xFinal);
+        double v1CcomponentOne = gamma / positionOne.magnitude * (lambda * yFinal - xFinal - rho * (lambda * yFinal + xFinal));
+        double v1ComponentTwo = gamma * sigma / positionOne.magnitude * (yFinal + lambda * xFinal);
 
-        Vector3d velocityAtPositionOne = componentOne * positionOne.normalized + componentTwo * tangentialUnitVector;
+        double v2CcomponentOne = -gamma / positionTwo.magnitude * (lambda * yFinal - xFinal + rho * (lambda * yFinal + xFinal));
+        double v2ComponentTwo = gamma * sigma / positionTwo.magnitude * (yFinal + lambda * xFinal);
 
-        Orbit orbit = Orbit.StateVectors2Orbit(body, positionOne, velocityAtPositionOne, timeOne);
-        return orbit;
+        Vector3d velocityAtPositionOne = v1CcomponentOne * positionOne.normalized + v1ComponentTwo * tangentialUnitVector;
+        Vector3d velocityAtPositionTwo = v2CcomponentOne * positionTwo.normalized + v2ComponentTwo * tangentialUnitVector;
+
+        return new Vector3d[2] { velocityAtPositionOne, velocityAtPositionTwo };
     }
 
     private static double FindXThatProducesTStar(double lambda, double TStar)
