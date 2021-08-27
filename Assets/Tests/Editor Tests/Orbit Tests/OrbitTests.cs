@@ -738,7 +738,7 @@ namespace Tests
         }
 
         [Test]
-        public void FindTransferOrbit_EllipticalOrbit_ReconstructsOrbit()
+        public void TryFindTransferOrbit_EllipticalOrbit_ReconstructsOrbit()
         {
             // Arrange
             Orbit original = new Orbit(725_000.0, 0.35, 0.436332313f, 0.6981317008f, 1.221730476f, 2_000.0, GravitationalBody.Kerbin);
@@ -750,7 +750,7 @@ namespace Tests
             Vector3d positionTwo = original.Time2Point(timeTwo);
 
             // Act
-            Orbit actual = Orbit.FindTransferOrbit(original, timeOne, original, timeTwo);
+            Orbit.TryFindTransferOrbit(original, timeOne, original, timeTwo, out Orbit actual);
 
             // Assert
             Assert.That(actual.RPE, Is.EqualTo(original.RPE).Within(0.01).Percent);
@@ -762,7 +762,7 @@ namespace Tests
         }
 
         [Test]
-        public void FindTransferOrbit_HyperbolicOrbit_ReconstructsOrbit()
+        public void TFindTransferOrbit_HyperbolicOrbit_ReconstructsOrbit()
         {
             // Arrange
             Orbit original = new Orbit(725_000.0, 1.5, 0.436332313f, 0.6981317008f, 1.221730476f, 2_000.0, GravitationalBody.Kerbin);
@@ -774,7 +774,7 @@ namespace Tests
             Vector3d positionTwo = original.Time2Point(arrivalTime);
 
             // Act
-            Orbit actual = Orbit.FindTransferOrbit(original, departureTime, original, arrivalTime);
+            Orbit.TryFindTransferOrbit(original, departureTime, original, arrivalTime, out Orbit actual);
 
             // Assert
             Assert.That(actual.RPE, Is.EqualTo(original.RPE).Within(0.01).Percent);
@@ -786,7 +786,7 @@ namespace Tests
         }
 
         [Test]
-        public void FindTransferOrbit_ParabolicOrbit_ReconstructsOrbit()
+        public void FindTryTransferOrbit_ParabolicOrbit_ReconstructsOrbit()
         {
             // Arrange
             Orbit original = new Orbit(725_000.0, 1.0, 0.436332313f, 0.6981317008f, 1.221730476f, 2_000.0, GravitationalBody.Kerbin);
@@ -798,7 +798,7 @@ namespace Tests
             Vector3d positionTwo = original.Time2Point(arrivalTime);
 
             // Act
-            Orbit actual = Orbit.FindTransferOrbit(original, departureTime, original, arrivalTime);
+            Orbit.TryFindTransferOrbit(original, departureTime, original, arrivalTime, out Orbit actual);
 
             // Assert
             Assert.That(actual.RPE, Is.EqualTo(original.RPE).Within(0.01).Percent);
@@ -810,25 +810,68 @@ namespace Tests
         }
 
         [Test]
-        public void FindTransferOrbit_OrbitsAroundDifferentBodies_ReturnsNullOrbit()
+        public void FindTransferOrbit_OrbitsAroundDifferentBodies_ReturnsFalse()
+        {
+            // Arrange
+            Orbit initial = GravitationalBody.Earth.DefaultOrbit;
+            Orbit target = GravitationalBody.Kerbin.DefaultOrbit;
+            double departureTime = 0.0;
+            double arrivalTime = 1.0;
+
+            // Act
+            bool actual = Orbit.TryFindTransferOrbit(initial, departureTime, target, arrivalTime, out _);
+
+            // Assert
+            Assert.That(actual, Is.False);
+        }
+
+        [Test]
+        public void FindTransferOrbit_ZeroTimeOfFlightWithDistinctDepartureAndArrivalPoints_ReturnsFalse()
+        {
+            // Arrange
+            Orbit initial = GravitationalBody.Kerbin.DefaultOrbit;
+            Orbit target = GravitationalBody.Kerbin.DefaultOrbit;
+            target.RPE = 10_000_000.0;
+            double departureTime = 0.0;
+            double arrivalTime = 0.0;
+
+            // Act
+            bool actual = Orbit.TryFindTransferOrbit(initial, departureTime, target, arrivalTime, out _);
+
+            // Assert
+            Assert.That(actual, Is.False);
+        }
+
+        [Test]
+        public void FindTransferOrbit_ZeroTimeOfFlightWithEqualDepartureAndArrivalPoints_ReturnsInitialOrbit()
+        {
+            // Arrange
+            Orbit initial = GravitationalBody.Kerbin.DefaultOrbit;
+            Orbit target = GravitationalBody.Kerbin.DefaultOrbit;
+            target.INC = 0.5f;
+            double departureTime = 0.0;
+            double arrivalTime = 0.0;
+
+            // Act
+            Orbit.TryFindTransferOrbit(initial, departureTime, target, arrivalTime, out Orbit actual);
+
+            // Assert
+            Assert.That(actual.RPE, Is.EqualTo(initial.RPE).Within(0.01).Percent);
+            Assert.That(actual.ECC, Is.EqualTo(initial.ECC).Within(0.01));
+            Assert.That(actual.INC.RadValueMinusPiToPiRange, Is.EqualTo(initial.INC.RadValueMinusPiToPiRange).Within(0.01));
+            Assert.That(actual.APE.RadValueMinusPiToPiRange, Is.EqualTo(initial.APE.RadValueMinusPiToPiRange).Within(0.01));
+            Assert.That(actual.LAN.RadValueMinusPiToPiRange, Is.EqualTo(initial.LAN.RadValueMinusPiToPiRange).Within(0.01));
+            Assert.That(actual.TPP, Is.EqualTo(4_111.428195).Within(initial.TPP).Percent);
+        }
+
+        [Test]
+        public void TryFindTransferOrbit_TransferAngleEqualsPI_ReturnsOrbitWithMinimumDeltaVCost()
         {
 
         }
 
         [Test]
-        public void FindTransferOrbit_EqualDepartureAndArrivalTimesWithDistinctDepartureAndArrivalPoints_ReturnsNullOrbit()
-        {
-
-        }
-
-        [Test]
-        public void FindTransferOrbit_EqualDepartureAndArrivalTimesWithEqualDepartureAndArrivalPoints_ReturnsInitialOrbit()
-        {
-
-        }
-
-        [Test]
-        public void FindTransferOrbit_TransferAngleEqualsPI_ReturnsOrbitWithMinimumDeltaVCost()
+        public void TryFindTransferOrbit_SameDepartureAndArrivalPointsWithNonZeroTimeOfFlight_ReturnsOrbitWithMinimumDeltaVCost()
         {
 
         }
