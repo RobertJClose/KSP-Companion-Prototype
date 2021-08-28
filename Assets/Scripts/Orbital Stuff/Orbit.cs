@@ -519,7 +519,7 @@ public class Orbit
     private double ParabolicAnomaly2MeanAnomaly(double parabolicAnomaly)
     {
         if (double.IsInfinity(parabolicAnomaly))
-            return double.PositiveInfinity;
+            return parabolicAnomaly;
         else
             return periapsisRadius * parabolicAnomaly + parabolicAnomaly * parabolicAnomaly * parabolicAnomaly / 6.0;
     }
