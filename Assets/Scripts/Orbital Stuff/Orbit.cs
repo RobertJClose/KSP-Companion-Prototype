@@ -345,14 +345,12 @@ public class Orbit
         return orbit;
     }
 
-    public static bool TryFindTransferOrbit(Orbit initialOrbit, double departureTime, Orbit targetOrbit, double arrivalTime, out Orbit transferOrbit)
+    public static Orbit FindTransferOrbit(Orbit initialOrbit, double departureTime, Orbit targetOrbit, double arrivalTime)
     {
         // First check that the initial and final orbits are around the same body. This should ALWAYS be the case, and if a
         // caller is failing to do this that's a developer error.
         //if (initialOrbit.attractingBody != targetOrbit.attractingBody)
         //    throw new ArgumentException("The initial and target orbits should be around the same gravitational body", "initialOrbit, targetOrbit");
-
-        transferOrbit = initialOrbit.attractingBody.ZeroOrbit;
 
         // Calculate the departure and arrival points in space
         Vector3d departurePoint = initialOrbit.Time2Point(departureTime);
@@ -362,8 +360,7 @@ public class Orbit
         {
             if (Mathd.Approximately(departureTime, arrivalTime))
             {
-                transferOrbit = initialOrbit;
-                return true;
+                return initialOrbit;
             }
             else
             {
@@ -380,13 +377,12 @@ public class Orbit
             {
                 if (double.IsNaN(velocityVector[i]))
                 {
-                    return false;
+                    return null;
                 }
             }
         }
 
-        transferOrbit = StateVectors2Orbit(initialOrbit.attractingBody, departurePoint, terminalVelocities[0], departureTime);
-        return true;
+        return StateVectors2Orbit(initialOrbit.attractingBody, departurePoint, terminalVelocities[0], departureTime);
     }
 
     public double TrueAnomaly2Time(Angle trueAnomaly)
