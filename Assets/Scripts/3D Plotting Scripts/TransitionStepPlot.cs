@@ -34,4 +34,12 @@ public class TransitionStepPlot : InspectablePlot
         spriteRenderer.sprite = sprite;
         childSpriteRenderer.sprite = sprite;
     }
+
+    public void SetPlotPoint(Vector3 position)
+    {
+        if (position.magnitude < Constants.MaximumPlotDistance)
+            transform.position = position;
+        else
+            transform.position = Vector3.zero;
+    }
 }

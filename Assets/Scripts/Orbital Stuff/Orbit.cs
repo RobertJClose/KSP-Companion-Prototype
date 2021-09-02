@@ -11,7 +11,7 @@ public class Orbit
 
     protected double periapsisRadius;           // RPE: Strictly positive, measured in metres.
     protected double eccentricity;              // ECC: Strictly positive. Elliptical orbit: 0 <= ECC < 1. Parabolic orbit: ECC == 1. Hyperbolic orbit: ECC > 1. 
-    protected Angle inclination;                // INC: 0 < INC < PI. Specifies the angle between the orbital plane and the reference XY plane
+    protected Angle inclination;                // INC: 0 < INC < PI.  Specifies the angle between the orbital plane and the reference XY plane
     protected Angle argumentOfPeriapsis;        // APE: 0 < APE < 2PI. Specifies the angle between the ascending node vector (NVector) and the point of periapsis 
     protected Angle longitudeOfAscendingNode;   // LAN: 0 < LAN < 2PI. Specifies the angle between the reference direction (X axis) and the ascending node vector (NVector)
     protected double timeOfPeriapsisPassage;    // TPP: Specifies the bodies position in its orbit by representing a time at which the body passed through the orbit's periapsis.
@@ -20,37 +20,95 @@ public class Orbit
     // *** Properties of the orbit ***
     // Orbital elements
     // Periapsis radius
-    public double RPE
-    {
-        get { return periapsisRadius; }
-        set
+    public double RPE 
+    { 
+        get 
+        { 
+            return periapsisRadius; 
+        } 
+        set 
         {
-            if (value < 0.0)
-                periapsisRadius = 0.0;
-            else
-                periapsisRadius = value;
-        }
+            if (double.IsNaN(value))
+                throw new ArgumentException("RPE should never be set to NaN", "value");
+
+            periapsisRadius = Mathd.Clamp(value, 0.0, double.PositiveInfinity); 
+        } 
     }
     // Eccentricity
-    public double ECC
-    {
-        get { return eccentricity; }
-        set
+    public double ECC 
+    { 
+        get 
+        { 
+            return eccentricity; 
+        } 
+        set 
         {
-            if (value < 0.0)
-                eccentricity = 0.0;
-            else
-                eccentricity = value;
-        }
+            if (double.IsNaN(value))
+                throw new ArgumentException("ECC should never be set to NaN", "value");
+
+            eccentricity = Mathd.Clamp(value, 0.0, double.PositiveInfinity); 
+        } 
     }
     // Inclination
-    public Angle INC { get { return inclination; } set { inclination = value % Mathf.PI; } }
+    public Angle INC 
+    { 
+        get 
+        { 
+            return inclination; 
+        } 
+        set 
+        {
+            if (float.IsNaN(value))
+                throw new ArgumentException("INC should never be set to NaN", "value");
+
+            inclination = value % Mathf.PI; 
+        } 
+    }
     // Argument of periapsis
-    public Angle APE { get { return argumentOfPeriapsis; } set { argumentOfPeriapsis = value; } }
+    public Angle APE 
+    { 
+        get 
+        { 
+            return argumentOfPeriapsis; 
+        } 
+        set 
+        {
+            if (float.IsNaN(value))
+                throw new ArgumentException("APE should never be set to NaN", "value");
+
+            argumentOfPeriapsis = value; 
+        } 
+    }
     // Longitude of the ascending node
-    public Angle LAN { get { return longitudeOfAscendingNode; } set { longitudeOfAscendingNode = value; } }
+    public Angle LAN 
+    { 
+        get 
+        { 
+            return longitudeOfAscendingNode; 
+        } 
+        set 
+        {
+            if (float.IsNaN(value))
+                throw new ArgumentException("LAN should never be set to NaN", "value");
+
+            longitudeOfAscendingNode = value; 
+        } 
+    }
     // Time of periapsis passage
-    public double TPP { get { return timeOfPeriapsisPassage; } set { timeOfPeriapsisPassage = value; } }
+    public double TPP 
+    { 
+        get 
+        { 
+            return timeOfPeriapsisPassage; 
+        } 
+        set 
+        {
+            if (double.IsNaN(value))
+                throw new ArgumentException("TPP should never be set to NaN", "value");
+
+            timeOfPeriapsisPassage = value; 
+        } 
+    }
 
     // Alternative elements
     // Semi-major axis
@@ -287,9 +345,48 @@ public class Orbit
         return orbit;
     }
 
-    public static Orbit FindTransferOrbit(GravitationalBody body, Vector3d positionOne, double timeOne, Vector3d positionTwo, double timeTwo)
+    public static bool TryFindTransferOrbit(Orbit initialOrbit, double departureTime, Orbit targetOrbit, double arrivalTime, out Orbit transferOrbit)
     {
-        return LambertsProblemHelper.Solver(body, positionOne, timeOne, positionTwo, timeTwo);
+        // First check that the initial and final orbits are around the same body. This should ALWAYS be the case, and if a
+        // caller is failing to do this that's a developer error.
+        //if (initialOrbit.attractingBody != targetOrbit.attractingBody)
+        //    throw new ArgumentException("The initial and target orbits should be around the same gravitational body", "initialOrbit, targetOrbit");
+
+        transferOrbit = initialOrbit.attractingBody.ZeroOrbit;
+
+        // Calculate the departure and arrival points in space
+        Vector3d departurePoint = initialOrbit.Time2Point(departureTime);
+        Vector3d arrivalPoint = targetOrbit.Time2Point(arrivalTime);
+
+        if (departurePoint == arrivalPoint)
+        {
+            if (Mathd.Approximately(departureTime, arrivalTime))
+            {
+                transferOrbit = initialOrbit;
+                return true;
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        Vector3d[] terminalVelocities = LambertsProblemHelper.Solver(initialOrbit.attractingBody, departurePoint, departureTime, arrivalPoint, arrivalTime);
+
+        // Check if the solver was able to find valid terminal velocity vectors, and thus a transfer orbit may be found
+        foreach (Vector3d velocityVector in terminalVelocities)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                if (double.IsNaN(velocityVector[i]))
+                {
+                    return false;
+                }
+            }
+        }
+
+        transferOrbit = StateVectors2Orbit(initialOrbit.attractingBody, departurePoint, terminalVelocities[0], departureTime);
+        return true;
     }
 
     public double TrueAnomaly2Time(Angle trueAnomaly)
@@ -421,7 +518,10 @@ public class Orbit
 
     private double ParabolicAnomaly2MeanAnomaly(double parabolicAnomaly)
     {
-        return periapsisRadius * parabolicAnomaly + parabolicAnomaly * parabolicAnomaly * parabolicAnomaly / 6.0;
+        if (double.IsInfinity(parabolicAnomaly))
+            return parabolicAnomaly;
+        else
+            return periapsisRadius * parabolicAnomaly + parabolicAnomaly * parabolicAnomaly * parabolicAnomaly / 6.0;
     }
 
     private double TrueAnomaly2HyperbolicAnomaly(Angle trueAnomaly)
@@ -526,25 +626,7 @@ public class Orbit
         return TrueAnomaly2Velocity(trueAnomaly);
     }
 
-    public List<Vector3d> OrbitalPoints(Angle? startTrueAnomaly, Angle? endTrueAnomaly)
-    {
-        // This method exists purely to avoid an optional paramter in OrbitalPoints(Angle?, Angle?, Angle, Angle[]). Read its documentation below.
-        return OrbitalPoints(startTrueAnomaly, endTrueAnomaly, Constants.OrbitDefaultStepRad, out _);
-    }
-
-    public List<Vector3d> OrbitalPoints(Angle? startTrueAnomaly, Angle? endTrueAnomaly, Angle stepRad)
-    {
-        // This method exists purely to avoid an optional paramter in OrbitalPoints(Angle?, Angle?, Angle, Angle[]). Read its documentation below.
-        return OrbitalPoints(startTrueAnomaly, endTrueAnomaly, stepRad, out _);
-    }
-
-    public List<Vector3d> OrbitalPoints(Angle? startTrueAnomaly, Angle? endTrueAnomaly, out List<Angle> trueAnomalies)
-    {
-        // This method exists purely to avoid an optional paramter in OrbitalPoints(Angle?, Angle?, Angle, Angle[]). Read its documentation below.
-        return OrbitalPoints(startTrueAnomaly, endTrueAnomaly, Constants.OrbitDefaultStepRad, out trueAnomalies);
-    }
-
-    public List<Vector3d> OrbitalPoints(Angle? startTrueAnomaly, Angle? endTrueAnomaly, Angle stepRad, out List<Angle> trueAnomalies)
+    public List<Vector3d> OrbitalPoints(Angle? startTrueAnomaly, Angle? endTrueAnomaly, out List<Angle> trueAnomalies, Angle stepRad)
     {
         // This method returns a List containing 3D points that trace the trajectory of this orbit, starting at the 'startTrueAnomaly' 
         // and ending at the 'endTrueAnomaly'. If the start and end points are the same then the whole orbit is output.

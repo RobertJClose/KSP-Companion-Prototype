@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -277,6 +277,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 0
 --- !u!223 &120945058
 Canvas:
   m_ObjectHideFlags: 0
@@ -624,6 +625,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a7c088f1ad0fb24786d23492ee080c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  missionTimeline: []
   prefab_OrbitalStep: {fileID: -8571678526763865369, guid: 40b3b27dfaec7fe418591c92a586fa98, type: 3}
   prefab_StartStep: {fileID: -4780124236428697387, guid: 57ee0a95a38c462428f842dd64c48b70, type: 3}
   prefab_FinishStep: {fileID: 5583124547497432651, guid: 1c0901590ecca484eb14b11cb685854b, type: 3}
@@ -1325,6 +1327,7 @@ Light:
   m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
+  m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
 --- !u!4 &705507995
@@ -2254,6 +2257,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Navigation:
     m_Mode: 3
+    m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -2403,6 +2407,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Navigation:
     m_Mode: 0
+    m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -2835,7 +2840,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 010ec0bd04649794a9ee78bc04189f6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab_InspectorPropertyBlock: {fileID: 0}
+  prefab_InspectorPropertyBlock: {fileID: 5240825941910606685, guid: a77e19c89d1639c428a8eae1dd29f088, type: 3}
   header: {fileID: 0}
   porkChopArea: {fileID: 0}
   propertiesArea: {fileID: 1057718189}

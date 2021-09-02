@@ -53,7 +53,6 @@ public class MissionTimeline : MonoBehaviour
         // Create a new ManeuverStep and add it in where the AddButton used to be.
         ManeuverTransitionStep firstManeuver = Instantiate(prefab_ManeuverStep, transform);
         firstManeuver.transform.SetSiblingIndex(addButtonIndex);
-        firstManeuver.TransitionTime = double.NegativeInfinity;
         missionTimeline.Insert(addButtonIndex, firstManeuver);
 
         // Create a new OrbitalStep and set it up as a transfer orbit. Add it after the first ManeuverStep
@@ -66,11 +65,13 @@ public class MissionTimeline : MonoBehaviour
         // Create the second new ManeuverStep and add it after the transfer OrbitalStep
         ManeuverTransitionStep secondManeuver = Instantiate(prefab_ManeuverStep, transform);
         secondManeuver.transform.SetSiblingIndex(addButtonIndex + 2);
-        secondManeuver.TransitionTime = double.PositiveInfinity;
         missionTimeline.Insert(addButtonIndex + 2, secondManeuver);
 
         UpdateAllSurroundingSteps();
-        ValidateTransitionTimes();
+
+        firstManeuver.TransitionTime = firstManeuver.PreviousTransitionStep.TransitionTime;
+        secondManeuver.TransitionTime = secondManeuver.NextTransitionStep.TransitionTime;
+
         UpdateAllTransferOrbits();
         PlotSteps();
     }
@@ -170,31 +171,6 @@ public class MissionTimeline : MonoBehaviour
         foreach (TimelineStep step in missionTimeline)
         {
             step.UpdateSurroundingSteps();
-        }
-    }
-
-    public void ValidateTransitionTimes()
-    {
-        // This method guarantees that there will be proper ordering of the TransitionTimes for each TransitionStep
-        // along the missionTimeline. So a TransitionStep cannot end up with a TransitionTime that is earlier(later)
-        // than another TransitionStep that is before(after) it in the timeline.
-
-        for (int forwardIndex = 0; forwardIndex < missionTimeline.Count; forwardIndex++)
-        {
-            // Step forwards and clamp each TransitionTime from below based on the step that is before each TransitionStep.
-            // Ignore the first step in the list as the first TransitionStep has no earlier TransitionStep.
-            TimelineStep step = missionTimeline[forwardIndex];
-            if (step is TransitionStep && forwardIndex != 0)
-                (step as TransitionStep).TransitionTime = Mathd.Clamp((step as TransitionStep).TransitionTime, (step as TransitionStep).PreviousTransitionStep.TransitionTime, float.PositiveInfinity);
-        }
-
-        for (int backwardIndex = missionTimeline.Count - 1; backwardIndex > -1; backwardIndex--)
-        {
-            // Step backwards and clamp each TransitionTime based on the step that comes after each TransitionStep.
-            // Ignore the final step in the list as the final TransitionStep has no later TransitionStep.
-            TimelineStep step = missionTimeline[backwardIndex];
-            if (step is TransitionStep && backwardIndex != missionTimeline.Count - 1)
-                (step as TransitionStep).TransitionTime = Mathd.Clamp((step as TransitionStep).TransitionTime, float.NegativeInfinity, (step as TransitionStep).NextTransitionStep.TransitionTime);
         }
     }
 

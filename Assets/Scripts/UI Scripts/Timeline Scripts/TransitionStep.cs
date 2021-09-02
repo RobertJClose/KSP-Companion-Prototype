@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 public abstract class TransitionStep : TimelineStep, IInspectable, IPlottable
 {
     // Members
-    double transitionTime;
+    private double transitionTime;
     public double TransitionTime 
     { 
         get 
@@ -16,24 +16,31 @@ public abstract class TransitionStep : TimelineStep, IInspectable, IPlottable
         }
         set
         {
-            if (earlierTransitionStep == null && laterTransitionStep == null)
+            if (previousTransitionStep == null && nextTransitionStep == null)
                 transitionTime = value;
-            else if (earlierTransitionStep == null && laterTransitionStep != null)
-                transitionTime = Mathd.Clamp(value, double.NegativeInfinity, laterTransitionStep.transitionTime);
-            else if (earlierTransitionStep != null && laterTransitionStep == null)
-                transitionTime = Mathd.Clamp(value, earlierTransitionStep.transitionTime, double.PositiveInfinity);
+            else if (previousTransitionStep == null && nextTransitionStep != null)
+                transitionTime = Mathd.Clamp(value, double.NegativeInfinity, nextTransitionStep.transitionTime);
+            else if (previousTransitionStep != null && nextTransitionStep == null)
+                transitionTime = Mathd.Clamp(value, previousTransitionStep.transitionTime, double.PositiveInfinity);
             else
-                transitionTime = Mathd.Clamp(value, earlierTransitionStep.transitionTime, laterTransitionStep.transitionTime);
+                transitionTime = Mathd.Clamp(value, previousTransitionStep.transitionTime, nextTransitionStep.transitionTime);
         }
     }
     public Vector3d? TransitionPoint
     {
         get
         {
-            if (PreviousStep is OrbitalStep)
-                return (PreviousStep as OrbitalStep).Orbit.Time2Point(TransitionTime);
-            else if (NextStep is OrbitalStep)
-                return (NextStep as OrbitalStep).Orbit.Time2Point(TransitionTime);
+            //if (nextOrbitalStep != null)
+            //    return nextOrbitalStep.Orbit.Time2Point(transitionTime);
+            //else if (previousOrbitalStep != null)
+            //    return previousOrbitalStep.Orbit.Time2Point(transitionTime);
+            //else 
+            //    return null;
+
+            if (previousOrbitalStep != null)
+                return previousOrbitalStep.Orbit.Time2Point(transitionTime);
+            else if (nextOrbitalStep != null)
+                return nextOrbitalStep.Orbit.Time2Point(transitionTime);
             else
                 return null;
         }
@@ -67,11 +74,8 @@ public abstract class TransitionStep : TimelineStep, IInspectable, IPlottable
     {
         if (plot != null)
         {
-            if (TransitionPoint.HasValue && TransitionPoint.Value.magnitude != float.PositiveInfinity)
-                plot.transform.position = (Vector3)((TransitionPoint ?? Vector3d.zero) * Constants.PlotRescaleFactor);
-            else
-                plot.transform.position = Vector3.zero;
+            plot.SetPlotPoint((Vector3?)TransitionPoint * Constants.PlotRescaleFactor ?? Vector3.zero);
         }       
     }
-
+    
 }

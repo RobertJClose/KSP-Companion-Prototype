@@ -9,7 +9,7 @@ using UnityEngine.Events;
 public class InspectorDoubleProperty : InspectorProperty
 {
     TMP_InputField inputFieldComponent;
-    double defaultValue;
+    double defaultValue = 0.0;
     Func<double> ValueGetter;
     Action<double> ValueSetter;
     public bool IsEditable { get; set; }
@@ -52,8 +52,15 @@ public class InspectorDoubleProperty : InspectorProperty
         else
         {
             // Update the stored value for the float with the newValue.
-            double value = double.Parse(newValue, System.Globalization.CultureInfo.InvariantCulture);
-            ValueSetter?.Invoke(value);
+            try
+            {
+                double value = double.Parse(newValue, System.Globalization.CultureInfo.InvariantCulture);
+                ValueSetter?.Invoke(value);
+            }
+            catch (FormatException)
+            {
+                ValueSetter?.Invoke(defaultValue);
+            }
         }
 
         // Tell the inspector to update the values of all the displayed properties.
