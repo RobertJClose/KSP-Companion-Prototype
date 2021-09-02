@@ -50,15 +50,18 @@ public class OrbitPlot : InspectablePlot
         lineOfNodes.gameObject.SetActive(isHighlighted);
     }
 
-    public void SetPlotPoints(List<PolylinePoint> points, Vector3 periapsisPoint, Vector3? apoapsisPoint, Vector3? ascendingNodePoint, Vector3? descendingNodePoint)
+    public void SetPlotPoints(List<PolylinePoint> points, Vector3 periapsisPlotPosition, Vector3 apoapsisPlotPosition, Vector3 ascendingNodePlotPosition, Vector3 descendingNodePlotPosition)
     {
-        mainPlot.SetPoints( points.ConvertAll( (PolylinePoint point) => new PolylinePoint(point.point * Constants.PlotRescaleFactor, point.color, point.thickness) ) );
-        highlightPlot.SetPoints( points.ConvertAll( (PolylinePoint point) => new PolylinePoint(point.point * Constants.PlotRescaleFactor, highlightedColour, Constants.OrbitPlotThickness) ) );
+        // Remove any points that are too far from the origin to be plotted
+        points.RemoveAll((PolylinePoint point) => point.point.magnitude > Constants.MaximumPlotDistance);
 
-        periapsisSphere.transform.position = (periapsisPoint) * Constants.PlotRescaleFactor;
-        apoapsisSphere.transform.position = (apoapsisPoint ?? Vector3.zero) * Constants.PlotRescaleFactor;
-        ascendingNodeSphere.transform.position = (ascendingNodePoint ?? Vector3.zero) * Constants.PlotRescaleFactor;
-        descendingNodeSphere.transform.position = (descendingNodePoint ?? Vector3.zero) * Constants.PlotRescaleFactor;
+        mainPlot.SetPoints(points);
+        highlightPlot.SetPoints(points.ConvertAll( (PolylinePoint point) => new PolylinePoint(point.point, highlightedColour, Constants.OrbitPlotThickness) ));
+
+        periapsisSphere.transform.position =        (periapsisPlotPosition.magnitude        < Constants.MaximumPlotDistance) ? periapsisPlotPosition        : Vector3.zero;
+        apoapsisSphere.transform.position =         (apoapsisPlotPosition.magnitude         < Constants.MaximumPlotDistance) ? apoapsisPlotPosition         : Vector3.zero;
+        ascendingNodeSphere.transform.position =    (ascendingNodePlotPosition.magnitude    < Constants.MaximumPlotDistance) ? ascendingNodePlotPosition    : Vector3.zero;
+        descendingNodeSphere.transform.position =   (descendingNodePlotPosition.magnitude   < Constants.MaximumPlotDistance) ? descendingNodePlotPosition   : Vector3.zero;
 
         periapsisSphere.Radius = nodesRadius;
         apoapsisSphere.Radius = nodesRadius;

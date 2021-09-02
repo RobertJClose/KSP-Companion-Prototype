@@ -129,13 +129,12 @@ public class OrbitalStep : TimelineStep, IInspectable, IPlottable
     {
         if (!isFreeOrbit)
         {
-            double departureTime = earlierTransitionStep.TransitionTime;
-            double arrivalTime = laterTransitionStep.TransitionTime;
+            bool doesTransferExist = Orbit.TryFindTransferOrbit(previousOrbitalStep.Orbit, previousTransitionStep.TransitionTime, nextOrbitalStep.Orbit, nextTransitionStep.TransitionTime, out Orbit transferOrbit);
 
-            Vector3d departurePosition = previousOrbitalStep.Orbit.Time2Point(departureTime);
-            Vector3d arrivalPosition = followingOrbitalStep.Orbit.Time2Point(arrivalTime);
-
-            orbit = Orbit.FindTransferOrbit(orbit.GravitationalBody, departurePosition, departureTime, arrivalPosition, arrivalTime);
+            if (doesTransferExist == true)
+                orbit = transferOrbit;
+            else
+                orbit = orbit.GravitationalBody.ZeroOrbit;
         }
     }
 
@@ -164,7 +163,7 @@ public class OrbitalStep : TimelineStep, IInspectable, IPlottable
         if (!isFreeOrbit)
         {
             InspectorPropertyBlock porkChopPropertyBlock = inspector.AddPorkChopPropertyBlock();
-            porkChopPropertyBlock.AddDoubleProperty("Departure Time (s UT)",    () => (preceedingStep as TransitionStep).TransitionTime,    (double newDepartureTime)   => { (preceedingStep as TransitionStep).TransitionTime = newDepartureTime;  UpdateTransferOrbit(); });
+            porkChopPropertyBlock.AddDoubleProperty("Departure Time (s UT)",    () => (previousStep as TransitionStep).TransitionTime,    (double newDepartureTime)   => { (previousStep as TransitionStep).TransitionTime = newDepartureTime;  UpdateTransferOrbit(); });
             porkChopPropertyBlock.AddDoubleProperty("Arrival Time (s UT)",      () => (nextStep as TransitionStep).TransitionTime,          (double newArrivalTime)     => { (nextStep as TransitionStep).TransitionTime = newArrivalTime;          UpdateTransferOrbit(); });
         }
 
@@ -203,7 +202,7 @@ public class OrbitalStep : TimelineStep, IInspectable, IPlottable
         if (plot != null)
         {
             // First get a list of Vector3 points along the orbital trajectory.
-            List<Vector3d> orbitPoints = orbit.OrbitalPoints(-orbit.MaxTrueAnomaly, orbit.MaxTrueAnomaly, out List<Angle> trueAnomalies);
+            List<Vector3d> orbitPoints = orbit.OrbitalPoints(-orbit.MaxTrueAnomaly, orbit.MaxTrueAnomaly, out List<Angle> trueAnomalies, Constants.OrbitDefaultStepRad);
 
             // Now each one of these points must be turned into a PolylinePoint and added to the Polyline plot.
             PolylinePoint nextPoint;
@@ -213,16 +212,16 @@ public class OrbitalStep : TimelineStep, IInspectable, IPlottable
             foreach (Vector3d point in orbitPoints)
             {
                 nextPointTrueAnomaly = trueAnomalies[pointIndex];
+                Vector3d rescaledPoint = point * Constants.PlotRescaleFactor;
 
-                // If a point is at an infinite/NaN radius, don't add it to the plot. And remove its true anomaly value from the 'trueAnomalies' list.
-                // This maintains equivalent indexing between the 'polylinePoints' list and the 'trueAnomalies' list.
-                if (point.magnitude == double.PositiveInfinity || point.magnitude == double.NaN || point.magnitude == double.NegativeInfinity)
+                // If a point is at an invalid distance, don't add it to the plot.
+                if ((float)rescaledPoint.magnitude == float.PositiveInfinity || (float)rescaledPoint.magnitude == float.NegativeInfinity || (float)rescaledPoint.magnitude == float.NaN)
                 {
-                    trueAnomalies.Remove(nextPointTrueAnomaly);
+                    pointIndex++;
                     continue;
                 }
                 else
-                    nextPoint.point = (Vector3)point;
+                    nextPoint.point = (Vector3)rescaledPoint;
 
                 // Colour the point according to whether it is actually travelled on during this orbital step.
                 if (DetermineIfPointIsTravelledOn(nextPointTrueAnomaly))
@@ -236,7 +235,9 @@ public class OrbitalStep : TimelineStep, IInspectable, IPlottable
                 pointIndex++;
             }
 
-            plot.SetPlotPoints(polylinePoints, (Vector3)orbit.PeriapsisPoint, (Vector3?)orbit.ApoapsisPoint, (Vector3?)orbit.AscendingNode, (Vector3?)orbit.DescendingNode);
+            polylinePoints.TrimExcess();
+
+            plot.SetPlotPoints(polylinePoints, (Vector3)orbit.PeriapsisPoint * Constants.PlotRescaleFactor, (Vector3)(orbit.ApoapsisPoint * Constants.PlotRescaleFactor ?? Vector3d.zero), (Vector3)(orbit.AscendingNode * Constants.PlotRescaleFactor ?? Vector3d.zero), (Vector3)(orbit.DescendingNode * Constants.PlotRescaleFactor ?? Vector3d.zero));
             if (orbit.OrbitType == Orbit.ConicSection.Elliptical)
                 plot.SetClosedPlot(true);
             else
