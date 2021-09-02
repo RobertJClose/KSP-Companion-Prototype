@@ -129,12 +129,7 @@ public class OrbitalStep : TimelineStep, IInspectable, IPlottable
     {
         if (!isFreeOrbit)
         {
-            bool doesTransferExist = Orbit.TryFindTransferOrbit(previousOrbitalStep.Orbit, previousTransitionStep.TransitionTime, nextOrbitalStep.Orbit, nextTransitionStep.TransitionTime, out Orbit transferOrbit);
-
-            if (doesTransferExist == true)
-                orbit = transferOrbit;
-            else
-                orbit = orbit.GravitationalBody.ZeroOrbit;
+            orbit = Orbit.FindTransferOrbit(previousOrbitalStep.Orbit, previousTransitionStep.TransitionTime, nextOrbitalStep.Orbit, nextTransitionStep.TransitionTime);
         }
     }
 
@@ -201,85 +196,8 @@ public class OrbitalStep : TimelineStep, IInspectable, IPlottable
     {
         if (plot != null)
         {
-            // First get a list of Vector3 points along the orbital trajectory.
-            List<Vector3d> orbitPoints = orbit.OrbitalPoints(-orbit.MaxTrueAnomaly, orbit.MaxTrueAnomaly, out List<Angle> trueAnomalies, Constants.OrbitDefaultStepRad);
-
-            // Now each one of these points must be turned into a PolylinePoint and added to the Polyline plot.
-            PolylinePoint nextPoint;
-            Angle nextPointTrueAnomaly;
-            int pointIndex = 0;
-            List<PolylinePoint> polylinePoints = new List<PolylinePoint>(orbitPoints.Count);
-            foreach (Vector3d point in orbitPoints)
-            {
-                nextPointTrueAnomaly = trueAnomalies[pointIndex];
-                Vector3d rescaledPoint = point * Constants.PlotRescaleFactor;
-
-                // If a point is at an invalid distance, don't add it to the plot.
-                if ((float)rescaledPoint.magnitude == float.PositiveInfinity || (float)rescaledPoint.magnitude == float.NegativeInfinity || (float)rescaledPoint.magnitude == float.NaN)
-                {
-                    pointIndex++;
-                    continue;
-                }
-                else
-                    nextPoint.point = (Vector3)rescaledPoint;
-
-                // Colour the point according to whether it is actually travelled on during this orbital step.
-                if (DetermineIfPointIsTravelledOn(nextPointTrueAnomaly))
-                    nextPoint.color = StepColour.color;
-                else
-                    nextPoint.color = NotTravelledColour.color;
-
-                nextPoint.thickness = Constants.OrbitPlotThickness;
-
-                polylinePoints.Add(nextPoint);
-                pointIndex++;
-            }
-
-            polylinePoints.TrimExcess();
-
-            plot.SetPlotPoints(polylinePoints, (Vector3)orbit.PeriapsisPoint * Constants.PlotRescaleFactor, (Vector3)(orbit.ApoapsisPoint * Constants.PlotRescaleFactor ?? Vector3d.zero), (Vector3)(orbit.AscendingNode * Constants.PlotRescaleFactor ?? Vector3d.zero), (Vector3)(orbit.DescendingNode * Constants.PlotRescaleFactor ?? Vector3d.zero));
-            if (orbit.OrbitType == Orbit.ConicSection.Elliptical)
-                plot.SetClosedPlot(true);
-            else
-                plot.SetClosedPlot(false);
+            plot.PlotTrajectory(orbit, StepColour.color, StartTime, FinalTime);
         }
     }
 
-    private bool DetermineIfPointIsTravelledOn(Angle pointTrueAnomaly)
-    {
-        if (orbit.OrbitType == Orbit.ConicSection.Elliptical)
-        {
-            // Elliptical orbit case.
-            if ((StartTrueAnomaly == null) ||
-                (FinalTrueAnomaly == null) ||
-                (Duration > orbit.Period) ||
-                (pointTrueAnomaly.IsBetween(StartTrueAnomaly, FinalTrueAnomaly)))
-            {
-                // Point is travelled on.
-                return true;
-            }
-            else
-            {
-                // Point isn't travelled on.
-                return false;
-            }
-        }
-        else
-        {
-            // Open orbit case.
-            if ((StartTrueAnomaly == null && FinalTrueAnomaly == null) ||
-                (StartTrueAnomaly == null && pointTrueAnomaly.IsBetween(-orbit.MaxTrueAnomaly, FinalTrueAnomaly)) ||
-                (pointTrueAnomaly.IsBetween(StartTrueAnomaly, orbit.MaxTrueAnomaly) && FinalTrueAnomaly == null) ||
-                (pointTrueAnomaly.IsBetween(StartTrueAnomaly, FinalTrueAnomaly)))
-            {
-                // Point is travelled on.
-                return true;
-            }
-            else
-            {
-                // Point isn't travelled on.
-                return false;
-            }
-        }
-    }
 }
