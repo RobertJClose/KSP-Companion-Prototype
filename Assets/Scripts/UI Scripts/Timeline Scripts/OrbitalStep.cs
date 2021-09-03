@@ -129,12 +129,7 @@ public class OrbitalStep : TimelineStep, IInspectable, IPlottable
     {
         if (!isFreeOrbit)
         {
-            bool doesTransferExist = Orbit.TryFindTransferOrbit(previousOrbitalStep.Orbit, previousTransitionStep.TransitionTime, nextOrbitalStep.Orbit, nextTransitionStep.TransitionTime, out Orbit transferOrbit);
-
-            if (doesTransferExist == true)
-                orbit = transferOrbit;
-            else
-                orbit = orbit.GravitationalBody.ZeroOrbit;
+            orbit = Orbit.FindTransferOrbit(previousOrbitalStep.Orbit, previousTransitionStep.TransitionTime, nextOrbitalStep.Orbit, nextTransitionStep.TransitionTime);
         }
     }
 
@@ -163,8 +158,8 @@ public class OrbitalStep : TimelineStep, IInspectable, IPlottable
         if (!isFreeOrbit)
         {
             InspectorPropertyBlock porkChopPropertyBlock = inspector.AddPorkChopPropertyBlock();
-            porkChopPropertyBlock.AddDoubleProperty("Departure Time (s UT)",    () => (previousStep as TransitionStep).TransitionTime,    (double newDepartureTime)   => { (previousStep as TransitionStep).TransitionTime = newDepartureTime;  UpdateTransferOrbit(); });
-            porkChopPropertyBlock.AddDoubleProperty("Arrival Time (s UT)",      () => (nextStep as TransitionStep).TransitionTime,          (double newArrivalTime)     => { (nextStep as TransitionStep).TransitionTime = newArrivalTime;          UpdateTransferOrbit(); });
+            porkChopPropertyBlock.AddDoubleProperty("Departure Time (s UT)",    () => (previousStep as TransitionStep).TransitionTime,  (double newDepartureTime)   => { (previousStep as TransitionStep).TransitionTime = newDepartureTime;    UpdateTransferOrbit(); });
+            porkChopPropertyBlock.AddDoubleProperty("Arrival Time (s UT)",      () => (nextStep as TransitionStep).TransitionTime,      (double newArrivalTime)     => { (nextStep as TransitionStep).TransitionTime = newArrivalTime;          UpdateTransferOrbit(); });
         }
 
         // Set-up of the Inspector property blocks:
@@ -172,20 +167,20 @@ public class OrbitalStep : TimelineStep, IInspectable, IPlottable
         blockOne.AddDropdownProperty("Colour", () => StepColour, (NamedColour namedColour) => SetOrbitalStepColour(namedColour), namedColours, NamedColour.TMPDropdownOptionDataConverter, DisplayCondition: () => isFreeOrbit); ;
 
         InspectorPropertyBlock blockTwo = inspector.AddPropertyBlock();
-        blockTwo.AddDoubleProperty("Periapsis Radius (m)",               () => orbit.RPE,                            (double newRPE)    => { orbit.RPE = newRPE;                            PreviousOrbitalStep?.UpdateTransferOrbit(); NextOrbitalStep?.UpdateTransferOrbit(); }, isEditable: IsFreeOrbit);
-        blockTwo.AddDoubleProperty("Eccentricity",                       () => orbit.ECC,                            (double newECC)    => { orbit.ECC = newECC;                            PreviousOrbitalStep?.UpdateTransferOrbit(); NextOrbitalStep?.UpdateTransferOrbit(); }, isEditable: IsFreeOrbit);
-        blockTwo.AddDoubleProperty("Inclination (deg)",                  () => orbit.INC.DegValueMinus180To180Range, (double newINCd)   => { orbit.INC = (float)newINCd * Mathf.Deg2Rad;    PreviousOrbitalStep?.UpdateTransferOrbit(); NextOrbitalStep?.UpdateTransferOrbit(); }, isEditable: IsFreeOrbit);
-        blockTwo.AddDoubleProperty("Argument Of Periapsis (deg)",        () => orbit.APE.DegValue,                   (double newAPEd)   => { orbit.APE = (float)newAPEd * Mathf.Deg2Rad;    PreviousOrbitalStep?.UpdateTransferOrbit(); NextOrbitalStep?.UpdateTransferOrbit(); }, isEditable: IsFreeOrbit);
-        blockTwo.AddDoubleProperty("Longitude Of Ascending Node (deg)",  () => orbit.LAN.DegValue,                   (double newLANd)   => { orbit.LAN = (float)newLANd * Mathf.Deg2Rad;    PreviousOrbitalStep?.UpdateTransferOrbit(); NextOrbitalStep?.UpdateTransferOrbit(); }, isEditable: IsFreeOrbit);
-        blockTwo.AddDoubleProperty("Time Of Periapsis Passage (s UT)",   () => orbit.TPP,                            (double newTPP)    => { orbit.TPP = newTPP;                            PreviousOrbitalStep?.UpdateTransferOrbit(); NextOrbitalStep?.UpdateTransferOrbit(); }, isEditable: IsFreeOrbit);
+        blockTwo.AddDoubleProperty("Periapsis Radius (m)",              ValueGetter: () => { if (orbit != null) return orbit.RPE; else return 0.0; },           ValueSetter: newRPE  => { if (orbit != null) orbit.RPE = newRPE; UpdateAdjacentTransferOrbits(); },                         DisplayCondition: () => orbit != null, isEditable: IsFreeOrbit);
+        blockTwo.AddDoubleProperty("Eccentricity",                      ValueGetter: () => { if (orbit != null) return orbit.ECC; else return 0.0; },           ValueSetter: newECC  => { if (orbit != null) orbit.ECC = newECC; UpdateAdjacentTransferOrbits(); },                         DisplayCondition: () => orbit != null, isEditable: IsFreeOrbit);
+        blockTwo.AddDoubleProperty("Inclination (deg)",                 ValueGetter: () => { if (orbit != null) return orbit.INC.DegValue; else return 0.0; },  ValueSetter: newINCd => { if (orbit != null) orbit.INC = (float)newINCd * Mathf.Deg2Rad; UpdateAdjacentTransferOrbits(); }, DisplayCondition: () => orbit != null, isEditable: IsFreeOrbit);
+        blockTwo.AddDoubleProperty("Argument Of Periapsis (deg)",       ValueGetter: () => { if (orbit != null) return orbit.APE.DegValue; else return 0.0; },  ValueSetter: newAPEd => { if (orbit != null) orbit.APE = (float)newAPEd * Mathf.Deg2Rad; UpdateAdjacentTransferOrbits(); }, DisplayCondition: () => orbit != null, isEditable: IsFreeOrbit);
+        blockTwo.AddDoubleProperty("Longitude Of Ascending Node (deg)", ValueGetter: () => { if (orbit != null) return orbit.LAN.DegValue; else return 0.0; },  ValueSetter: newLANd => { if (orbit != null) orbit.LAN = (float)newLANd * Mathf.Deg2Rad; UpdateAdjacentTransferOrbits(); }, DisplayCondition: () => orbit != null, isEditable: IsFreeOrbit);
+        blockTwo.AddDoubleProperty("Time Of Periapsis Passage (s UT)",  ValueGetter: () => { if (orbit != null) return orbit.TPP; else return 0.0; },           ValueSetter: newTPP  => { if (orbit != null) orbit.TPP = newTPP; UpdateAdjacentTransferOrbits(); },                         DisplayCondition: () => orbit != null, isEditable: IsFreeOrbit);
 
         InspectorPropertyBlock blockThree = inspector.AddPropertyBlock();
-        blockThree.AddDoubleProperty("Semimajor Axis (m)",       () => orbit.SMA);
-        blockThree.AddDoubleProperty("Specific energy (J/kg)",   () => orbit.SpecificEnergy);
-        blockThree.AddDoubleProperty("Period (s)",               () => orbit.Period,                                     DisplayCondition: () => orbit.OrbitType == Orbit.ConicSection.Elliptical);
-        blockThree.AddDoubleProperty("Apoapsis Radius (m)",      () => orbit.ApoapsisRadius,                             DisplayCondition: () => orbit.OrbitType == Orbit.ConicSection.Elliptical);
-        blockThree.AddDoubleProperty("Start True Anomaly (deg)", () => orbit.Time2TrueAnomaly(StartTime ?? 0f).DegValue, DisplayCondition: () => StartTime != null);
-        blockThree.AddDoubleProperty("Final True Anomaly (deg)", () => orbit.Time2TrueAnomaly(FinalTime ?? 0f).DegValue, DisplayCondition: () => FinalTime != null);
+        blockThree.AddDoubleProperty("Semimajor Axis (m)",          ValueGetter: () => { if (orbit != null) return orbit.SMA; else return 0.0; },                                           DisplayCondition: () => orbit != null);
+        blockThree.AddDoubleProperty("Specific energy (J/kg)",      ValueGetter: () => { if (orbit != null) return orbit.SpecificEnergy; else return 0.0; },                                DisplayCondition: () => orbit != null);
+        blockThree.AddDoubleProperty("Start True Anomaly (deg)",    ValueGetter: () => { if (orbit != null) return orbit.Time2TrueAnomaly(StartTime ?? 0f).DegValue; else return 0.0; },    DisplayCondition: () => StartTime != null && orbit != null);
+        blockThree.AddDoubleProperty("Final True Anomaly (deg)",    ValueGetter: () => { if (orbit != null) return orbit.Time2TrueAnomaly(FinalTime ?? 0f).DegValue; else return 0.0; },    DisplayCondition: () => FinalTime != null && orbit != null);
+        blockThree.AddDoubleProperty("Period (s)",                  ValueGetter: () => { if (orbit != null) return orbit.Period; else return 0.0; },                                        DisplayCondition: () => orbit != null && orbit.OrbitType == Orbit.ConicSection.Elliptical);
+        blockThree.AddDoubleProperty("Apoapsis Radius (m)",         ValueGetter: () => { if (orbit != null) return orbit.ApoapsisRadius; else return 0.0; },                                DisplayCondition: () => orbit != null && orbit.OrbitType == Orbit.ConicSection.Elliptical);
 
         plot.HighlightPlot(true);
     }
@@ -201,85 +196,16 @@ public class OrbitalStep : TimelineStep, IInspectable, IPlottable
     {
         if (plot != null)
         {
-            // First get a list of Vector3 points along the orbital trajectory.
-            List<Vector3d> orbitPoints = orbit.OrbitalPoints(-orbit.MaxTrueAnomaly, orbit.MaxTrueAnomaly, out List<Angle> trueAnomalies, Constants.OrbitDefaultStepRad);
-
-            // Now each one of these points must be turned into a PolylinePoint and added to the Polyline plot.
-            PolylinePoint nextPoint;
-            Angle nextPointTrueAnomaly;
-            int pointIndex = 0;
-            List<PolylinePoint> polylinePoints = new List<PolylinePoint>(orbitPoints.Count);
-            foreach (Vector3d point in orbitPoints)
-            {
-                nextPointTrueAnomaly = trueAnomalies[pointIndex];
-                Vector3d rescaledPoint = point * Constants.PlotRescaleFactor;
-
-                // If a point is at an invalid distance, don't add it to the plot.
-                if ((float)rescaledPoint.magnitude == float.PositiveInfinity || (float)rescaledPoint.magnitude == float.NegativeInfinity || (float)rescaledPoint.magnitude == float.NaN)
-                {
-                    pointIndex++;
-                    continue;
-                }
-                else
-                    nextPoint.point = (Vector3)rescaledPoint;
-
-                // Colour the point according to whether it is actually travelled on during this orbital step.
-                if (DetermineIfPointIsTravelledOn(nextPointTrueAnomaly))
-                    nextPoint.color = StepColour.color;
-                else
-                    nextPoint.color = NotTravelledColour.color;
-
-                nextPoint.thickness = Constants.OrbitPlotThickness;
-
-                polylinePoints.Add(nextPoint);
-                pointIndex++;
-            }
-
-            polylinePoints.TrimExcess();
-
-            plot.SetPlotPoints(polylinePoints, (Vector3)orbit.PeriapsisPoint * Constants.PlotRescaleFactor, (Vector3)(orbit.ApoapsisPoint * Constants.PlotRescaleFactor ?? Vector3d.zero), (Vector3)(orbit.AscendingNode * Constants.PlotRescaleFactor ?? Vector3d.zero), (Vector3)(orbit.DescendingNode * Constants.PlotRescaleFactor ?? Vector3d.zero));
-            if (orbit.OrbitType == Orbit.ConicSection.Elliptical)
-                plot.SetClosedPlot(true);
+            if (orbit != null)
+                plot.PlotTrajectory(orbit, StepColour.color, StartTime, FinalTime);
             else
-                plot.SetClosedPlot(false);
+                plot.PlotTrajectory(GravitationalBody.Kerbin.ZeroOrbit, Color.black);
         }
     }
 
-    private bool DetermineIfPointIsTravelledOn(Angle pointTrueAnomaly)
+    private void UpdateAdjacentTransferOrbits()
     {
-        if (orbit.OrbitType == Orbit.ConicSection.Elliptical)
-        {
-            // Elliptical orbit case.
-            if ((StartTrueAnomaly == null) ||
-                (FinalTrueAnomaly == null) ||
-                (Duration > orbit.Period) ||
-                (pointTrueAnomaly.IsBetween(StartTrueAnomaly, FinalTrueAnomaly)))
-            {
-                // Point is travelled on.
-                return true;
-            }
-            else
-            {
-                // Point isn't travelled on.
-                return false;
-            }
-        }
-        else
-        {
-            // Open orbit case.
-            if ((StartTrueAnomaly == null && FinalTrueAnomaly == null) ||
-                (StartTrueAnomaly == null && pointTrueAnomaly.IsBetween(-orbit.MaxTrueAnomaly, FinalTrueAnomaly)) ||
-                (pointTrueAnomaly.IsBetween(StartTrueAnomaly, orbit.MaxTrueAnomaly) && FinalTrueAnomaly == null) ||
-                (pointTrueAnomaly.IsBetween(StartTrueAnomaly, FinalTrueAnomaly)))
-            {
-                // Point is travelled on.
-                return true;
-            }
-            else
-            {
-                // Point isn't travelled on.
-                return false;
-            }
-        }
+        PreviousOrbitalStep?.UpdateTransferOrbit();
+        NextOrbitalStep?.UpdateTransferOrbit();
     }
 }
