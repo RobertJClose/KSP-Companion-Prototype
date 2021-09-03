@@ -196,8 +196,16 @@ public class OrbitalStep : TimelineStep, IInspectable, IPlottable
     {
         if (plot != null)
         {
-            plot.PlotTrajectory(orbit, StepColour.color, StartTime, FinalTime);
+            if (orbit != null)
+                plot.PlotTrajectory(orbit, StepColour.color, StartTime, FinalTime);
+            else
+                plot.PlotTrajectory(GravitationalBody.Kerbin.ZeroOrbit, Color.black);
         }
     }
 
+    private void UpdateAdjacentTransferOrbits()
+    {
+        PreviousOrbitalStep?.UpdateTransferOrbit();
+        NextOrbitalStep?.UpdateTransferOrbit();
+    }
 }
