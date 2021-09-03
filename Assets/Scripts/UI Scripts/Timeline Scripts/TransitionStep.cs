@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 public abstract class TransitionStep : TimelineStep, IInspectable, IPlottable
 {
     // Members
-    private double transitionTime;
+    protected double transitionTime;
     public double TransitionTime 
     { 
         get 
