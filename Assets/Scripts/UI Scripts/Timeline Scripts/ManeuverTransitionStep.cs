@@ -5,11 +5,61 @@ using UnityEngine.EventSystems;
 
 public class ManeuverTransitionStep : TransitionStep
 {
+    public Vector3d? ManeuverVelocityChange
+    {
+        get
+        {
+            if (CheckAdjacentOrbits())
+                return nextOrbitalStep.Orbit.Time2Velocity(transitionTime) - previousOrbitalStep.Orbit.Time2Velocity(transitionTime);
+            else
+                return null;
+        }
+    }
+
+    public double? DeltaV
+    {
+        get
+        {
+            if (CheckAdjacentOrbits())
+                return ManeuverVelocityChange.Value.magnitude;
+            else
+                return null;
+        }
+    }    
+
+    public Angle? ManeuverAzimuth
+    {
+        get
+        {
+            if (CheckAdjacentOrbits())
+                return (float)Mathd.Atan2(ManeuverVelocityChange.Value.y, ManeuverVelocityChange.Value.x);
+            else
+                return null;
+        }
+    }
+
+    public Angle? ManeuverElevation
+    {
+        get
+        {
+            if (CheckAdjacentOrbits())
+                return (float)Mathd.Atan2(ManeuverVelocityChange.Value.z, Mathd.Sqrt(ManeuverVelocityChange.Value.x * ManeuverVelocityChange.Value.x + ManeuverVelocityChange.Value.y * ManeuverVelocityChange.Value.y));
+            else
+                return null;
+        }
+    }
+
     public override void OnSelect(BaseEventData eventData)
     {
         inspector.SetHeader("Maneuver:");
+
         InspectorPropertyBlock blockOne = inspector.AddPropertyBlock();
         blockOne.AddDoubleProperty("Maneuver Time (s UT)", () => TransitionTime);
+
+        InspectorPropertyBlock blockTwo = inspector.AddPropertyBlock();
+        blockTwo.AddDoubleProperty("\u0394V (m/s)",             ValueGetter: () => { if (DeltaV.HasValue) return DeltaV.Value; else return 0.0; },                                                  DisplayCondition: () => DeltaV.HasValue);
+        blockTwo.AddDoubleProperty("Maneuver azimuth (Deg)",    ValueGetter: () => { if (ManeuverAzimuth.HasValue) return ManeuverAzimuth.Value.DegValue; else return 0.0; },                       DisplayCondition: () => ManeuverAzimuth.HasValue);
+        blockTwo.AddDoubleProperty("Maneuver elevation (Deg)",  ValueGetter: () => { if (ManeuverElevation.HasValue) return ManeuverElevation.Value.DegValueMinus180To180Range; else return 0.0; }, DisplayCondition: () => ManeuverElevation.HasValue);
     }
 
     private void OnDestroy()
