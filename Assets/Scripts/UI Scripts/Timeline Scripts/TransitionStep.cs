@@ -30,13 +30,6 @@ public abstract class TransitionStep : TimelineStep, IInspectable, IPlottable
     {
         get
         {
-            //if (nextOrbitalStep != null)
-            //    return nextOrbitalStep.Orbit.Time2Point(transitionTime);
-            //else if (previousOrbitalStep != null)
-            //    return previousOrbitalStep.Orbit.Time2Point(transitionTime);
-            //else 
-            //    return null;
-
             if (previousOrbitalStep != null && previousOrbitalStep.Orbit != null)
                 return previousOrbitalStep.Orbit.Time2Point(transitionTime);
             else if (nextOrbitalStep != null && nextOrbitalStep.Orbit != null)
@@ -75,7 +68,7 @@ public abstract class TransitionStep : TimelineStep, IInspectable, IPlottable
         if (plot != null)
         {
             plot.SetPlotPoint((Vector3?)TransitionPoint * Constants.PlotRescaleFactor ?? Vector3.zero);
-        }       
+        }
     }
     
 }
