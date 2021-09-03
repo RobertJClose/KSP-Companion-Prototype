@@ -158,8 +158,8 @@ public class OrbitalStep : TimelineStep, IInspectable, IPlottable
         if (!isFreeOrbit)
         {
             InspectorPropertyBlock porkChopPropertyBlock = inspector.AddPorkChopPropertyBlock();
-            porkChopPropertyBlock.AddDoubleProperty("Departure Time (s UT)",    () => (previousStep as TransitionStep).TransitionTime,    (double newDepartureTime)   => { (previousStep as TransitionStep).TransitionTime = newDepartureTime;  UpdateTransferOrbit(); });
-            porkChopPropertyBlock.AddDoubleProperty("Arrival Time (s UT)",      () => (nextStep as TransitionStep).TransitionTime,          (double newArrivalTime)     => { (nextStep as TransitionStep).TransitionTime = newArrivalTime;          UpdateTransferOrbit(); });
+            porkChopPropertyBlock.AddDoubleProperty("Departure Time (s UT)",    () => (previousStep as TransitionStep).TransitionTime,  (double newDepartureTime)   => { (previousStep as TransitionStep).TransitionTime = newDepartureTime;    UpdateTransferOrbit(); });
+            porkChopPropertyBlock.AddDoubleProperty("Arrival Time (s UT)",      () => (nextStep as TransitionStep).TransitionTime,      (double newArrivalTime)     => { (nextStep as TransitionStep).TransitionTime = newArrivalTime;          UpdateTransferOrbit(); });
         }
 
         // Set-up of the Inspector property blocks:
@@ -167,21 +167,21 @@ public class OrbitalStep : TimelineStep, IInspectable, IPlottable
         blockOne.AddDropdownProperty("Colour", () => StepColour, (NamedColour namedColour) => SetOrbitalStepColour(namedColour), namedColours, NamedColour.TMPDropdownOptionDataConverter, DisplayCondition: () => isFreeOrbit); ;
 
         InspectorPropertyBlock blockTwo = inspector.AddPropertyBlock();
-        blockTwo.AddDoubleProperty("Periapsis Radius (m)",               () => orbit.RPE,                            (double newRPE)    => { orbit.RPE = newRPE;                            PreviousOrbitalStep?.UpdateTransferOrbit(); NextOrbitalStep?.UpdateTransferOrbit(); }, isEditable: IsFreeOrbit);
-        blockTwo.AddDoubleProperty("Eccentricity",                       () => orbit.ECC,                            (double newECC)    => { orbit.ECC = newECC;                            PreviousOrbitalStep?.UpdateTransferOrbit(); NextOrbitalStep?.UpdateTransferOrbit(); }, isEditable: IsFreeOrbit);
-        blockTwo.AddDoubleProperty("Inclination (deg)",                  () => orbit.INC.DegValueMinus180To180Range, (double newINCd)   => { orbit.INC = (float)newINCd * Mathf.Deg2Rad;    PreviousOrbitalStep?.UpdateTransferOrbit(); NextOrbitalStep?.UpdateTransferOrbit(); }, isEditable: IsFreeOrbit);
-        blockTwo.AddDoubleProperty("Argument Of Periapsis (deg)",        () => orbit.APE.DegValue,                   (double newAPEd)   => { orbit.APE = (float)newAPEd * Mathf.Deg2Rad;    PreviousOrbitalStep?.UpdateTransferOrbit(); NextOrbitalStep?.UpdateTransferOrbit(); }, isEditable: IsFreeOrbit);
-        blockTwo.AddDoubleProperty("Longitude Of Ascending Node (deg)",  () => orbit.LAN.DegValue,                   (double newLANd)   => { orbit.LAN = (float)newLANd * Mathf.Deg2Rad;    PreviousOrbitalStep?.UpdateTransferOrbit(); NextOrbitalStep?.UpdateTransferOrbit(); }, isEditable: IsFreeOrbit);
-        blockTwo.AddDoubleProperty("Time Of Periapsis Passage (s UT)",   () => orbit.TPP,                            (double newTPP)    => { orbit.TPP = newTPP;                            PreviousOrbitalStep?.UpdateTransferOrbit(); NextOrbitalStep?.UpdateTransferOrbit(); }, isEditable: IsFreeOrbit);
+        blockTwo.AddDoubleProperty("Periapsis Radius (m)",              () => orbit.RPE,                            newRPE => { orbit.RPE = newRPE;                             UpdateAdjacentTransferOrbits(); }, isEditable: IsFreeOrbit);
+        blockTwo.AddDoubleProperty("Eccentricity",                      () => orbit.ECC,                            newECC => { orbit.ECC = newECC;                             UpdateAdjacentTransferOrbits(); }, isEditable: IsFreeOrbit);
+        blockTwo.AddDoubleProperty("Inclination (deg)",                 () => orbit.INC.DegValueMinus180To180Range, newINCd => { orbit.INC = (float)newINCd * Mathf.Deg2Rad;    UpdateAdjacentTransferOrbits(); }, isEditable: IsFreeOrbit);
+        blockTwo.AddDoubleProperty("Argument Of Periapsis (deg)",       () => orbit.APE.DegValue,                   newAPEd => { orbit.APE = (float)newAPEd * Mathf.Deg2Rad;    UpdateAdjacentTransferOrbits(); }, isEditable: IsFreeOrbit);
+        blockTwo.AddDoubleProperty("Longitude Of Ascending Node (deg)", () => orbit.LAN.DegValue,                   newLANd => { orbit.LAN = (float)newLANd * Mathf.Deg2Rad;    UpdateAdjacentTransferOrbits(); }, isEditable: IsFreeOrbit);
+        blockTwo.AddDoubleProperty("Time Of Periapsis Passage (s UT)",  () => orbit.TPP,                            newTPP => { orbit.TPP = newTPP;                             UpdateAdjacentTransferOrbits(); }, isEditable: IsFreeOrbit);
 
         InspectorPropertyBlock blockThree = inspector.AddPropertyBlock();
-        blockThree.AddDoubleProperty("Semimajor Axis (m)",       () => orbit.SMA);
-        blockThree.AddDoubleProperty("Specific energy (J/kg)",   () => orbit.SpecificEnergy);
-        blockThree.AddDoubleProperty("Period (s)",               () => orbit.Period,                                     DisplayCondition: () => orbit.OrbitType == Orbit.ConicSection.Elliptical);
-        blockThree.AddDoubleProperty("Apoapsis Radius (m)",      () => orbit.ApoapsisRadius,                             DisplayCondition: () => orbit.OrbitType == Orbit.ConicSection.Elliptical);
-        blockThree.AddDoubleProperty("Start True Anomaly (deg)", () => orbit.Time2TrueAnomaly(StartTime ?? 0f).DegValue, DisplayCondition: () => StartTime != null);
-        blockThree.AddDoubleProperty("Final True Anomaly (deg)", () => orbit.Time2TrueAnomaly(FinalTime ?? 0f).DegValue, DisplayCondition: () => FinalTime != null);
-
+        blockThree.AddDoubleProperty("Semimajor Axis (m)",          () => orbit.SMA);
+        blockThree.AddDoubleProperty("Specific energy (J/kg)",      () => orbit.SpecificEnergy);
+        blockThree.AddDoubleProperty("Start True Anomaly (deg)",    () => orbit.Time2TrueAnomaly(StartTime ?? 0f).DegValue, DisplayCondition: () => StartTime != null);
+        blockThree.AddDoubleProperty("Final True Anomaly (deg)",    () => orbit.Time2TrueAnomaly(FinalTime ?? 0f).DegValue, DisplayCondition: () => FinalTime != null);
+        blockThree.AddDoubleProperty("Period (s)",                  () => orbit.Period,                                     DisplayCondition: () => orbit.OrbitType == Orbit.ConicSection.Elliptical);
+        blockThree.AddDoubleProperty("Apoapsis Radius (m)",         () => orbit.ApoapsisRadius,                             DisplayCondition: () => orbit.OrbitType == Orbit.ConicSection.Elliptical);
+        
         plot.HighlightPlot(true);
     }
 

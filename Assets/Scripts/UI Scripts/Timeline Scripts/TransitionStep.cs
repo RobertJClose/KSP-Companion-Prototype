@@ -37,9 +37,9 @@ public abstract class TransitionStep : TimelineStep, IInspectable, IPlottable
             //else 
             //    return null;
 
-            if (previousOrbitalStep != null)
+            if (previousOrbitalStep != null && previousOrbitalStep.Orbit != null)
                 return previousOrbitalStep.Orbit.Time2Point(transitionTime);
-            else if (nextOrbitalStep != null)
+            else if (nextOrbitalStep != null && nextOrbitalStep.Orbit != null)
                 return nextOrbitalStep.Orbit.Time2Point(transitionTime);
             else
                 return null;
