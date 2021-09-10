@@ -141,6 +141,8 @@ public class OrbitalStep : TimelineStep, IInspectable, IPlottable
 
     public void OnSelect(BaseEventData eventData)
     {
+        inspector.Clear();
+
         // Set-up of the Inspector header:
         if (IsDeletable)
         {
@@ -187,7 +189,7 @@ public class OrbitalStep : TimelineStep, IInspectable, IPlottable
 
     public void OnDeselect(BaseEventData eventData)
     {
-        inspector.Clear();
+        inspector.DisplayMissionOverview();
 
         plot.HighlightPlot(false);
     }

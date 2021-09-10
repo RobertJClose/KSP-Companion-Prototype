@@ -631,6 +631,7 @@ MonoBehaviour:
   prefab_FinishStep: {fileID: 5583124547497432651, guid: 1c0901590ecca484eb14b11cb685854b, type: 3}
   prefab_ManeuverStep: {fileID: -915597185657616187, guid: d4db6b783fa95b144afd66d17bdeb040, type: 3}
   prefab_AddButton: {fileID: -5086190420496702262, guid: 7a7a4281b1798844ea076e222dccb85a, type: 3}
+  inspector: {fileID: 7278270196546961638}
 --- !u!1 &430033535
 GameObject:
   m_ObjectHideFlags: 0
