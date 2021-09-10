@@ -7,6 +7,8 @@ public class StartFinishTransitionStep : TransitionStep
 {
     public override void OnSelect(BaseEventData eventData)
     {
+        inspector.Clear();
+
         if (IndexInTimeline == 0)
         {
             // Start step.
