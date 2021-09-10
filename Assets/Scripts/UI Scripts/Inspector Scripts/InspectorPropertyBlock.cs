@@ -19,20 +19,27 @@ public class InspectorPropertyBlock : MonoBehaviour
 
     private void Awake()
     {
+        gridLayoutGroup = GetComponent<GridLayoutGroup>();
+        StartCoroutine(Start());
+    }
+
+    private IEnumerator Start()
+    {
+        yield return new WaitForEndOfFrame();
+
         // The PropertyBlock gameobjects have a grid layout group that is meant to contain Property prefabs of various types. The Property Block
         // is to help group related/similar properties together. 
         // The grid size of the grid layout group must be set to match the size of each property UI element, which can be found by a 
         // reference to the Property prefab used as a base for the different types of properties. 
         // The number of columns of the grid layout group is then set so that as many properties as possible will fit into the parent transform
         // of the property block, given the amount of padding and spacing along the x direction
-        gridLayoutGroup = GetComponent<GridLayoutGroup>();
         gridLayoutGroup.cellSize = prefab_DoubleProperty.GetComponent<RectTransform>().rect.size;
         gridLayoutGroup.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
         float availableSpace = (transform.parent as RectTransform).rect.width;
         float xPadding = gridLayoutGroup.padding.left + gridLayoutGroup.padding.right;
         float xSpacing = gridLayoutGroup.spacing.x;
         float cellWidth = gridLayoutGroup.cellSize.x;
-        gridLayoutGroup.constraintCount = Mathf.FloorToInt((availableSpace - xPadding + xSpacing) / (cellWidth + xSpacing)); // Do some inequality maths for why this formula works
+        gridLayoutGroup.constraintCount = Mathf.FloorToInt((availableSpace - xPadding + xSpacing) / (cellWidth + xSpacing)); // Do some inequality maths for why this formula works    
     }
 
     public void AddDoubleProperty(string text, Func<double> ValueGetter)

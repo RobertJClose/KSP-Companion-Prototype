@@ -29,7 +29,6 @@ public class InspectorHeader : MonoBehaviour
 
     public void ResetHeader()
     {
-        headerTextComponent.text = "Mission Overview:";
         deleteButton.onClick.RemoveAllListeners();
         deleteButton.gameObject.SetActive(false);
     }

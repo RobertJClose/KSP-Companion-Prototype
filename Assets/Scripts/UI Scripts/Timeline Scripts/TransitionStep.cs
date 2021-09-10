@@ -58,7 +58,7 @@ public abstract class TransitionStep : TimelineStep, IInspectable, IPlottable
 
     public void OnDeselect(BaseEventData eventData)
     {
-        inspector.Clear();
+        inspector.DisplayMissionOverview();
 
         plot.HighlightPlot(false);
     }
