@@ -8,6 +8,8 @@ public class MissionTimeline : MonoBehaviour
     [SerializeField]
     List<TimelineStep> missionTimeline = new List<TimelineStep>();
     public int StepCount { get { return missionTimeline.Count; } }
+    public StartFinishTransitionStep StartStep { get { return missionTimeline.Find(step => step is StartFinishTransitionStep) as StartFinishTransitionStep; } }
+    public StartFinishTransitionStep FinishStep { get { return missionTimeline.FindLast(step => step is StartFinishTransitionStep) as StartFinishTransitionStep; } }
 
     // Prefab references:
     [SerializeField]
@@ -22,6 +24,41 @@ public class MissionTimeline : MonoBehaviour
     AddButton prefab_AddButton;
 
     public List<TimelineStep> GetMissionTimeline() { return missionTimeline; }
+
+    // Scene references
+    [SerializeField]
+    Inspector inspector;
+
+    public double? TryGetTotalDeltaV()
+    {
+        if (!IsMissionConnected())
+            return null;
+
+        double total = 0.0;
+        foreach (TimelineStep step in missionTimeline)
+        {
+            if (step is ManeuverTransitionStep mStep)
+                total += mStep.DeltaV.Value;
+        }
+
+        return total;
+    }
+
+    public bool IsMissionConnected()
+    {
+        foreach (TimelineStep step in missionTimeline)
+        {
+            if (step is GapStep)
+                return false;
+            if (step is OrbitalStep oStep)
+            {
+                if (oStep.Orbit == null)
+                    return false;
+            }
+        }
+
+        return true;
+    }
 
     public void CreateFreeOrbitalStep(int addButtonIndex)
     {
@@ -40,6 +77,7 @@ public class MissionTimeline : MonoBehaviour
 
         UpdateAllSurroundingSteps();
         PlotSteps();
+        inspector.DisplayMissionOverview();
     }
 
     public void CreateTransferOrbit(int addButtonIndex)
@@ -74,6 +112,7 @@ public class MissionTimeline : MonoBehaviour
 
         UpdateAllTransferOrbits();
         PlotSteps();
+        inspector.DisplayMissionOverview();
     }
 
     public void DeleteFreeOrbitalStep(int orbitalStepIndex)
@@ -139,6 +178,7 @@ public class MissionTimeline : MonoBehaviour
 
         UpdateAllSurroundingSteps();
         PlotSteps();
+        inspector.DisplayMissionOverview();
     }
 
     public void DeleteTransferOrbit(int orbitalStepIndex)
@@ -164,6 +204,7 @@ public class MissionTimeline : MonoBehaviour
 
         UpdateAllSurroundingSteps();
         PlotSteps();
+        inspector.DisplayMissionOverview();
     }
 
     public void UpdateAllSurroundingSteps()
@@ -233,6 +274,7 @@ public class MissionTimeline : MonoBehaviour
         InitialiseTimeline();
         UpdateAllSurroundingSteps();
         PlotSteps();
+        inspector.DisplayMissionOverview();
     }
 
 }

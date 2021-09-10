@@ -66,4 +66,18 @@ public class Inspector : MonoBehaviour
         }
         propertyBlocks.Clear();
     }
+
+    public void DisplayMissionOverview()
+    {
+        Clear();
+
+        SetHeader("Mission Overview");
+
+        InspectorPropertyBlock overviewBlock = AddPropertyBlock();
+        overviewBlock.AddDoubleProperty("Start Time (s UT)", () => missionTimeline.StartStep.TransitionTime);
+        overviewBlock.AddDoubleProperty("Finish Time (s UT)", () => missionTimeline.FinishStep.TransitionTime);
+        overviewBlock.AddDoubleProperty("Duration (s)", () => missionTimeline.FinishStep.TransitionTime - missionTimeline.StartStep.TransitionTime);
+        overviewBlock.AddDoubleProperty("Total \u0394V (m/s)", () => missionTimeline.TryGetTotalDeltaV().GetValueOrDefault(), DisplayCondition: () => missionTimeline.IsMissionConnected() == true);
+    }
+
 }

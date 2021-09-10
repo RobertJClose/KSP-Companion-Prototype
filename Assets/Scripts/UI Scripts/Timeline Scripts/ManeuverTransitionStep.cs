@@ -51,6 +51,8 @@ public class ManeuverTransitionStep : TransitionStep
 
     public override void OnSelect(BaseEventData eventData)
     {
+        inspector.Clear();
+
         inspector.SetHeader("Maneuver:");
 
         InspectorPropertyBlock blockOne = inspector.AddPropertyBlock();
