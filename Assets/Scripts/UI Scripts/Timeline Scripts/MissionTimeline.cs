@@ -105,9 +105,8 @@ public class MissionTimeline : MonoBehaviour
         missionTimeline.Insert(addButtonIndex + 2, secondManeuver);
 
         UpdateAllSurroundingSteps();
-
-        firstManeuver.TransitionTime = firstManeuver.PreviousTransitionStep.TransitionTime;
-        secondManeuver.TransitionTime = secondManeuver.NextTransitionStep.TransitionTime;
+        firstManeuver.TransitionTime = StartStep.TransitionTime;
+        secondManeuver.TransitionTime = FinishStep.TransitionTime;
 
         UpdateAllTransferOrbits();
         PlotSteps();
