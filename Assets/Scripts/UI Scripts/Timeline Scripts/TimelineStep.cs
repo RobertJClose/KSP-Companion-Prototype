@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 public abstract class TimelineStep : MonoBehaviour
 {
     // Members
-    public int IndexInTimeline { get { return missionTimeline.GetMissionTimeline().IndexOf(this); } }
+    public int IndexInTimeline { get { return missionTimeline.Timeline.IndexOf(this); } }
     
     [SerializeField] protected TimelineStep previousStep;
     public TimelineStep PreviousStep { get { return previousStep; } }
@@ -40,12 +40,12 @@ public abstract class TimelineStep : MonoBehaviour
 
     public virtual void UpdateSurroundingSteps()
     {
-        previousStep = missionTimeline.GetMissionTimeline().FindLast(step => step.IndexInTimeline < IndexInTimeline);
-        previousTransitionStep = missionTimeline.GetMissionTimeline().FindLast(step => step is TransitionStep && step.IndexInTimeline < IndexInTimeline) as TransitionStep;
-        previousOrbitalStep = missionTimeline.GetMissionTimeline().FindLast(step => step is OrbitalStep && step.IndexInTimeline < IndexInTimeline) as OrbitalStep;
+        previousStep = missionTimeline.Timeline.FindLast(step => step.IndexInTimeline < IndexInTimeline);
+        previousTransitionStep = missionTimeline.Timeline.FindLast(step => step is TransitionStep && step.IndexInTimeline < IndexInTimeline) as TransitionStep;
+        previousOrbitalStep = missionTimeline.Timeline.FindLast(step => step is OrbitalStep && step.IndexInTimeline < IndexInTimeline) as OrbitalStep;
 
-        nextStep = missionTimeline.GetMissionTimeline().Find(step => step.IndexInTimeline > IndexInTimeline);
-        nextTransitionStep = missionTimeline.GetMissionTimeline().Find(step => step is TransitionStep && step.IndexInTimeline > IndexInTimeline) as TransitionStep;
-        nextOrbitalStep = missionTimeline.GetMissionTimeline().Find(step => step is OrbitalStep && step.IndexInTimeline > IndexInTimeline) as OrbitalStep;
+        nextStep = missionTimeline.Timeline.Find(step => step.IndexInTimeline > IndexInTimeline);
+        nextTransitionStep = missionTimeline.Timeline.Find(step => step is TransitionStep && step.IndexInTimeline > IndexInTimeline) as TransitionStep;
+        nextOrbitalStep = missionTimeline.Timeline.Find(step => step is OrbitalStep && step.IndexInTimeline > IndexInTimeline) as OrbitalStep;
     }
 }

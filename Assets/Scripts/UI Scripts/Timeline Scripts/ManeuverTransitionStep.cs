@@ -62,6 +62,8 @@ public class ManeuverTransitionStep : TransitionStep
         blockTwo.AddDoubleProperty("\u0394V (m/s)",             ValueGetter: () => { if (DeltaV.HasValue) return DeltaV.Value; else return 0.0; },                                                  DisplayCondition: () => DeltaV.HasValue);
         blockTwo.AddDoubleProperty("Maneuver azimuth (Deg)",    ValueGetter: () => { if (ManeuverAzimuth.HasValue) return ManeuverAzimuth.Value.DegValue; else return 0.0; },                       DisplayCondition: () => ManeuverAzimuth.HasValue);
         blockTwo.AddDoubleProperty("Maneuver elevation (Deg)",  ValueGetter: () => { if (ManeuverElevation.HasValue) return ManeuverElevation.Value.DegValueMinus180To180Range; else return 0.0; }, DisplayCondition: () => ManeuverElevation.HasValue);
+
+        plot.HighlightPlot(true);
     }
 
     private void OnDestroy()

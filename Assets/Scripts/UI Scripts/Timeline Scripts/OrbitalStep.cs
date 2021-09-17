@@ -100,7 +100,6 @@ public class OrbitalStep : TimelineStep, IInspectable, IPlottable
 
     private void OnDestroy()
     {
-        inspector.Clear();
         if (plot != null)
             Destroy(plot.gameObject);
     }
