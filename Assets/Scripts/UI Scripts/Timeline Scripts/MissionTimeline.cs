@@ -7,6 +7,7 @@ public class MissionTimeline : MonoBehaviour
     // Members
     [SerializeField]
     List<TimelineStep> missionTimeline = new List<TimelineStep>();
+    public List<TimelineStep> Timeline { get { return missionTimeline; } }
     public int StepCount { get { return missionTimeline.Count; } }
     public StartFinishTransitionStep StartStep { get { return missionTimeline.Find(step => step is StartFinishTransitionStep) as StartFinishTransitionStep; } }
     public StartFinishTransitionStep FinishStep { get { return missionTimeline.FindLast(step => step is StartFinishTransitionStep) as StartFinishTransitionStep; } }
@@ -22,8 +23,6 @@ public class MissionTimeline : MonoBehaviour
     ManeuverTransitionStep prefab_ManeuverStep;
     [SerializeField]
     AddButton prefab_AddButton;
-
-    public List<TimelineStep> GetMissionTimeline() { return missionTimeline; }
 
     // Scene references
     [SerializeField]
@@ -106,9 +105,8 @@ public class MissionTimeline : MonoBehaviour
         missionTimeline.Insert(addButtonIndex + 2, secondManeuver);
 
         UpdateAllSurroundingSteps();
-
-        firstManeuver.TransitionTime = firstManeuver.PreviousTransitionStep.TransitionTime;
-        secondManeuver.TransitionTime = secondManeuver.NextTransitionStep.TransitionTime;
+        firstManeuver.TransitionTime = StartStep.TransitionTime;
+        secondManeuver.TransitionTime = FinishStep.TransitionTime;
 
         UpdateAllTransferOrbits();
         PlotSteps();
