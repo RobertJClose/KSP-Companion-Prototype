@@ -239,6 +239,7 @@ public class MissionTimeline : MonoBehaviour
     {
         // Add the mission start step
         StartFinishTransitionStep startStep = Instantiate(prefab_StartStep, transform);
+        startStep.IsStartStep = true;
         startStep.TransitionTime = 0.0;
         missionTimeline.Add(startStep);
 
@@ -265,6 +266,7 @@ public class MissionTimeline : MonoBehaviour
 
         // Add the mission finish step
         StartFinishTransitionStep finishStep = Instantiate(prefab_FinishStep, transform);
+        finishStep.IsFinishStep = true;
         finishStep.TransitionTime = 14_400.0; // 4 hours after the mission start.
         missionTimeline.Add(finishStep);
     }
@@ -288,6 +290,7 @@ public class MissionTimeline : MonoBehaviour
                     break;
                 case StartFinishTransitionStep startFinishStep:
                     saveData = TimelineStepSaveData.StartFinishStepSaveData();
+                    saveData.isStartStep = startFinishStep.IsStartStep;
                     saveData.transitionTime = startFinishStep.TransitionTime;
                     break;
                 case ManeuverTransitionStep maneuverStep:
@@ -381,9 +384,13 @@ public class MissionTimeline : MonoBehaviour
                     missionTimeline.Add(addButton);
                     break;
                 case TimelineStepType.StartFinishTransitionStep:
-                    StartFinishTransitionStep finishStep = Instantiate(prefab_FinishStep, transform);
-                    finishStep.TransitionTime = nextStepSaveData.transitionTime;
-                    missionTimeline.Add(finishStep);
+                    StartFinishTransitionStep startFinishStep;
+                    if (nextStepSaveData.isStartStep)
+                        startFinishStep = Instantiate(prefab_StartStep, transform);
+                    else
+                        startFinishStep = Instantiate(prefab_FinishStep, transform);
+                    startFinishStep.TransitionTime = nextStepSaveData.transitionTime;
+                    missionTimeline.Add(startFinishStep);
                     break;
                 case TimelineStepType.ManeuverTransitionStep:
                     ManeuverTransitionStep maneuverStep = Instantiate(prefab_ManeuverStep, transform);

@@ -2,6 +2,8 @@ public class TimelineStepSaveData
 {
     public TimelineStepType stepType;
 
+    public bool isStartStep;
+
     public double transitionTime;
 
     public bool isOrbitalStepOrbitNull;
