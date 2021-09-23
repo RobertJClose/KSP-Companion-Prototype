@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class NamedColour
+public struct NamedColour
 {
     [SerializeField]
     public Color color;
@@ -11,7 +11,7 @@ public class NamedColour
     public string name;
     
     // Put this in a namespace???
-    public static System.Converter<NamedColour, TMPro.TMP_Dropdown.OptionData> TMPDropdownOptionDataConverter = (NamedColour namedColour) => new TMPro.TMP_Dropdown.OptionData(namedColour.name, null); 
+    public static System.Converter<object, TMPro.TMP_Dropdown.OptionData> TMPDropdownOptionDataConverter = (object namedColour) => new TMPro.TMP_Dropdown.OptionData(((NamedColour)namedColour).name, null); 
 
     public NamedColour(string name, Color color) { this.name = name; this.color = color; }
 
