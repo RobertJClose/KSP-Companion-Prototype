@@ -1513,6 +1513,7 @@ GameObject:
   - component: {fileID: 466151218}
   - component: {fileID: 466151217}
   - component: {fileID: 466151216}
+  - component: {fileID: 466151219}
   m_Layer: 5
   m_Name: Load Slot 1 Button
   m_TagString: Untagged
@@ -1583,7 +1584,43 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 466151217}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 466151219}
+        m_TargetAssemblyTypeName: LoadSlotButton, Scripts
+        m_MethodName: Load
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 77756320}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 1585816691}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &466151217
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1622,6 +1659,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 466151214}
   m_CullTransparentMesh: 1
+--- !u!114 &466151219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 466151214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 402a4599f06317240ba2bd4d5be265ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  missionTimeline: {fileID: 362061702}
+  slotNumber: 1
 --- !u!1 &496764267
 GameObject:
   m_ObjectHideFlags: 0
@@ -2981,6 +3032,7 @@ GameObject:
   - component: {fileID: 702826751}
   - component: {fileID: 702826750}
   - component: {fileID: 702826749}
+  - component: {fileID: 702826752}
   m_Layer: 5
   m_Name: Save Slot 1 Button
   m_TagString: Untagged
@@ -3051,7 +3103,43 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 702826750}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 702826752}
+        m_TargetAssemblyTypeName: SaveSlotButton, Scripts
+        m_MethodName: Save
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 77756320}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 1289140587}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &702826750
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3090,6 +3178,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 702826747}
   m_CullTransparentMesh: 1
+--- !u!114 &702826752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 702826747}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46843f16d1f1f2c429213bd25ab70cb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  missionTimeline: {fileID: 362061702}
+  slotNumber: 1
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -3474,6 +3576,7 @@ GameObject:
   - component: {fileID: 794138425}
   - component: {fileID: 794138424}
   - component: {fileID: 794138423}
+  - component: {fileID: 794138426}
   m_Layer: 5
   m_Name: Load Slot 3 Button
   m_TagString: Untagged
@@ -3544,7 +3647,43 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 794138424}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 794138426}
+        m_TargetAssemblyTypeName: LoadSlotButton, Scripts
+        m_MethodName: Load
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 77756320}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 1585816691}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &794138424
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3583,6 +3722,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 794138421}
   m_CullTransparentMesh: 1
+--- !u!114 &794138426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 794138421}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 402a4599f06317240ba2bd4d5be265ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  missionTimeline: {fileID: 362061702}
+  slotNumber: 3
 --- !u!1 &879493683
 GameObject:
   m_ObjectHideFlags: 0
@@ -3595,6 +3748,7 @@ GameObject:
   - component: {fileID: 879493687}
   - component: {fileID: 879493686}
   - component: {fileID: 879493685}
+  - component: {fileID: 879493688}
   m_Layer: 5
   m_Name: Save Slot 2 Button
   m_TagString: Untagged
@@ -3665,7 +3819,43 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 879493686}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 879493688}
+        m_TargetAssemblyTypeName: SaveSlotButton, Scripts
+        m_MethodName: Save
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 77756320}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 1289140587}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &879493686
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3704,6 +3894,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 879493683}
   m_CullTransparentMesh: 1
+--- !u!114 &879493688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 879493683}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46843f16d1f1f2c429213bd25ab70cb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  missionTimeline: {fileID: 362061702}
+  slotNumber: 2
 --- !u!1 &911924541
 GameObject:
   m_ObjectHideFlags: 0
@@ -4284,6 +4488,7 @@ GameObject:
   - component: {fileID: 1194288392}
   - component: {fileID: 1194288391}
   - component: {fileID: 1194288390}
+  - component: {fileID: 1194288393}
   m_Layer: 5
   m_Name: Load Slot 2 Button
   m_TagString: Untagged
@@ -4354,7 +4559,43 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1194288391}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1194288393}
+        m_TargetAssemblyTypeName: LoadSlotButton, Scripts
+        m_MethodName: Load
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 77756320}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 1585816691}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1194288391
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4393,6 +4634,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1194288388}
   m_CullTransparentMesh: 1
+--- !u!114 &1194288393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1194288388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 402a4599f06317240ba2bd4d5be265ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  missionTimeline: {fileID: 362061702}
+  slotNumber: 2
 --- !u!1 &1216421690
 GameObject:
   m_ObjectHideFlags: 0
@@ -5388,6 +5643,7 @@ GameObject:
   - component: {fileID: 1909405688}
   - component: {fileID: 1909405687}
   - component: {fileID: 1909405686}
+  - component: {fileID: 1909405689}
   m_Layer: 5
   m_Name: Save Slot 3 Button
   m_TagString: Untagged
@@ -5458,7 +5714,43 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1909405687}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1909405689}
+        m_TargetAssemblyTypeName: SaveSlotButton, Scripts
+        m_MethodName: Save
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 77756320}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 1289140587}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1909405687
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5497,6 +5789,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1909405684}
   m_CullTransparentMesh: 1
+--- !u!114 &1909405689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1909405684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46843f16d1f1f2c429213bd25ab70cb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  missionTimeline: {fileID: 362061702}
+  slotNumber: 3
 --- !u!1 &1955062808
 GameObject:
   m_ObjectHideFlags: 0
