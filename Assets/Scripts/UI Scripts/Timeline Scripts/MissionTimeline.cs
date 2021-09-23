@@ -296,13 +296,19 @@ public class MissionTimeline : MonoBehaviour
                     break;
                 case OrbitalStep orbitalStep:
                     saveData = TimelineStepSaveData.OrbitalStepSaveData();
-                    saveData.orbitGravBodyID = orbitalStep.Orbit.GravitationalBody.ID;
-                    saveData.orbitRPE = orbitalStep.Orbit.RPE;
-                    saveData.orbitECC = orbitalStep.Orbit.ECC;
-                    saveData.orbitINC = orbitalStep.Orbit.INC;
-                    saveData.orbitAPE = orbitalStep.Orbit.APE;
-                    saveData.orbitLAN = orbitalStep.Orbit.LAN;
-                    saveData.orbitTPP = orbitalStep.Orbit.TPP;
+                    if (orbitalStep.Orbit == null)
+                        saveData.isOrbitalStepOrbitNull = true;
+                    else
+                    {
+                        saveData.isOrbitalStepOrbitNull = false;
+                        saveData.orbitGravBodyID = orbitalStep.Orbit.GravitationalBody.ID;
+                        saveData.orbitRPE = orbitalStep.Orbit.RPE;
+                        saveData.orbitECC = orbitalStep.Orbit.ECC;
+                        saveData.orbitINC = orbitalStep.Orbit.INC;
+                        saveData.orbitAPE = orbitalStep.Orbit.APE;
+                        saveData.orbitLAN = orbitalStep.Orbit.LAN;
+                        saveData.orbitTPP = orbitalStep.Orbit.TPP;
+                    }
                     saveData.stepName = orbitalStep.StepName;
                     saveData.mayUserEditOrbit = orbitalStep.MayUserEditOrbit;
                     saveData.isTransferOrbit = orbitalStep.IsTransferOrbit;
@@ -386,13 +392,18 @@ public class MissionTimeline : MonoBehaviour
                     break;
                 case TimelineStepType.OrbitalStep:
                     OrbitalStep orbitalStep = Instantiate(prefab_OrbitalStep, transform);
-                    orbitalStep.Orbit.GravitationalBody = GravitationalBody.ListOfBodies.Find(step => step.ID == nextStepSaveData.orbitGravBodyID);
-                    orbitalStep.Orbit.RPE = nextStepSaveData.orbitRPE;
-                    orbitalStep.Orbit.ECC = nextStepSaveData.orbitECC;
-                    orbitalStep.Orbit.INC = nextStepSaveData.orbitINC;
-                    orbitalStep.Orbit.APE = nextStepSaveData.orbitAPE;
-                    orbitalStep.Orbit.LAN = nextStepSaveData.orbitLAN;
-                    orbitalStep.Orbit.TPP = nextStepSaveData.orbitTPP;
+                    if (nextStepSaveData.isOrbitalStepOrbitNull)
+                        orbitalStep.Orbit = null;
+                    else
+                    {
+                        orbitalStep.Orbit.GravitationalBody = GravitationalBody.ListOfBodies.Find(step => step.ID == nextStepSaveData.orbitGravBodyID);
+                        orbitalStep.Orbit.RPE = nextStepSaveData.orbitRPE;
+                        orbitalStep.Orbit.ECC = nextStepSaveData.orbitECC;
+                        orbitalStep.Orbit.INC = nextStepSaveData.orbitINC;
+                        orbitalStep.Orbit.APE = nextStepSaveData.orbitAPE;
+                        orbitalStep.Orbit.LAN = nextStepSaveData.orbitLAN;
+                        orbitalStep.Orbit.TPP = nextStepSaveData.orbitTPP;
+                    }
                     orbitalStep.StepName = nextStepSaveData.stepName;
                     orbitalStep.MayUserEditOrbit = nextStepSaveData.mayUserEditOrbit;
                     orbitalStep.IsTransferOrbit = nextStepSaveData.isTransferOrbit;

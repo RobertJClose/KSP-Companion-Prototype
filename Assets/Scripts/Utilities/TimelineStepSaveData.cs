@@ -4,6 +4,7 @@ public class TimelineStepSaveData
 
     public double transitionTime;
 
+    public bool isOrbitalStepOrbitNull;
     public int orbitGravBodyID;
     public double orbitRPE;
     public double orbitECC;
