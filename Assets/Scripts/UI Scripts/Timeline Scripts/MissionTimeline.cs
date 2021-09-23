@@ -66,6 +66,7 @@ public class MissionTimeline : MonoBehaviour
         // Create a new free OrbitalStep and add it in after the AddButton that led to this call.
         OrbitalStep newOrbitalStep = Instantiate(prefab_OrbitalStep, transform);
         newOrbitalStep.transform.SetSiblingIndex(addButtonIndex + 1);
+        newOrbitalStep.StepName = "Orbit";
         newOrbitalStep.IsDeletable = true;
         missionTimeline.Insert(addButtonIndex + 1, newOrbitalStep);
 
