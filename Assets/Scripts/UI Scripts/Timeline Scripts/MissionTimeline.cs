@@ -276,7 +276,7 @@ public class MissionTimeline : MonoBehaviour
         if (!(saveSlot == 1 || saveSlot == 2 || saveSlot == 3))
             throw new System.ArgumentException("saveSlot must correspond to one of the three save slots.", "saveSlot");
 
-        string pathToFile = Application.persistentDataPath + @"\Save" + saveSlot.ToString() + ".txt";
+        string pathToFile = Application.persistentDataPath + @"\Save" + saveSlot.ToString() + ".rson";
 
         string timelineJsonRepresentation = string.Empty;
         foreach (TimelineStep step in missionTimeline)
