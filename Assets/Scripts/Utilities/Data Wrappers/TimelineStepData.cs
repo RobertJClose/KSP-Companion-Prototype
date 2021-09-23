@@ -1,4 +1,4 @@
-public class TimelineStepSaveData
+public class TimelineStepData
 {
     public TimelineStepType stepType;
 
@@ -20,43 +20,35 @@ public class TimelineStepSaveData
     public bool isDeletable;
     public NamedColour stepColour;
 
-    public static TimelineStepSaveData AddButtonSaveData()
+    public static TimelineStepData AddButtonSaveData()
     {
-        TimelineStepSaveData step = new TimelineStepSaveData();
+        TimelineStepData step = new TimelineStepData();
         step.stepType = TimelineStepType.AddButton;
         return step;
     }
 
-    public static TimelineStepSaveData StartFinishStepSaveData()
+    public static TimelineStepData StartFinishStepSaveData()
     {
-        TimelineStepSaveData step = new TimelineStepSaveData();
+        TimelineStepData step = new TimelineStepData();
         step.stepType = TimelineStepType.StartFinishTransitionStep;
         return step;
     }
 
-    public static TimelineStepSaveData ManeuverStepSaveData()
+    public static TimelineStepData ManeuverStepSaveData()
     {
-        TimelineStepSaveData step = new TimelineStepSaveData();
+        TimelineStepData step = new TimelineStepData();
         step.stepType = TimelineStepType.ManeuverTransitionStep;
         return step;
     }
 
-    public static TimelineStepSaveData OrbitalStepSaveData()
+    public static TimelineStepData OrbitalStepSaveData()
     {
-        TimelineStepSaveData step = new TimelineStepSaveData();
+        TimelineStepData step = new TimelineStepData();
         step.stepType = TimelineStepType.OrbitalStep;
         return step;
     }
 
-    public static string DefaultTimelineJsonRepresentation
-    {
-        get
-        {
-            return "asdf";
-        }
-    }
-
-    public static string JsonRepresentationDelimiter
+    public static string StepDelimiter
     {
         get
         {
