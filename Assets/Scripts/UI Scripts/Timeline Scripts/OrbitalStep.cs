@@ -149,7 +149,7 @@ public class OrbitalStep : TimelineStep, IInspectable, IPlottable
 
         // Set-up of the Inspector property blocks:
         InspectorPropertyBlock blockOne = inspector.AddPropertyBlock();
-        blockOne.AddDropdownProperty("Colour", () => StepColour, (NamedColour namedColour) => StepColour = namedColour, namedColours, NamedColour.TMPDropdownOptionDataConverter); ;
+        blockOne.AddDropdownProperty("Colour", () => StepColour, (object namedColour) => StepColour = (NamedColour)namedColour, namedColours.ConvertAll((NamedColour namedColour) => (object)namedColour), NamedColour.TMPDropdownOptionDataConverter); ;
 
         InspectorPropertyBlock blockTwo = inspector.AddPropertyBlock();
         blockTwo.AddDoubleProperty("Periapsis Radius (m)",              ValueGetter: () => { if (orbit != null) return orbit.RPE; else return 0.0; },           ValueSetter: newRPE  => { if (orbit != null) orbit.RPE = newRPE; UpdateAdjacentTransferOrbits(); },                         DisplayCondition: () => orbit != null, isEditable: MayUserEditOrbit);
