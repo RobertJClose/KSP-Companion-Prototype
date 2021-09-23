@@ -333,10 +333,16 @@ public class MissionTimeline : MonoBehaviour
         {
             string pathToFile = Application.persistentDataPath + @"\Save" + loadSlot.ToString() + ".txt";
 
-            using (System.IO.StreamReader inputFile = new System.IO.StreamReader(pathToFile))
+            // Check that the file to be loaded exists. If it does not, then nothing should happen.
+            if (System.IO.File.Exists(pathToFile))
             {
-                timelineJsonRepresentation = inputFile.ReadToEnd();
+                using (System.IO.StreamReader inputFile = new System.IO.StreamReader(pathToFile))
+                {
+                    timelineJsonRepresentation = inputFile.ReadToEnd();
+                }
             }
+            else
+                return;
         }
 
         SetMissionTimelineFromJsonRepresentation(timelineJsonRepresentation);
