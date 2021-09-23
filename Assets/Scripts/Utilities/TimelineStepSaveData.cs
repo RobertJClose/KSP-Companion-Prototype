@@ -12,7 +12,8 @@ public class TimelineStepSaveData
     public float orbitLAN;
     public double orbitTPP;
     public string stepName;
-    public bool isFreeOrbitalStep;
+    public bool mayUserEditOrbit;
+    public bool isTransferOrbit;
     public bool isDeletable;
     public NamedColour stepColour;
 

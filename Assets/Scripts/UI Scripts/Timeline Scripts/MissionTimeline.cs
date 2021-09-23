@@ -94,9 +94,10 @@ public class MissionTimeline : MonoBehaviour
 
         // Create a new OrbitalStep and set it up as a transfer orbit. Add it after the first ManeuverStep
         OrbitalStep newTransferOrbit = Instantiate(prefab_OrbitalStep, transform);
-        newTransferOrbit.SetTransferOrbit(true);
-        newTransferOrbit.transform.SetSiblingIndex(addButtonIndex + 1);
+        newTransferOrbit.IsTransferOrbit = true;
+        newTransferOrbit.StepName = "Transfer Orbit";
         newTransferOrbit.IsDeletable = true;
+        newTransferOrbit.transform.SetSiblingIndex(addButtonIndex + 1);
         missionTimeline.Insert(addButtonIndex + 1, newTransferOrbit);
 
         // Create the second new ManeuverStep and add it after the transfer OrbitalStep
@@ -244,7 +245,7 @@ public class MissionTimeline : MonoBehaviour
         OrbitalStep initialOrbit = Instantiate(prefab_OrbitalStep, transform);
         initialOrbit.IsDeletable = false;
         initialOrbit.Orbit = GravitationalBody.Kerbin.DefaultOrbit;
-        initialOrbit.SetStepName("Initial Orbit");
+        initialOrbit.StepName = "Initial Orbit";
         missionTimeline.Add(initialOrbit);
 
         // Add an 'add button' inbetween the initial and final orbital steps
@@ -255,7 +256,7 @@ public class MissionTimeline : MonoBehaviour
         OrbitalStep finalOrbit = Instantiate(prefab_OrbitalStep, transform);
         finalOrbit.IsDeletable = false;
         finalOrbit.Orbit = GravitationalBody.Kerbin.DefaultOrbit;
-        finalOrbit.SetStepName("Final Orbit");
+        finalOrbit.StepName = "Final Orbit";
         finalOrbit.Orbit.RPE = 1_250_000f;
         finalOrbit.Orbit.ECC = 1.5f;
         finalOrbit.Orbit.TPP = 7_200.0;
@@ -301,8 +302,9 @@ public class MissionTimeline : MonoBehaviour
                     saveData.orbitAPE = orbitalStep.Orbit.APE;
                     saveData.orbitLAN = orbitalStep.Orbit.LAN;
                     saveData.orbitTPP = orbitalStep.Orbit.TPP;
-                    saveData.stepName = "PLACEHOLDER FIX ME";
-                    saveData.isFreeOrbitalStep = orbitalStep.MayUserEditOrbit;
+                    saveData.stepName = orbitalStep.StepName;
+                    saveData.mayUserEditOrbit = orbitalStep.MayUserEditOrbit;
+                    saveData.isTransferOrbit = orbitalStep.IsTransferOrbit;
                     saveData.isDeletable = orbitalStep.IsDeletable;
                     saveData.stepColour = orbitalStep.StepColour;
                     break;
@@ -384,10 +386,11 @@ public class MissionTimeline : MonoBehaviour
                     orbitalStep.Orbit.APE = nextStepSaveData.orbitAPE;
                     orbitalStep.Orbit.LAN = nextStepSaveData.orbitLAN;
                     orbitalStep.Orbit.TPP = nextStepSaveData.orbitTPP;
-                    orbitalStep.SetStepName(nextStepSaveData.stepName);
-                    orbitalStep.SetTransferOrbit(!nextStepSaveData.isFreeOrbitalStep);
+                    orbitalStep.StepName = nextStepSaveData.stepName;
+                    orbitalStep.MayUserEditOrbit = nextStepSaveData.mayUserEditOrbit;
+                    orbitalStep.IsTransferOrbit = nextStepSaveData.isTransferOrbit;
                     orbitalStep.IsDeletable = nextStepSaveData.isDeletable;
-                    orbitalStep.SetOrbitalStepColour(nextStepSaveData.stepColour);
+                    orbitalStep.StepColour = nextStepSaveData.stepColour;
                     missionTimeline.Add(orbitalStep);
                     break;
                 default:
