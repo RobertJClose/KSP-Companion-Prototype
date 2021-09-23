@@ -60,7 +60,7 @@ public class TimelineStepSaveData
     {
         get
         {
-            return "AAA";
+            return "\n\n";
         }
     }
 }

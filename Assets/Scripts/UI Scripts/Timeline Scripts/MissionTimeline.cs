@@ -322,7 +322,7 @@ public class MissionTimeline : MonoBehaviour
                     break;
             }
 
-            timelineJsonRepresentation += JsonUtility.ToJson(saveData) + TimelineStepSaveData.JsonRepresentationDelimiter;
+            timelineJsonRepresentation += JsonUtility.ToJson(saveData, true) + TimelineStepSaveData.JsonRepresentationDelimiter;
         }
 
         using (System.IO.StreamWriter outputFile = new System.IO.StreamWriter(pathToFile))
