@@ -23,6 +23,7 @@ public class OrbitalStep : TimelineStep, IInspectable, IPlottable
     public bool IsDeletable { get; set; }
     
     List<NamedColour> namedColours;
+    public List<NamedColour> OrbitalStepNamedColours { get { return namedColours; } }
 
     NamedColour stepColour;
     public NamedColour StepColour { get { return stepColour; } set { stepColour = value; colourBarImage.color = value.color; } }
