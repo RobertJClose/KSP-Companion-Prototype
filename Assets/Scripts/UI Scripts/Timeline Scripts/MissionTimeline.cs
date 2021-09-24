@@ -273,6 +273,10 @@ public class MissionTimeline : MonoBehaviour
         finishStep.IsFinishStep = true;
         finishStep.TransitionTime = 14_400.0; // 4 hours after the mission start.
         missionTimeline.Add(finishStep);
+
+        UpdateAllSurroundingSteps();
+        PlotSteps();
+        inspector.DisplayMissionOverview();
     }
 
     public void SaveMissionTimeline(int saveSlot)
@@ -481,16 +485,10 @@ public class MissionTimeline : MonoBehaviour
 
     private void Start()
     {
-        ClearMissionTimeline();
-
         if (System.IO.File.Exists(Application.temporaryCachePath + @"\TempTimeline.rson"))
             LoadMissionTimeline(-1);
         else
             SetTimelineToDefault();
-
-        UpdateAllSurroundingSteps();
-        PlotSteps();
-        inspector.DisplayMissionOverview();
 
         // When the application quits, the temporary file used to save the timeline when quitting back to the title screen will be deleted.
         Application.quitting += DeleteTempTimeline; 
