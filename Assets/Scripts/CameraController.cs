@@ -9,6 +9,7 @@ public class CameraController : MonoBehaviour
     Transform kerbin;
 
     Camera mainCamera;
+    RectTransform menuBar;
     RectTransform viewport;
     Canvas mainCanvas;
     Resolution currentResolution;
@@ -26,6 +27,7 @@ public class CameraController : MonoBehaviour
     {
         // Set the camera viewport
         mainCamera = GetComponent<Camera>();
+        menuBar = GameObject.FindGameObjectWithTag("Menu Bar").transform as RectTransform;
         viewport = GameObject.FindGameObjectWithTag("3D Scene Viewport").transform as RectTransform;
         mainCanvas = GameObject.FindGameObjectWithTag("Main Canvas").GetComponent<Canvas>();
         currentResolution = Screen.currentResolution;
@@ -46,9 +48,10 @@ public class CameraController : MonoBehaviour
 
     void SetCameraViewport()
     {
+        Rect menuBarRect = RectTransformUtility.PixelAdjustRect(menuBar, mainCanvas);
         Rect viewportRect = RectTransformUtility.PixelAdjustRect(viewport, mainCanvas);
         viewportRect.x = 0f;
-        viewportRect.y = Screen.height - viewportRect.height;
+        viewportRect.y = Screen.height - viewportRect.height - menuBarRect.height;
 
         mainCamera.pixelRect = viewportRect;
     }

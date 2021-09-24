@@ -13,6 +13,7 @@ TagManager:
   - Inspector
   - Mission Start Step
   - Mission Finish Step
+  - Menu Bar
   layers:
   - Default
   - TransparentFX

@@ -66,12 +66,6 @@ public class ManeuverTransitionStep : TransitionStep
         plot.HighlightPlot(true);
     }
 
-    private void OnDestroy()
-    {
-        if (plot != null)
-            Destroy(plot.gameObject);
-    }
-
     private bool CheckAdjacentOrbits()
     {
         // If an adjacent transfer OrbitalStep cannot find a valid transfer orbit, then this method will return false. Otherwise it will return true.
