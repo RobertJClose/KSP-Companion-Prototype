@@ -235,8 +235,10 @@ public class MissionTimeline : MonoBehaviour
         }
     }
 
-    private void SetTimelineToDefault()
+    public void SetTimelineToDefault()
     {
+        ClearMissionTimeline();
+
         // Add the mission start step
         StartFinishTransitionStep startStep = Instantiate(prefab_StartStep, transform);
         startStep.IsStartStep = true;
@@ -248,6 +250,7 @@ public class MissionTimeline : MonoBehaviour
         initialOrbit.IsDeletable = false;
         initialOrbit.Orbit = GravitationalBody.Kerbin.DefaultOrbit;
         initialOrbit.StepName = "Initial Orbit";
+        initialOrbit.StepColour = initialOrbit.OrbitalStepNamedColours[1]; // Potential for exception here
         missionTimeline.Add(initialOrbit);
 
         // Add an 'add button' inbetween the initial and final orbital steps
@@ -259,6 +262,7 @@ public class MissionTimeline : MonoBehaviour
         finalOrbit.IsDeletable = false;
         finalOrbit.Orbit = GravitationalBody.Kerbin.DefaultOrbit;
         finalOrbit.StepName = "Final Orbit";
+        finalOrbit.StepColour = finalOrbit.OrbitalStepNamedColours[2]; // Potential for exception here
         finalOrbit.Orbit.RPE = 1_250_000f;
         finalOrbit.Orbit.ECC = 1.5f;
         finalOrbit.Orbit.TPP = 7_200.0;
@@ -277,7 +281,6 @@ public class MissionTimeline : MonoBehaviour
             throw new System.ArgumentException("saveSlot must correspond to one of the three save slots (1, 2, 3), or the temporary slot (-1)", "saveSlot");
 
         string pathToFile;
-
         if (saveSlot == -1)
             pathToFile = Application.temporaryCachePath + @"\TempTimeline.rson";
         else
@@ -286,48 +289,7 @@ public class MissionTimeline : MonoBehaviour
         string timelineRSON = string.Empty;
         foreach (TimelineStep step in missionTimeline)
         {
-            TimelineStepData saveData = new TimelineStepData();
-
-            switch (step)
-            {
-                case AddButton addButtonStep:
-                    saveData = TimelineStepData.AddButtonSaveData();
-                    break;
-                case StartFinishTransitionStep startFinishStep:
-                    saveData = TimelineStepData.StartFinishStepSaveData();
-                    saveData.isStartStep = startFinishStep.IsStartStep;
-                    saveData.transitionTime = startFinishStep.TransitionTime;
-                    break;
-                case ManeuverTransitionStep maneuverStep:
-                    saveData = TimelineStepData.ManeuverStepSaveData();
-                    saveData.transitionTime = maneuverStep.TransitionTime;
-                    break;
-                case OrbitalStep orbitalStep:
-                    saveData = TimelineStepData.OrbitalStepSaveData();
-                    if (orbitalStep.Orbit == null)
-                        saveData.isOrbitalStepOrbitNull = true;
-                    else
-                    {
-                        saveData.isOrbitalStepOrbitNull = false;
-                        saveData.orbitGravBodyID = orbitalStep.Orbit.GravitationalBody.ID;
-                        saveData.orbitRPE = orbitalStep.Orbit.RPE;
-                        saveData.orbitECC = orbitalStep.Orbit.ECC;
-                        saveData.orbitINC = orbitalStep.Orbit.INC;
-                        saveData.orbitAPE = orbitalStep.Orbit.APE;
-                        saveData.orbitLAN = orbitalStep.Orbit.LAN;
-                        saveData.orbitTPP = orbitalStep.Orbit.TPP;
-                    }
-                    saveData.stepName = orbitalStep.StepName;
-                    saveData.mayUserEditOrbit = orbitalStep.MayUserEditOrbit;
-                    saveData.isTransferOrbit = orbitalStep.IsTransferOrbit;
-                    saveData.isDeletable = orbitalStep.IsDeletable;
-                    saveData.stepColour = orbitalStep.StepColour;
-                    break;
-                default:
-                    break;
-            }
-
-            timelineRSON += JsonUtility.ToJson(saveData, true) + TimelineStepData.StepDelimiter;
+            timelineRSON += TimelineStep2Json(step) + TimelineStepData.StepDelimiter;
         }
 
         using (System.IO.StreamWriter outputFile = new System.IO.StreamWriter(pathToFile))
@@ -364,73 +326,24 @@ public class MissionTimeline : MonoBehaviour
             else
                 return;
 
-            SetMissionTimelineFromRSON(timelineRSON);
+            SetTimelineFromRSON(timelineRSON);
         }
     }
 
-    private void SetMissionTimelineFromRSON(string timelineRSON)
+    private void SetTimelineFromRSON(string timelineRSON)
     {
-        // First of all, clear the current timeline.
-        foreach (Transform child in transform)
-        {
-            Destroy(child.gameObject);
-        }
-        missionTimeline.Clear();
+        ClearMissionTimeline();
 
         TimelineStepData nextStepData = new TimelineStepData();
         while (!string.IsNullOrEmpty(timelineRSON))
         {
             int delimiterStartIndex = timelineRSON.IndexOf(TimelineStepData.StepDelimiter);
 
-            string nextStepJsonRepresentation = timelineRSON.Substring(startIndex: 0, length: delimiterStartIndex);
+            string nextStepJson = timelineRSON.Substring(startIndex: 0, length: delimiterStartIndex);
+
+            AddTimelineStepFromJson(nextStepJson);
+
             timelineRSON = timelineRSON.Remove(startIndex: 0, count: delimiterStartIndex + TimelineStepData.StepDelimiter.Length);
-
-            JsonUtility.FromJsonOverwrite(nextStepJsonRepresentation, nextStepData);
-
-            switch (nextStepData.stepType)
-            {
-                case TimelineStepType.AddButton:
-                    AddButton addButton = Instantiate(prefab_AddButton, transform);
-                    missionTimeline.Add(addButton);
-                    break;
-                case TimelineStepType.StartFinishTransitionStep:
-                    StartFinishTransitionStep startFinishStep;
-                    if (nextStepData.isStartStep)
-                        startFinishStep = Instantiate(prefab_StartStep, transform);
-                    else
-                        startFinishStep = Instantiate(prefab_FinishStep, transform);
-                    startFinishStep.TransitionTime = nextStepData.transitionTime;
-                    missionTimeline.Add(startFinishStep);
-                    break;
-                case TimelineStepType.ManeuverTransitionStep:
-                    ManeuverTransitionStep maneuverStep = Instantiate(prefab_ManeuverStep, transform);
-                    maneuverStep.TransitionTime = nextStepData.transitionTime;
-                    missionTimeline.Add(maneuverStep);
-                    break;
-                case TimelineStepType.OrbitalStep:
-                    OrbitalStep orbitalStep = Instantiate(prefab_OrbitalStep, transform);
-                    if (nextStepData.isOrbitalStepOrbitNull)
-                        orbitalStep.Orbit = null;
-                    else
-                    {
-                        orbitalStep.Orbit.GravitationalBody = GravitationalBody.ListOfBodies.Find(step => step.ID == nextStepData.orbitGravBodyID);
-                        orbitalStep.Orbit.RPE = nextStepData.orbitRPE;
-                        orbitalStep.Orbit.ECC = nextStepData.orbitECC;
-                        orbitalStep.Orbit.INC = nextStepData.orbitINC;
-                        orbitalStep.Orbit.APE = nextStepData.orbitAPE;
-                        orbitalStep.Orbit.LAN = nextStepData.orbitLAN;
-                        orbitalStep.Orbit.TPP = nextStepData.orbitTPP;
-                    }
-                    orbitalStep.StepName = nextStepData.stepName;
-                    orbitalStep.MayUserEditOrbit = nextStepData.mayUserEditOrbit;
-                    orbitalStep.IsTransferOrbit = nextStepData.isTransferOrbit;
-                    orbitalStep.IsDeletable = nextStepData.isDeletable;
-                    orbitalStep.StepColour = nextStepData.stepColour;
-                    missionTimeline.Add(orbitalStep);
-                    break;
-                default:
-                    break;
-            }
         }
 
         UpdateAllSurroundingSteps();
@@ -438,8 +351,138 @@ public class MissionTimeline : MonoBehaviour
         inspector.DisplayMissionOverview();
     }
 
+    private string TimelineStep2Json(TimelineStep step)
+    {
+        TimelineStepData saveData = new TimelineStepData();
+
+        switch (step)
+        {
+            case AddButton addButtonStep:
+                saveData = TimelineStepData.AddButtonSaveData();
+                break;
+
+            case StartFinishTransitionStep startFinishStep:
+                saveData = TimelineStepData.StartFinishStepSaveData();
+                saveData.isStartStep = startFinishStep.IsStartStep;
+                saveData.transitionTime = startFinishStep.TransitionTime;
+                break;
+
+            case ManeuverTransitionStep maneuverStep:
+                saveData = TimelineStepData.ManeuverStepSaveData();
+                saveData.transitionTime = maneuverStep.TransitionTime;
+                break;
+
+            case OrbitalStep orbitalStep:
+                saveData = TimelineStepData.OrbitalStepSaveData();
+                if (orbitalStep.Orbit == null)
+                    saveData.isOrbitalStepOrbitNull = true;
+                else
+                {
+                    saveData.isOrbitalStepOrbitNull = false;
+                    saveData.orbitGravBodyID = orbitalStep.Orbit.GravitationalBody.ID;
+                    saveData.orbitRPE = orbitalStep.Orbit.RPE;
+                    saveData.orbitECC = orbitalStep.Orbit.ECC;
+                    saveData.orbitINC = orbitalStep.Orbit.INC;
+                    saveData.orbitAPE = orbitalStep.Orbit.APE;
+                    saveData.orbitLAN = orbitalStep.Orbit.LAN;
+                    saveData.orbitTPP = orbitalStep.Orbit.TPP;
+                }
+                saveData.stepName = orbitalStep.StepName;
+                saveData.mayUserEditOrbit = orbitalStep.MayUserEditOrbit;
+                saveData.isTransferOrbit = orbitalStep.IsTransferOrbit;
+                saveData.isDeletable = orbitalStep.IsDeletable;
+                saveData.stepColour = orbitalStep.StepColour;
+                break;
+
+            default:
+                throw new System.InvalidOperationException("TimelineStep data couldn't be used to create a TimelineStepData object");
+        }
+
+        return JsonUtility.ToJson(saveData);
+    }
+
+    private void AddTimelineStepFromJson(string jsonString)
+    {
+        TimelineStepData nextStepData = JsonUtility.FromJson<TimelineStepData>(jsonString);
+
+        switch (nextStepData.stepType)
+        {
+            case TimelineStepType.AddButton:
+                AddButton addButton = Instantiate(prefab_AddButton, transform);
+                missionTimeline.Add(addButton);
+                break;
+            case TimelineStepType.StartFinishTransitionStep:
+                StartFinishTransitionStep startFinishStep;
+                if (nextStepData.isStartStep)
+                    startFinishStep = Instantiate(prefab_StartStep, transform);
+                else
+                    startFinishStep = Instantiate(prefab_FinishStep, transform);
+                startFinishStep.TransitionTime = nextStepData.transitionTime;
+                missionTimeline.Add(startFinishStep);
+                break;
+            case TimelineStepType.ManeuverTransitionStep:
+                ManeuverTransitionStep maneuverStep = Instantiate(prefab_ManeuverStep, transform);
+                maneuverStep.TransitionTime = nextStepData.transitionTime;
+                missionTimeline.Add(maneuverStep);
+                break;
+            case TimelineStepType.OrbitalStep:
+                OrbitalStep orbitalStep = Instantiate(prefab_OrbitalStep, transform);
+                if (nextStepData.isOrbitalStepOrbitNull)
+                    orbitalStep.Orbit = null;
+                else
+                {
+                    orbitalStep.Orbit.GravitationalBody = GravitationalBody.ListOfBodies.Find(step => step.ID == nextStepData.orbitGravBodyID);
+                    orbitalStep.Orbit.RPE = nextStepData.orbitRPE;
+                    orbitalStep.Orbit.ECC = nextStepData.orbitECC;
+                    orbitalStep.Orbit.INC = nextStepData.orbitINC;
+                    orbitalStep.Orbit.APE = nextStepData.orbitAPE;
+                    orbitalStep.Orbit.LAN = nextStepData.orbitLAN;
+                    orbitalStep.Orbit.TPP = nextStepData.orbitTPP;
+                }
+                orbitalStep.StepName = nextStepData.stepName;
+                orbitalStep.MayUserEditOrbit = nextStepData.mayUserEditOrbit;
+                orbitalStep.IsTransferOrbit = nextStepData.isTransferOrbit;
+                orbitalStep.IsDeletable = nextStepData.isDeletable;
+                orbitalStep.StepColour = nextStepData.stepColour;
+                missionTimeline.Add(orbitalStep);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void ClearMissionTimeline()
+    {
+        foreach (Transform child in transform)
+        {
+            Destroy(child.gameObject);
+        }
+        missionTimeline.Clear();
+    }
+
+    public void DeleteTempTimeline()
+    {
+        DeleteSavedTimeline(-1);
+    }
+
+    public void DeleteSavedTimeline(int saveSlot)
+    {
+        if (!(saveSlot == -1 || saveSlot == 1 || saveSlot == 2 || saveSlot == 3))
+            throw new System.ArgumentException("saveSlot must correspond to one of the three save slots (1, 2, 3), or the temporary slot (-1)", "saveSlot");
+
+        string pathToFile;
+        if (saveSlot == -1)
+            pathToFile = Application.temporaryCachePath + @"\TempTimeline.rson";
+        else
+            pathToFile = Application.persistentDataPath + @"\Save" + saveSlot.ToString() + ".rson";
+
+        System.IO.File.Delete(pathToFile);
+    }
+
     private void Start()
     {
+        ClearMissionTimeline();
+
         if (System.IO.File.Exists(Application.temporaryCachePath + @"\TempTimeline.rson"))
             LoadMissionTimeline(-1);
         else
@@ -448,6 +491,8 @@ public class MissionTimeline : MonoBehaviour
         UpdateAllSurroundingSteps();
         PlotSteps();
         inspector.DisplayMissionOverview();
-    }
 
+        // When the application quits, the temporary file used to save the timeline when quitting back to the title screen will be deleted.
+        Application.quitting += DeleteTempTimeline; 
+    }
 }
