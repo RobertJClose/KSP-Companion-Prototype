@@ -54,6 +54,12 @@ public abstract class TransitionStep : TimelineStep, IInspectable, IPlottable
         Plot();
     }
 
+    protected void OnDestroy()
+    {
+        if (plot != null)
+            Destroy(plot.gameObject);
+    }
+
     public abstract void OnSelect(BaseEventData eventData);
 
     public void OnDeselect(BaseEventData eventData)
