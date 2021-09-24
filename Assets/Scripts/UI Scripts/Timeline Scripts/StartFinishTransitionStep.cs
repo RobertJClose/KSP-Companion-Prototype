@@ -5,6 +5,10 @@ using UnityEngine.EventSystems;
 
 public class StartFinishTransitionStep : TransitionStep
 {
+    private bool isStartStep;
+    public bool IsStartStep { get { return isStartStep; } set { isStartStep = value; } }
+    public bool IsFinishStep { get { return !isStartStep; } set { isStartStep = !value; } }
+
     public override void OnSelect(BaseEventData eventData)
     {
         inspector.Clear();
