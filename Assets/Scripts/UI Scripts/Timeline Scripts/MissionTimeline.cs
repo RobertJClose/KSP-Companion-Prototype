@@ -402,7 +402,7 @@ public class MissionTimeline : MonoBehaviour
                 throw new System.InvalidOperationException("TimelineStep data couldn't be used to create a TimelineStepData object");
         }
 
-        return JsonUtility.ToJson(saveData);
+        return JsonUtility.ToJson(saveData, true);
     }
 
     private void AddTimelineStepFromJson(string jsonString)
@@ -421,6 +421,7 @@ public class MissionTimeline : MonoBehaviour
                     startFinishStep = Instantiate(prefab_StartStep, transform);
                 else
                     startFinishStep = Instantiate(prefab_FinishStep, transform);
+                startFinishStep.IsStartStep = nextStepData.isStartStep;
                 startFinishStep.TransitionTime = nextStepData.transitionTime;
                 missionTimeline.Add(startFinishStep);
                 break;
