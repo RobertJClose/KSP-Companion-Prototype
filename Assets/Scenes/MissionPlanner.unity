@@ -1988,6 +1988,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b70ae544c72ea14889f12b35c733a40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  missionTimeline: {fileID: 362061702}
 --- !u!1 &577521868
 GameObject:
   m_ObjectHideFlags: 0

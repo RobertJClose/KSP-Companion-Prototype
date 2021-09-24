@@ -273,10 +273,15 @@ public class MissionTimeline : MonoBehaviour
 
     public void SaveMissionTimeline(int saveSlot)
     {
-        if (!(saveSlot == 1 || saveSlot == 2 || saveSlot == 3))
-            throw new System.ArgumentException("saveSlot must correspond to one of the three save slots.", "saveSlot");
+        if (!(saveSlot == -1 || saveSlot == 1 || saveSlot == 2 || saveSlot == 3))
+            throw new System.ArgumentException("saveSlot must correspond to one of the three save slots (1, 2, 3), or the temporary slot (-1)", "saveSlot");
 
-        string pathToFile = Application.persistentDataPath + @"\Save" + saveSlot.ToString() + ".rson";
+        string pathToFile;
+
+        if (saveSlot == -1)
+            pathToFile = Application.temporaryCachePath + @"\TempTimeline.rson";
+        else
+            pathToFile = Application.persistentDataPath + @"\Save" + saveSlot.ToString() + ".rson";
 
         string timelineRSON = string.Empty;
         foreach (TimelineStep step in missionTimeline)
@@ -333,15 +338,20 @@ public class MissionTimeline : MonoBehaviour
 
     public void LoadMissionTimeline(int loadSlot)
     {
-        if (!(loadSlot == 0 || loadSlot == 1 || loadSlot == 2 || loadSlot == 3))
-            throw new System.ArgumentException("loadSlot must correspond to one of the three save slots, or the default timeline slot 0.", "loadSlot");
+        if (!(loadSlot == -1 || loadSlot == 0 || loadSlot == 1 || loadSlot == 2 || loadSlot == 3))
+            throw new System.ArgumentException("loadSlot must correspond to one of the three save slots (1, 2, 3), the default timeline slot (0), or the temporary slot (-1)", "loadSlot");
 
-        string timelineRSON;
         if (loadSlot == 0)
             SetTimelineToDefault();
-        else
+        else 
         {
-            string pathToFile = Application.persistentDataPath + @"\Save" + loadSlot.ToString() + ".rson";
+            string timelineRSON;
+            string pathToFile;
+
+            if (loadSlot == -1)
+                pathToFile = Application.temporaryCachePath + @"\TempTimeline.rson";
+            else
+                pathToFile = Application.persistentDataPath + @"\Save" + loadSlot.ToString() + ".rson";
 
             // Check that the file to be loaded exists. If it does not, then nothing should happen.
             if (System.IO.File.Exists(pathToFile))
@@ -430,7 +440,11 @@ public class MissionTimeline : MonoBehaviour
 
     private void Start()
     {
-        SetTimelineToDefault();
+        if (System.IO.File.Exists(Application.temporaryCachePath + @"\TempTimeline.rson"))
+            LoadMissionTimeline(-1);
+        else
+            SetTimelineToDefault();
+
         UpdateAllSurroundingSteps();
         PlotSteps();
         inspector.DisplayMissionOverview();
