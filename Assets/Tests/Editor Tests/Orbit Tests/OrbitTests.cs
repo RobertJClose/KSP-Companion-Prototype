@@ -117,7 +117,7 @@ namespace Tests
         }
 
         [Test]
-        public void FindTransferOrbit_ZeroTimeOfFlightWithDistinctDepartureAndArrivalPoints_ReturnsFalse()
+        public void FindTransferOrbit_ZeroTimeOfFlightWithDistinctDepartureAndArrivalPoints_ReturnsNull()
         {
             // Arrange
             Orbit initial = GravitationalBody.Kerbin.DefaultOrbit;
