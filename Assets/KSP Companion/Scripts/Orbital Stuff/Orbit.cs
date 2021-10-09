@@ -10,15 +10,15 @@ public class Orbit
 
     protected Angle argumentOfPeriapsis;
 
-    protected GravitationalBody attractingBody;
-
     protected double eccentricity;
 
     protected Angle inclination;
+    
+    protected GravitationalBody gravitationalBody;
 
     protected Angle longitudeOfAscendingNode;
 
-    protected double periapsisRadius;
+    protected double radiusOfPeriapsis;
 
     protected double timeOfPeriapsisPassage;
 
@@ -75,7 +75,7 @@ public class Orbit
             if (OrbitType != ConicSection.Elliptical)
                 return float.PositiveInfinity;
             else
-                return (1f + eccentricity) / (1f - eccentricity) * periapsisRadius;
+                return (1f + eccentricity) / (1f - eccentricity) * radiusOfPeriapsis;
         }
     }
 
@@ -140,11 +140,11 @@ public class Orbit
     { 
         get
         { 
-            return attractingBody; 
+            return gravitationalBody; 
         } 
         set 
         { 
-            attractingBody = value; 
+            gravitationalBody = value; 
         } 
     }
 
@@ -219,7 +219,7 @@ public class Orbit
     { 
         get 
         { 
-            return attractingBody.GravParameter; 
+            return gravitationalBody.GravParameter; 
         } 
     }
 
@@ -269,14 +269,14 @@ public class Orbit
     {
         get
         {
-            return periapsisRadius;
+            return radiusOfPeriapsis;
         }
         set
         {
             if (double.IsNaN(value))
                 throw new ArgumentException("RPE should never be set to NaN", "value");
 
-            periapsisRadius = Mathd.Clamp(value, 0.0, double.PositiveInfinity);
+            radiusOfPeriapsis = Mathd.Clamp(value, 0.0, double.PositiveInfinity);
         }
     }
 
@@ -284,7 +284,7 @@ public class Orbit
     {
         get
         {
-            return periapsisRadius * (1.0 + eccentricity);
+            return radiusOfPeriapsis * (1.0 + eccentricity);
         }
     }
 
@@ -295,7 +295,7 @@ public class Orbit
             if (OrbitType == ConicSection.Parabolic)
                 return double.PositiveInfinity;
             else
-                return periapsisRadius / (1.0 - eccentricity);
+                return radiusOfPeriapsis / (1.0 - eccentricity);
         }
     }
 
@@ -349,7 +349,7 @@ public class Orbit
             }
         }
 
-        Vector3d[] terminalVelocities = LambertsProblemHelper.Solver(initialOrbit.attractingBody, departurePoint, departureTime, arrivalPoint, arrivalTime);
+        Vector3d[] terminalVelocities = LambertsProblemHelper.Solver(initialOrbit.gravitationalBody, departurePoint, departureTime, arrivalPoint, arrivalTime);
 
         // Check if the solver was able to find valid terminal velocity vectors, and thus a transfer orbit may be found
         foreach (Vector3d velocityVector in terminalVelocities)
@@ -363,7 +363,7 @@ public class Orbit
             }
         }
 
-        return StateVectors2Orbit(initialOrbit.attractingBody, departurePoint, terminalVelocities[0], departureTime);
+        return StateVectors2Orbit(initialOrbit.gravitationalBody, departurePoint, terminalVelocities[0], departureTime);
     }
 
     public static Orbit StateVectors2Orbit(GravitationalBody body, Vector3d position, Vector3d velocity, double time)
@@ -511,7 +511,7 @@ public class Orbit
 
     public override string ToString()
     {
-        return "RPE: " + periapsisRadius + "\nECC: " + eccentricity + "\nINCd: " + inclination.DegValue + "\nAPEd: " + argumentOfPeriapsis.DegValue + "\nLANd: " + longitudeOfAscendingNode.DegValue + "\nTPP: " + timeOfPeriapsisPassage + '\n' + base.ToString();
+        return "RPE: " + radiusOfPeriapsis + "\nECC: " + eccentricity + "\nINCd: " + inclination.DegValue + "\nAPEd: " + argumentOfPeriapsis.DegValue + "\nLANd: " + longitudeOfAscendingNode.DegValue + "\nTPP: " + timeOfPeriapsisPassage + '\n' + base.ToString();
     }
 
     public Vector3d TrueAnomaly2Point(Angle trueAnomaly)
@@ -522,7 +522,7 @@ public class Orbit
         if (trueAnomaly >= MaxTrueAnomaly && trueAnomaly <= -MaxTrueAnomaly)
             return new Vector3d(Vector3.positiveInfinity);
 
-        radius = periapsisRadius * (1.0 + eccentricity) / (1.0 + eccentricity * Mathf.Cos(trueAnomaly));
+        radius = radiusOfPeriapsis * (1.0 + eccentricity) / (1.0 + eccentricity * Mathf.Cos(trueAnomaly));
 
         Vector3d output;
         output.x = radius * (Mathf.Cos(longitudeOfAscendingNode) * Mathf.Cos(argumentOfPeriapsis + trueAnomaly) - Mathf.Sin(longitudeOfAscendingNode) * Mathf.Sin(argumentOfPeriapsis + trueAnomaly) * Mathf.Cos(inclination));
@@ -659,7 +659,7 @@ public class Orbit
     {
         // For the parabolic case Barker's equation can give us the exact time without needing to solve a transcendental equation.
         // We do still have to find the one real root of a depressed cubic polynomial using Cardano's method.
-        double A = Math.Sqrt(9.0 * meanAnomaly * meanAnomaly + 8.0 * periapsisRadius * periapsisRadius * periapsisRadius);
+        double A = Math.Sqrt(9.0 * meanAnomaly * meanAnomaly + 8.0 * radiusOfPeriapsis * radiusOfPeriapsis * radiusOfPeriapsis);
         double termOne = Math.Pow(3.0 * meanAnomaly + A, 1.0 / 3.0);
         double termTwo = (3.0 * meanAnomaly - A > 0) ? Math.Pow(3.0 * meanAnomaly - A, 1.0 / 3.0) : -Math.Pow(3.0 * -meanAnomaly + A, 1.0 / 3.0); // Ugly but works without needing to define a custom cube root function that accepts negative inputs with fractional powers.
         return termOne + termTwo;
@@ -675,12 +675,12 @@ public class Orbit
         if (double.IsInfinity(parabolicAnomaly))
             return parabolicAnomaly;
         else
-            return periapsisRadius * parabolicAnomaly + parabolicAnomaly * parabolicAnomaly * parabolicAnomaly / 6.0;
+            return radiusOfPeriapsis * parabolicAnomaly + parabolicAnomaly * parabolicAnomaly * parabolicAnomaly / 6.0;
     }
 
     private Angle ParabolicAnomaly2TrueAnomaly(double parabolicAnomaly)
     {
-        return (float)(2.0f * Math.Atan(parabolicAnomaly / Math.Sqrt(2.0 * periapsisRadius)));
+        return (float)(2.0f * Math.Atan(parabolicAnomaly / Math.Sqrt(2.0 * radiusOfPeriapsis)));
     }
 
     private double Time2MeanAnomaly(double time)
@@ -710,7 +710,7 @@ public class Orbit
     {
         if (trueAnomaly.RadValue == Mathf.PI)
             return float.PositiveInfinity;
-        return Math.Sqrt(2.0 * periapsisRadius) * Mathf.Tan(trueAnomaly / 2f);
+        return Math.Sqrt(2.0 * radiusOfPeriapsis) * Mathf.Tan(trueAnomaly / 2f);
     }
 
     #endregion
