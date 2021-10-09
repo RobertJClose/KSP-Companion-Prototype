@@ -918,21 +918,25 @@ public class Orbit
 
     #region Private Methods
 
+    // Inverse hyperbolic tangent function.
     private static double Atanh(double x)
     {
         return 0.5 * Math.Log((1.0 + x) / (1.0 - x));
     }
 
+    // Used by TrueAnomaly2Time() in the elliptical orbit case.
     private double EccentricAnomaly2MeanAnomaly(double eccentricAnomaly)
     {
         return eccentricAnomaly - eccentricity * Math.Sin(eccentricAnomaly);
     }
 
+    // Used by Time2TrueAnomaly() in the elliptical orbit case.
     private Angle EccentricAnomaly2TrueAnomaly(double eccentricAnomaly)
     {
         return (float)(2.0 * Math.Atan2(Math.Sqrt(1.0 + eccentricity) * Math.Tan(eccentricAnomaly / 2.0), Math.Sqrt(1.0 - eccentricity)));
     }
 
+    // Used by TrueAnomaly2Time() in the hyperbolic orbit case.
     private double HyperbolicAnomaly2MeanAnomaly(double hyperbolicAnomaly)
     {
         if (hyperbolicAnomaly == double.PositiveInfinity)
@@ -943,11 +947,13 @@ public class Orbit
         return eccentricity * Math.Sinh(hyperbolicAnomaly) - hyperbolicAnomaly;
     }
 
+    // Used by Time2TrueAnomaly() in the hyperbolic orbit case.
     private Angle HyperbolicAnomaly2TrueAnomaly(double hyperbolicAnomaly)
     {
         return (float)(2.0 * Math.Atan2(Math.Sqrt(eccentricity + 1.0) * Math.Tanh(hyperbolicAnomaly / 2.0), Math.Sqrt(eccentricity - 1.0)));
     }
 
+    // Used by Time2TrueAnomaly() in the elliptical orbit case.
     private double MeanAnomaly2EccentricAnomaly(double meanAnomaly)
     {
         // Kepler's equation relates the mean anomaly to the eccentric anomaly, but is transcendental in the unknown variable E
@@ -974,6 +980,7 @@ public class Orbit
         return eccentricAnomaly;
     }
 
+    // Used by Time2TrueAnomaly() in the hyperbolic orbit case.
     private double MeanAnomaly2HyperbolicAnomaly(double meanAnomaly)
     {
         // In the hyperbolic case we must solve the hyperbolic Kepler equation in the transcendental unknown hyperbolic anomaly H.
@@ -998,6 +1005,7 @@ public class Orbit
         return hyperbolicAnomaly;
     }
 
+    // Used by Time2TrueAnomaly() in the parabolic orbit case.
     private double MeanAnomaly2ParabolicAnomaly(double meanAnomaly)
     {
         // For the parabolic case Barker's equation can give us the exact time without needing to solve a transcendental equation.
@@ -1008,11 +1016,13 @@ public class Orbit
         return termOne + termTwo;
     }
 
+    // Used by TrueAnomaly2Time() for all types of orbit.
     private double MeanAnomaly2Time(double meanAnomaly)
     {
         return meanAnomaly / MeanMotion + timeOfPeriapsisPassage;
     }
 
+    // Used by TrueAnomaly2Time() in the parabolic orbit case.
     private double ParabolicAnomaly2MeanAnomaly(double parabolicAnomaly)
     {
         if (double.IsInfinity(parabolicAnomaly))
@@ -1021,21 +1031,25 @@ public class Orbit
             return radiusOfPeriapsis * parabolicAnomaly + parabolicAnomaly * parabolicAnomaly * parabolicAnomaly / 6.0;
     }
 
+    // Used by Time2TrueAnomaly() in the parabolic orbit case.
     private Angle ParabolicAnomaly2TrueAnomaly(double parabolicAnomaly)
     {
         return (float)(2.0f * Math.Atan(parabolicAnomaly / Math.Sqrt(2.0 * radiusOfPeriapsis)));
     }
 
+    // Used by Time2TrueAnomaly() for all types of orbit.
     private double Time2MeanAnomaly(double time)
     {
         return MeanMotion * (time - timeOfPeriapsisPassage);
     }
 
+    // Used by TrueAnomaly2Time() in the elliptical orbit case.
     private double TrueAnomaly2EccentricAnomaly(Angle trueAnomaly)
     {
         return 2.0 * Math.Atan2(Math.Sqrt(1.0 - eccentricity) * Math.Tan(trueAnomaly / 2.0), Math.Sqrt(1.0 + eccentricity));
     }
 
+    // Used by TrueAnomaly2Time() in the hyperbolic orbit case.
     private double TrueAnomaly2HyperbolicAnomaly(Angle trueAnomaly)
     {
         trueAnomaly = Angle.Expel(trueAnomaly, MaxTrueAnomaly ?? Angle.Zero, 2f * Mathf.PI - (MaxTrueAnomaly ?? Angle.Zero));
@@ -1049,6 +1063,7 @@ public class Orbit
         return 2.0 * Atanh(Math.Sqrt((eccentricity - 1.0) / (ECC + 1.0)) * Math.Tan(trueAnomaly / 2.0));
     }
 
+    // Used by TrueAnomaly2Time() in the parabolic orbit case.
     private double TrueAnomaly2ParabolicAnomaly(Angle trueAnomaly)
     {
         if (trueAnomaly.RadValue == Mathf.PI)
