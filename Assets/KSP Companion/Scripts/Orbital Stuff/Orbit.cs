@@ -132,7 +132,7 @@ public class Orbit
     {
         get
         {
-            return Math.Sqrt(MU / (-SMA));
+            return Math.Sqrt(Mu / (-SemiMajorAxis));
         }
     }
 
@@ -152,7 +152,7 @@ public class Orbit
     {
         get
         {
-            double magnitude = Math.Sqrt(SemiLatusRectum * MU);
+            double magnitude = Math.Sqrt(SemiLatusRectum * Mu);
             Quaterniond rotation = Quaterniond.AngleAxis(inclination.DegValue, Vector3d.right) * Quaterniond.AngleAxis(longitudeOfAscendingNode.DegValue, Vector3d.forward);
             return magnitude * (rotation * Vector3d.forward);
         }
@@ -208,14 +208,14 @@ public class Orbit
             if (OrbitType == ConicSection.Parabolic)
             {
                 // Parabolic case
-                return Mathf.Sqrt(MU);
+                return Mathf.Sqrt(Mu);
             }
 
-            return Math.Sqrt(MU / (Math.Abs(SMA) * Math.Abs(SMA) * Math.Abs(SMA)));
+            return Math.Sqrt(Mu / (Math.Abs(SemiMajorAxis) * Math.Abs(SemiMajorAxis) * Math.Abs(SemiMajorAxis)));
         }
     }
 
-    public float MU 
+    public float Mu 
     { 
         get 
         { 
@@ -248,7 +248,7 @@ public class Orbit
             if (OrbitType != ConicSection.Elliptical)
                 return float.PositiveInfinity;
             else
-                return 2.0 * Math.PI * Math.Sqrt(SMA * SMA * SMA / MU);
+                return 2.0 * Math.PI * Math.Sqrt(SemiMajorAxis * SemiMajorAxis * SemiMajorAxis / Mu);
         }
     }
 
@@ -288,7 +288,7 @@ public class Orbit
         }
     }
 
-    public double SMA
+    public double SemiMajorAxis
     {
         get
         {
@@ -303,7 +303,7 @@ public class Orbit
     {
         get
         {
-            return (1.0 - 2.0 / (1.0 + eccentricity)) * MU * (1.0 + eccentricity) * (1.0 + eccentricity) / (2.0 * SemiLatusRectum);
+            return (1.0 - 2.0 / (1.0 + eccentricity)) * Mu * (1.0 + eccentricity) * (1.0 + eccentricity) / (2.0 * SemiLatusRectum);
         }
     }
 
@@ -565,9 +565,9 @@ public class Orbit
         double angMomentum = HVector.magnitude;
 
         Vector3d output;
-        output.x = -MU / angMomentum * (Mathf.Cos(longitudeOfAscendingNode) * (Mathf.Sin(argumentOfPeriapsis + trueAnomaly) + eccentricity * Mathf.Sin(argumentOfPeriapsis)) + Mathf.Sin(longitudeOfAscendingNode) * (Mathf.Cos(argumentOfPeriapsis + trueAnomaly) + ECC * Mathf.Cos(argumentOfPeriapsis)) * Mathf.Cos(inclination));
-        output.y = -MU / angMomentum * (Mathf.Sin(longitudeOfAscendingNode) * (Mathf.Sin(argumentOfPeriapsis + trueAnomaly) + eccentricity * Mathf.Sin(argumentOfPeriapsis)) - Mathf.Cos(longitudeOfAscendingNode) * (Mathf.Cos(argumentOfPeriapsis + trueAnomaly) + ECC * Mathf.Cos(argumentOfPeriapsis)) * Mathf.Cos(inclination));
-        output.z = MU / angMomentum * (Mathf.Cos(argumentOfPeriapsis + trueAnomaly) + eccentricity * Mathf.Cos(argumentOfPeriapsis)) * Mathf.Sin(inclination);
+        output.x = -Mu / angMomentum * (Mathf.Cos(longitudeOfAscendingNode) * (Mathf.Sin(argumentOfPeriapsis + trueAnomaly) + eccentricity * Mathf.Sin(argumentOfPeriapsis)) + Mathf.Sin(longitudeOfAscendingNode) * (Mathf.Cos(argumentOfPeriapsis + trueAnomaly) + ECC * Mathf.Cos(argumentOfPeriapsis)) * Mathf.Cos(inclination));
+        output.y = -Mu / angMomentum * (Mathf.Sin(longitudeOfAscendingNode) * (Mathf.Sin(argumentOfPeriapsis + trueAnomaly) + eccentricity * Mathf.Sin(argumentOfPeriapsis)) - Mathf.Cos(longitudeOfAscendingNode) * (Mathf.Cos(argumentOfPeriapsis + trueAnomaly) + ECC * Mathf.Cos(argumentOfPeriapsis)) * Mathf.Cos(inclination));
+        output.z = Mu / angMomentum * (Mathf.Cos(argumentOfPeriapsis + trueAnomaly) + eccentricity * Mathf.Cos(argumentOfPeriapsis)) * Mathf.Sin(inclination);
         return output;
     }
 

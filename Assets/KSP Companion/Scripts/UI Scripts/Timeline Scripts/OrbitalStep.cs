@@ -161,7 +161,7 @@ public class OrbitalStep : TimelineStep, IInspectable, IPlottable
         blockTwo.AddDoubleProperty("Time Of Periapsis Passage (s UT)",  ValueGetter: () => { if (orbit != null) return orbit.TPP; else return 0.0; },           ValueSetter: newTPP  => { if (orbit != null) orbit.TPP = newTPP; UpdateAdjacentTransferOrbits(); },                         DisplayCondition: () => orbit != null, isEditable: MayUserEditOrbit);
 
         InspectorPropertyBlock blockThree = inspector.AddPropertyBlock();
-        blockThree.AddDoubleProperty("Semimajor Axis (m)",          ValueGetter: () => { if (orbit != null) return orbit.SMA; else return 0.0; },                                           DisplayCondition: () => orbit != null);
+        blockThree.AddDoubleProperty("Semimajor Axis (m)",          ValueGetter: () => { if (orbit != null) return orbit.SemiMajorAxis; else return 0.0; },                                           DisplayCondition: () => orbit != null);
         blockThree.AddDoubleProperty("Specific energy (J/kg)",      ValueGetter: () => { if (orbit != null) return orbit.SpecificEnergy; else return 0.0; },                                DisplayCondition: () => orbit != null);
         blockThree.AddDoubleProperty("Start True Anomaly (deg)",    ValueGetter: () => { if (orbit != null) return orbit.Time2TrueAnomaly(StartTime.GetValueOrDefault()).DegValue; else return 0.0; },    DisplayCondition: () => StartTime != null && orbit != null);
         blockThree.AddDoubleProperty("Final True Anomaly (deg)",    ValueGetter: () => { if (orbit != null) return orbit.Time2TrueAnomaly(FinalTime.GetValueOrDefault()).DegValue; else return 0.0; },    DisplayCondition: () => FinalTime != null && orbit != null);
