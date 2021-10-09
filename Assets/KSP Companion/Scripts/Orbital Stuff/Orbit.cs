@@ -98,6 +98,16 @@ public class Orbit
 
     #region Properties
 
+    /// <summary>
+    /// Gets or sets the argument of periapsis orbital element.
+    /// </summary>
+    /// <remarks>
+    /// The value of this orbital element is the angle in radians between the ascending node and the point of periapsis of 
+    /// the orbit.
+    /// </remarks>
+    /// <exception cref="ArgumentException">An attempt was made to set the argument of periapsis to NaN.</exception>
+    /// <see cref="AscendingNode"/>
+    /// <see cref="PeriapsisPoint"/>
     public Angle APE
     {
         get
@@ -113,6 +123,13 @@ public class Orbit
         }
     }
 
+    /// <summary>
+    /// Gets the apoapsis point of the orbit.
+    /// </summary>
+    /// <remarks>
+    /// The apoapsis point is the point at which the satellite and the attracting body have their maximum separation. For open
+    /// orbits this point does not exist and this property returns null.
+    /// </remarks>
     public Vector3d? ApoapsisPoint
     {
         get
@@ -124,6 +141,9 @@ public class Orbit
         }
     }
 
+    /// <summary>
+    /// Gets the maximum separation between the satellite and the attracting body in metres.
+    /// </summary>
     public double ApoapsisRadius
     {
         get
@@ -135,6 +155,13 @@ public class Orbit
         }
     }
 
+    /// <summary>
+    /// Gets the position vector of the ascending node of the orbit.
+    /// </summary>
+    /// <remarks>
+    /// The ascending node is the point at which the orbital trajectory crosses the reference XY plane from below. For open orbits 
+    /// it is possible that this point does not exist, and in those cases null is returned.
+    /// </remarks>
     public Vector3d? AscendingNode
     {
         get
@@ -147,6 +174,13 @@ public class Orbit
         }
     }
 
+    /// <summary>
+    /// Gets the position vector of the descending node of the orbit.
+    /// </summary>
+    /// <remarks>
+    /// The descending node is the point at which the orbital trajectory crosses the reference XY plane from above. For open orbits 
+    /// it is possible that this point does not exist, and in those cases null is returned.
+    /// </remarks>
     public Vector3d? DescendingNode
     {
         get
@@ -159,6 +193,17 @@ public class Orbit
         }
     }
 
+    /// <summary>
+    /// Gets or sets the eccentricity orbital element.
+    /// </summary>
+    /// <remarks>
+    /// This value is strictly positive and dimensionless, and specifies what type of conic section the orbital trajectory is.
+    /// Circular orbit: Eccentricity = 0.
+    /// Elliptical orbit: 0 < Eccentricity < 1.
+    /// Parabolic orbit: Eccentricity = 1.
+    /// Hyperbolic orbit: Eccentricity > 1.
+    /// </remarks>
+    /// <exception cref="ArgumentException">An attempt was made to set the eccentricity to NaN.</exception>
     public double ECC
     {
         get
@@ -174,6 +219,13 @@ public class Orbit
         }
     }
 
+    /// <summary>
+    /// Gets the eccecentricity vector for this orbit.
+    /// </summary>
+    /// <remarks>
+    /// The eccentricity vector points from the attracting body to the point of periapsis with a magnitude equal to the 
+    /// eccentricity.
+    /// </remarks>
     public Vector3d EVector
     {
         get
@@ -184,6 +236,13 @@ public class Orbit
         }
     }
 
+    /// <summary>
+    /// Gets the excess velocity for the orbit in metres/second.
+    /// </summary>
+    /// <remarks>
+    /// The excess velocity is the speed of the satellite that is left after escaping to inifinity. For closed orbits it is 
+    /// undefined, for parabolic orbits it is equal to zero, and for hyperbolic orbits it is strictly positive. 
+    /// </remarks>
     public double ExcessVelocity
     {
         get
@@ -192,6 +251,9 @@ public class Orbit
         }
     }
 
+    /// <summary>
+    /// Gets or sets the gravitational body that the satellite is orbiting.
+    /// </summary>
     public GravitationalBody GravitationalBody 
     { 
         get
@@ -204,6 +266,14 @@ public class Orbit
         } 
     }
 
+    /// <summary>
+    /// Gets the specific angular momentum vector for the orbit.
+    /// </summary>
+    /// <remarks>
+    /// The specific angular momentum vector is normal to the orbital plane, with a magnitude equal to the specific angular
+    /// momentum of the satellite, measured in metres^2/second. "Specific" here means that it is the angular momentum per unit mass,
+    /// not the actual total angular momentum.
+    /// </remarks>
     public Vector3d HVector
     {
         get
@@ -214,6 +284,13 @@ public class Orbit
         }
     }
 
+    /// <summary>
+    /// Gets or sets the inclination orbital element.
+    /// </summary>
+    /// <remarks>
+    /// The value of this orbital element is the angle in radians between the orbital plane and the reference XY plane.
+    /// </remarks>
+    /// <exception cref="ArgumentException">An attempt was made to set the inclination to NaN.</exception>
     public Angle INC
     {
         get
@@ -229,6 +306,15 @@ public class Orbit
         }
     }
 
+    /// <summary>
+    /// Gets or sets the longitude of the ascending node orbital element. 
+    /// </summary>
+    /// <remarks>
+    /// The value of this orbital element is the angle in radians between the reference direction (X axis) and the ascending node 
+    /// of the orbit.
+    /// </remarks>
+    /// <exception cref="ArgumentException">An attempt was made to set the longitude of the ascending node to NaN.</exception>
+    /// <see cref="AscendingNode"/>
     public Angle LAN
     {
         get
@@ -244,6 +330,13 @@ public class Orbit
         }
     }
 
+    /// <summary>
+    /// Gets the maximum possible value for the true anomaly of the satellite, measured in radians.
+    /// </summary>
+    /// <remarks>
+    /// For open orbits not all values for the true anomaly are possible. For closed orbits all values are possible and this
+    /// property returns null.
+    /// </remarks>
     public Angle? MaxTrueAnomaly
     {
         get
@@ -257,6 +350,13 @@ public class Orbit
         }
     }
 
+    /// <summary>
+    /// Gets the value of the mean motion for the orbit. Measured in radians/second.
+    /// </summary>
+    /// <remarks>
+    /// The mean motion is the angular speed of a body in a circular orbit with the same angular momentum as the actual orbit
+    /// of the satellite. This value is useful when calculating the position of the satellite at a given time.
+    /// </remarks>
     public double MeanMotion
     {
         get
@@ -271,6 +371,10 @@ public class Orbit
         }
     }
 
+    /// <summary>
+    /// Gets the value of the gravitational parameter for the gravitational body that the satellite is orbiting. This is often
+    /// represented in writing by the Greek letter mu.
+    /// </summary>
     public float Mu 
     { 
         get 
@@ -279,6 +383,13 @@ public class Orbit
         } 
     }
 
+    /// <summary>
+    /// Gets the nodal vector for the orbit.
+    /// </summary>
+    /// <remarks>
+    /// The nodal vector points to the ascending node, where the orbiting body crosses the reference XY plane from below.
+    /// The magnitude of the vector is Sin(inclination).
+    /// </remarks>
     public Vector3d NVector
     {
         get
@@ -289,6 +400,13 @@ public class Orbit
         }
     }
 
+    /// <summary>
+    /// Gets the position vector for the periapsis point for the orbit.
+    /// </summary>
+    /// <remarks>
+    /// The periapsis point is the point along the orbital trajectory at which the separation between the satellite and the 
+    /// attracting body is at its minimum. 
+    /// </remarks>
     public Vector3d PeriapsisPoint
     {
         get
@@ -297,6 +415,10 @@ public class Orbit
         }
     }
 
+    /// <summary>
+    /// Gets the time in seconds for the satellite to complete one revolution of the orbit. For open orbits this returns 
+    /// positive infinity.
+    /// </summary>
     public double Period
     {
         get
@@ -308,6 +430,10 @@ public class Orbit
         }
     }
 
+    /// <summary>
+    /// Gets the type of conic section corresponding to the orbital trajectory of this orbit. Controlled by the eccentricity.
+    /// </summary>
+    /// <see cref="eccentricity"/>
     public ConicSection OrbitType
     {
         get
@@ -321,6 +447,15 @@ public class Orbit
         }
     }
 
+    /// <summary>
+    /// Gets or sets the radius of periapsis orbital element.
+    /// </summary>
+    /// <remarks>
+    /// The value of this orbital element is equal to the distance between the satellite and the attracting body when they are at 
+    /// their closest. This value is strictly positive and is measured in metres. Trying to set this to be less than zero will result 
+    /// in clamping up to zero.
+    /// </remarks>
+    /// <exception cref="ArgumentException">An attempt was made to set the radius of periapsis to NaN.</exception>
     public double RPE
     {
         get
@@ -336,6 +471,13 @@ public class Orbit
         }
     }
 
+    /// <summary>
+    /// Gets the size of the semi-latus rectum for the orbit measured in metres.
+    /// </summary>
+    /// <remarks>
+    /// The semi-latus rectum is the distance between the satellite and the attracting body when the satellite has a true 
+    /// anomaly of PI/2. This value is often helpful for calculating other properties of the orbit.
+    /// </remarks>
     public double SemiLatusRectum
     {
         get
@@ -344,6 +486,14 @@ public class Orbit
         }
     }
 
+    /// <summary>
+    /// Gets the semi-major axis for the orbit in metres.
+    /// </summary>
+    /// <remarks>
+    /// The semi-major axis is a measure of the size of the orbit. For closed orbits it is the average distance between the
+    /// satellite and the attracting body over one revolution. For parabolic orbits the semi-major axis is infinite, and for 
+    /// hyperbolic orbits the semi-major axis is negative.
+    /// </remarks>
     public double SemiMajorAxis
     {
         get
@@ -355,6 +505,13 @@ public class Orbit
         }
     }
 
+    /// <summary>
+    /// Gets the specific energy of the orbit measured in Joules/kg.
+    /// </summary>
+    /// <remarks>
+    /// The specific energy is the energy per unit mass of satellites travelling on the orbit. The total energy of the satellite
+    /// can thus be found by multiplying by the mass of the satellite.
+    /// </remarks>
     public double SpecificEnergy
     {
         get
@@ -363,6 +520,17 @@ public class Orbit
         }
     }
 
+    /// <summary>
+    /// Gets or sets the time of periapsis passage orbital element.
+    /// </summary>
+    /// <remarks>
+    /// The value of this orbital element is the time in seconds at which the satellite will be at the periapsis point. This 
+    /// orbital element thus specifies the positional information of the satellite, while the other orbital elements specify the 
+    /// orbit's geometry in space. For closed orbits (eccentricity < 1) the periodicity of the orbit means different choices for
+    /// this value are equivalent if the difference between the values is equal to the period of the orbit.
+    /// </remarks>
+    /// <exception cref="ArgumentException">An attempt was made to the time of periapsis passage to NaN.</exception>
+    /// <see cref="PeriapsisPoint"/>
     public double TPP
     {
         get
