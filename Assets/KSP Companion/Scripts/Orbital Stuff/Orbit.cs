@@ -226,12 +226,12 @@ public class Orbit
     /// The eccentricity vector points from the attracting body to the point of periapsis with a magnitude equal to the 
     /// eccentricity.
     /// </remarks>
-    public Vector3d EVector
+    public Vector3d EccentricityVector
     {
         get
         {
             double magnitude = eccentricity;
-            Quaterniond rotation = Quaterniond.AngleAxis(longitudeOfAscendingNode.DegValue, Vector3d.forward) * Quaterniond.AngleAxis(argumentOfPeriapsis.DegValue, HVector);
+            Quaterniond rotation = Quaterniond.AngleAxis(longitudeOfAscendingNode.DegValue, Vector3d.forward) * Quaterniond.AngleAxis(argumentOfPeriapsis.DegValue, SpecificAngularMomentumVector);
             return magnitude * (rotation * Vector3d.right);
         }
     }
@@ -274,7 +274,7 @@ public class Orbit
     /// momentum of the satellite, measured in metres^2/second. "Specific" here means that it is the angular momentum per unit mass,
     /// not the actual total angular momentum.
     /// </remarks>
-    public Vector3d HVector
+    public Vector3d SpecificAngularMomentumVector
     {
         get
         {
@@ -390,7 +390,7 @@ public class Orbit
     /// The nodal vector points to the ascending node, where the orbiting body crosses the reference XY plane from below.
     /// The magnitude of the vector is Sin(inclination).
     /// </remarks>
-    public Vector3d NVector
+    public Vector3d NodalVector
     {
         get
         {
@@ -786,7 +786,7 @@ public class Orbit
 
     public Vector3d TrueAnomaly2Velocity(Angle trueAnomaly)
     {
-        double angMomentum = HVector.magnitude;
+        double angMomentum = SpecificAngularMomentumVector.magnitude;
 
         Vector3d output;
         output.x = -Mu / angMomentum * (Mathf.Cos(longitudeOfAscendingNode) * (Mathf.Sin(argumentOfPeriapsis + trueAnomaly) + eccentricity * Mathf.Sin(argumentOfPeriapsis)) + Mathf.Sin(longitudeOfAscendingNode) * (Mathf.Cos(argumentOfPeriapsis + trueAnomaly) + ECC * Mathf.Cos(argumentOfPeriapsis)) * Mathf.Cos(inclination));
