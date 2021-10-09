@@ -25,18 +25,36 @@ public class Orbit
 {
     #region Fields
 
+    // This orbital element specifies the angle in radians between the ascending node vector and the point of
+    // periapsis of the orbit.
     protected Angle argumentOfPeriapsis;
 
+    // This orbital element defines the shape of the orbit. This value is strictly positive and dimensionless.
+    // Circular orbit:      Eccentricity = 0
+    // Elliptical orbit:    0 < Eccentricity < 1
+    // Parabolic orbit:     Eccentricity = 1
+    // Hyperbolic orbit:    Eccentricity > 1
     protected double eccentricity;
 
+    // This orbital element specifies the angle in radians between the orbital plane and the reference plane, which
+    // this class takes to be the XY plane.
     protected Angle inclination;
     
+    // The gravitational body that the satellite is orbiting.
     protected GravitationalBody gravitationalBody;
 
+    // This orbital element specifies the angle in radians between the reference direction (X axis) and the ascending
+    // node of the orbit.
     protected Angle longitudeOfAscendingNode;
 
+    // This orbital element defines the size of the orbit, and has a value equal to the distance between the satellite and
+    // the gravitational body when they are at their closest. The point at which this happens is known as the periapsis.
+    // This value is strictly positive, and is measured in metres.
     protected double radiusOfPeriapsis;
 
+    // This orbital element specifies the satellite's position in its orbit by specifying the time at which the satellite will
+    // be at the periapsis point. For closed orbits (eccentricity < 1) the periodicity of the orbit means different choices for
+    // this value are equivalent if the difference between the choices is equal to the period of the orbit. Measured in seconds.
     protected double timeOfPeriapsisPassage;
 
     #endregion
