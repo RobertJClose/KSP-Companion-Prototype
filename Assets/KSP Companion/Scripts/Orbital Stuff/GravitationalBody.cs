@@ -4,24 +4,73 @@ using UnityEngine;
 
 public class GravitationalBody
 {
-    [SerializeField]
-    private int id;
-    public int ID { get { return id; } }
-    [SerializeField]
-    private string nameOfBody;
-    public string Name { get { return nameOfBody; } }
-    [SerializeField]
-    private float gravitationalParameter;
-    public float GravParameter { get { return gravitationalParameter; } }
-    [SerializeField]
-    private float radius;
-    public float Radius { get { return radius; } }
-    [SerializeField]
-    private bool hasAtmosphere;
-    public bool HasAtmosphere { get { return hasAtmosphere; } }
-    [SerializeField]
-    private float atmosphereHeight;
-    public float AtmosphereHeight { get { return (hasAtmosphere == true) ? (atmosphereHeight) : (0f); } }
+    #region Fields
+
+    public static List<GravitationalBody> ListOfBodies = new List<GravitationalBody> { Kerbin };
+
+    public static List<string> ListOfBodyNames = new List<string> { Kerbin.Name };
+
+    protected float atmosphereHeight;
+
+    protected float gravitationalParameter;
+
+    protected bool hasAtmosphere;
+
+    protected int id;
+
+    protected string nameOfBody;
+
+    protected float radius;
+
+    #endregion
+
+    #region Constructors
+
+    private GravitationalBody(int bodyID, string bodyName, float bodyGravParameter, float bodyRadius, bool hasAtmos = false, float atmosHeight = 0f)
+    {
+        id = bodyID;
+        nameOfBody = bodyName;
+        gravitationalParameter = bodyGravParameter;
+        radius = bodyRadius;
+        hasAtmosphere = hasAtmos;
+        atmosphereHeight = atmosHeight;
+    }
+
+    #endregion
+
+    #region Properties
+
+    public static GravitationalBody Earth
+    {
+        get
+        {
+            return new GravitationalBody(1, "Earth", 3.986e+14f, 6371000f);
+        }
+    }
+
+    public static GravitationalBody Kerbin
+    {
+        get
+        {
+            return new GravitationalBody(1, "Kerbin", 3.5316e+12f, 6e+5f, true, 7e+4f);
+        }
+    }
+
+    public static GravitationalBody Jupiter
+    {
+        get
+        {
+            return new GravitationalBody(2, "Jupiter", 1.2669e+17f, 69911000f);
+        }
+    }
+
+    public float AtmosphereHeight
+    {
+        get
+        {
+            return (hasAtmosphere == true) ? (atmosphereHeight) : (0f);
+        }
+    }
 
     public Orbit DefaultOrbit
     {
@@ -38,6 +87,46 @@ public class GravitationalBody
         }
     }
 
+    public float GravParameter
+    {
+        get
+        {
+            return gravitationalParameter;
+        }
+    }
+
+    public bool HasAtmosphere
+    {
+        get
+        {
+            return hasAtmosphere;
+        }
+    }
+
+    public int ID
+    {
+        get
+        {
+            return id;
+        }
+    }
+
+    public string Name
+    {
+        get
+        {
+            return nameOfBody;
+        }
+    }
+
+    public float Radius
+    {
+        get
+        {
+            return radius;
+        }
+    }
+
     public Orbit ZeroOrbit
     {
         get
@@ -46,26 +135,5 @@ public class GravitationalBody
         }
     }
 
-    // *************** Static Members ***************
-    public static GravitationalBody Kerbin { get { return new GravitationalBody(1, "Kerbin", 3.5316e+12f, 6e+5f, true, 7e+4f); } }
-
-    public static GravitationalBody Earth { get { return new GravitationalBody(1, "Earth", 3.986e+14f, 6371000f); } }
-    public static GravitationalBody Jupiter { get { return new GravitationalBody(2, "Jupiter", 1.2669e+17f, 69911000f); } }
-
-    public static List<GravitationalBody> ListOfBodies = new List<GravitationalBody> { Kerbin };
-    public static List<string> ListOfBodyNames = new List<string> { Kerbin.Name };
-
-    // *************** Methods ***************
-
-    // *************** Constructors ***************
-
-    private GravitationalBody(int bodyID, string bodyName, float bodyGravParameter, float bodyRadius, bool hasAtmos = false, float atmosHeight = 0f)
-    {
-        id = bodyID;
-        nameOfBody = bodyName;
-        gravitationalParameter = bodyGravParameter;
-        radius = bodyRadius;
-        hasAtmosphere = hasAtmos;
-        atmosphereHeight = atmosHeight;
-    }
+    #endregion
 }
