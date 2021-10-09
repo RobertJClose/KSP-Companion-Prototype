@@ -254,7 +254,7 @@ public class Orbit
     /// <summary>
     /// Gets or sets the gravitational body that the satellite is orbiting.
     /// </summary>
-    public GravitationalBody GravitationalBody 
+    public GravitationalBody GravitationalBody
     { 
         get
         { 
@@ -375,7 +375,7 @@ public class Orbit
     /// Gets the value of the gravitational parameter for the gravitational body that the satellite is orbiting. This is often
     /// represented in writing by the Greek letter mu.
     /// </summary>
-    public float Mu 
+    public float Mu
     { 
         get 
         { 
