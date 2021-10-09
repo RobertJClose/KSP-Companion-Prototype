@@ -3,6 +3,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Represents the Keplerian orbit of a satellite.
+/// </summary>
+/// <remarks>
+/// All types of Keplerian orbit (circular, elliptical, parabolic, and hyperbolic) may be represented by an 
+/// instance of this class, with the exception of rectilinear orbits which are currently unsupported. 
+/// Each instance stores data that specifies the size, shape, and orientation of the orbit; as well as data that 
+/// specifies the position of the satellite along the orbit at a given time. This allows, for example, the 
+/// calculation of the position or velocity of the satellite at any other time. There are also methods for 
+/// converting measurements of a satellite's trajectory into the corresponding orbit and finding transfer 
+/// orbits between specified orbits.
+/// <para>
+/// A good understanding of the 'orbital elements' is helpful when using this class, in particular the meaning of the 
+/// periapsis radius, eccentricity, inclination, argument of periapsis, longitude of the ascending node, 
+/// time of periapsis passage, and the meaning of the true anomaly. 
+/// </para>
+/// </remarks>
 [System.Serializable]
 public class Orbit
 {
