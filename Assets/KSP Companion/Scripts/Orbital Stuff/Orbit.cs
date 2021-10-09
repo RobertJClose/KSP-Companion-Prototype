@@ -13,11 +13,13 @@ using UnityEngine;
 /// specifies the position of the satellite along the orbit at a given time. This allows, for example, the 
 /// calculation of the position or velocity of the satellite at any other time. There are also methods for 
 /// converting measurements of a satellite's trajectory into the corresponding orbit and finding transfer 
-/// orbits between specified orbits.
+/// trajectories between specified orbits.
 /// <para>
 /// A good understanding of the 'orbital elements' is helpful when using this class, in particular the meaning of the 
 /// periapsis radius, eccentricity, inclination, argument of periapsis, longitude of the ascending node, 
-/// time of periapsis passage, and the meaning of the true anomaly. 
+/// time of periapsis passage, and the meaning of the true anomaly. This class does not use the traditional semi-major axis
+/// as an orbital element, as the semi-major axis is degenerate for parabolic orbits. The semi-major axis still accessible
+/// through a read-only property.
 /// </para>
 /// </remarks>
 [System.Serializable]
