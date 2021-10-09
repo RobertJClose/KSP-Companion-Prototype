@@ -155,18 +155,6 @@ namespace Tests
             Assert.That(actual.TPP, Is.EqualTo(4_111.428195).Within(initial.TPP).Percent);
         }
 
-        [Test]
-        public void FindTransferOrbit_TransferAngleEqualsPI_ReturnsOrbitWithMinimumDeltaVCost()
-        {
-
-        }
-
-        [Test]
-        public void FindTransferOrbit_SameDepartureAndArrivalPointsWithNonZeroTimeOfFlight_ReturnsOrbitWithMinimumDeltaVCost()
-        {
-
-        }
-
         #endregion
 
         #region StateVectors2Orbit() tests
