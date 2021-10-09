@@ -61,9 +61,30 @@ public class Orbit
 
     #region Constructors
 
-    public Orbit(double periapsisRadius, double eccentricity, Angle inclination, Angle argumentOfPeriapsis, Angle longitudeOfAscendingNode, double timeOfPeriapsisPassage, GravitationalBody gravitationalBody)
+    /// <summary>
+    /// Initialises a new instace of the Orbit class, which represents a Keplerian orbit.
+    /// </summary>
+    /// <param name="radiusOfPeriapsis">The radius of periapsis of the orbit.</param>
+    /// <param name="eccentricity">The eccentricity of the orbit.</param>
+    /// <param name="inclination">The inclincation of the orbit.</param>
+    /// <param name="argumentOfPeriapsis">The argument of periapsis of the orbit.</param>
+    /// <param name="longitudeOfAscendingNode">The longitude of the ascending node of the orbit.</param>
+    /// <param name="timeOfPeriapsisPassage">The time of periapsis passage for the satellite on the orbit.</param>
+    /// <param name="gravitationalBody">The gravitational body that the satellite is orbiting.</param>
+    /// <remarks>
+    /// All of the passed argument values will be validated by the corresponding property setters to prevent the creation of 
+    /// an invalid orbit. For example, passing in <c><paramref name="eccentricity"/> = -1.0</c> will create an orbit with an
+    /// eccentricity of 0.
+    /// </remarks>
+    /// <see cref="RPE"/>
+    /// <see cref="ECC"/>
+    /// <see cref="INC"/>
+    /// <see cref="APE"/>
+    /// <see cref="LAN"/>
+    /// <see cref="TPP"/>
+    public Orbit(double radiusOfPeriapsis, double eccentricity, Angle inclination, Angle argumentOfPeriapsis, Angle longitudeOfAscendingNode, double timeOfPeriapsisPassage, GravitationalBody gravitationalBody)
     {
-        RPE = periapsisRadius;
+        RPE = radiusOfPeriapsis;
         ECC = eccentricity;
         INC = inclination;
         APE = argumentOfPeriapsis;
