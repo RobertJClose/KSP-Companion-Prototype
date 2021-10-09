@@ -957,10 +957,10 @@ public class Orbit
     private double MeanAnomaly2EccentricAnomaly(double meanAnomaly)
     {
         // Kepler's equation relates the mean anomaly to the eccentric anomaly, but is transcendental in the unknown variable E
-        // An initial guess is made for E (from Prussing & Conway), then iteration is used to find E.
+        // An initial guess is made for E (from Prussing & Conway), then Newton's method is used to find E.
 
         // Initial guess
-        double u = meanAnomaly + ECC; // Used in the initial guess.
+        double u = meanAnomaly + eccentricity; // Used in the initial guess.
         double eccentricAnomaly = (meanAnomaly * (1.0 - Math.Sin(u)) + u * Math.Sin(meanAnomaly)) / (1.0 + Math.Sin(meanAnomaly) - Math.Sin(u));
 
         int numIterations = 0;
@@ -998,7 +998,8 @@ public class Orbit
             numIterations++;
         }
 
-        // If the input meanAnomaly is large enough, the Sinh and Cosh functions will output NaN. In this case the method should return Infinity with the same sign as meanAnomaly.
+        // If the input meanAnomaly is large enough, the Sinh and Cosh functions will output NaN. In this case the method should
+        // return Infinity with the same sign as meanAnomaly.
         if (double.IsNaN(hyperbolicAnomaly))
             return (meanAnomaly > 0.0) ? double.PositiveInfinity : double.NegativeInfinity;
 
@@ -1008,8 +1009,8 @@ public class Orbit
     // Used by Time2TrueAnomaly() in the parabolic orbit case.
     private double MeanAnomaly2ParabolicAnomaly(double meanAnomaly)
     {
-        // For the parabolic case Barker's equation can give us the exact time without needing to solve a transcendental equation.
-        // We do still have to find the one real root of a depressed cubic polynomial using Cardano's method.
+        // For the parabolic case Barker's equation can give us the exact mean anomaly, unlike in the elliptical and hyperbolic case.
+        // We have to find the one real root of a depressed cubic polynomial using Cardano's method.
         double A = Math.Sqrt(9.0 * meanAnomaly * meanAnomaly + 8.0 * radiusOfPeriapsis * radiusOfPeriapsis * radiusOfPeriapsis);
         double termOne = Math.Pow(3.0 * meanAnomaly + A, 1.0 / 3.0);
         double termTwo = (3.0 * meanAnomaly - A > 0) ? Math.Pow(3.0 * meanAnomaly - A, 1.0 / 3.0) : -Math.Pow(3.0 * -meanAnomaly + A, 1.0 / 3.0); // Ugly but works without needing to define a custom cube root function that accepts negative inputs with fractional powers.
@@ -1052,6 +1053,8 @@ public class Orbit
     // Used by TrueAnomaly2Time() in the hyperbolic orbit case.
     private double TrueAnomaly2HyperbolicAnomaly(Angle trueAnomaly)
     {
+        // If the input true anomaly is unreachable by this hyperbolic orbit, change the true anomaly to whichever of the
+        // max/min true anomaly is closest.
         trueAnomaly = Angle.Expel(trueAnomaly, MaxTrueAnomaly ?? Angle.Zero, 2f * Mathf.PI - (MaxTrueAnomaly ?? Angle.Zero));
 
         if (trueAnomaly == MaxTrueAnomaly)
