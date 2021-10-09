@@ -241,13 +241,16 @@ public class Orbit
     /// </summary>
     /// <remarks>
     /// The excess velocity is the speed of the satellite that is left after escaping to inifinity. For closed orbits it is 
-    /// undefined, for parabolic orbits it is equal to zero, and for hyperbolic orbits it is strictly positive. 
+    /// undefined and null is returned, for parabolic orbits it is equal to zero, and for hyperbolic orbits it is strictly positive. 
     /// </remarks>
-    public double ExcessVelocity
+    public double? ExcessVelocity
     {
         get
         {
-            return Math.Sqrt(Mu / (-SemiMajorAxis));
+            if (OrbitType == ConicSection.Elliptical)
+                return null;
+            else
+                return Math.Sqrt(Mu / (-SemiMajorAxis));
         }
     }
 
