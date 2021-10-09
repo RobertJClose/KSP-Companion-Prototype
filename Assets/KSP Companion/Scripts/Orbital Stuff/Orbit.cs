@@ -267,24 +267,6 @@ public class Orbit
     }
 
     /// <summary>
-    /// Gets the specific angular momentum vector for the orbit.
-    /// </summary>
-    /// <remarks>
-    /// The specific angular momentum vector is normal to the orbital plane, with a magnitude equal to the specific angular
-    /// momentum of the satellite, measured in metres^2/second. "Specific" here means that it is the angular momentum per unit mass,
-    /// not the actual total angular momentum.
-    /// </remarks>
-    public Vector3d SpecificAngularMomentumVector
-    {
-        get
-        {
-            double magnitude = Math.Sqrt(SemiLatusRectum * Mu);
-            Quaterniond rotation = Quaterniond.AngleAxis(inclination.DegValue, Vector3d.right) * Quaterniond.AngleAxis(longitudeOfAscendingNode.DegValue, Vector3d.forward);
-            return magnitude * (rotation * Vector3d.forward);
-        }
-    }
-
-    /// <summary>
     /// Gets or sets the inclination orbital element.
     /// </summary>
     /// <remarks>
@@ -502,6 +484,24 @@ public class Orbit
                 return double.PositiveInfinity;
             else
                 return radiusOfPeriapsis / (1.0 - eccentricity);
+        }
+    }
+
+    /// <summary>
+    /// Gets the specific angular momentum vector for the orbit.
+    /// </summary>
+    /// <remarks>
+    /// The specific angular momentum vector is normal to the orbital plane, with a magnitude equal to the specific angular
+    /// momentum of the satellite, measured in metres^2/second. "Specific" here means that it is the angular momentum per unit mass,
+    /// not the actual total angular momentum.
+    /// </remarks>
+    public Vector3d SpecificAngularMomentumVector
+    {
+        get
+        {
+            double magnitude = Math.Sqrt(SemiLatusRectum * Mu);
+            Quaterniond rotation = Quaterniond.AngleAxis(inclination.DegValue, Vector3d.right) * Quaterniond.AngleAxis(longitudeOfAscendingNode.DegValue, Vector3d.forward);
+            return magnitude * (rotation * Vector3d.forward);
         }
     }
 
