@@ -46,9 +46,6 @@ namespace Tests
             double timeOne = 1_000.0;
             double timeTwo = 3_200.0;
 
-            Vector3d positionOne = original.Time2Point(timeOne);
-            Vector3d positionTwo = original.Time2Point(timeTwo);
-
             // Act
             Orbit actual = Orbit.FindTransferOrbit(original, timeOne, original, timeTwo);
 
@@ -70,9 +67,6 @@ namespace Tests
             double departureTime = 4_000.0;
             double arrivalTime = 5_330.0;
 
-            Vector3d positionOne = original.Time2Point(departureTime);
-            Vector3d positionTwo = original.Time2Point(arrivalTime);
-
             // Act
             Orbit actual = Orbit.FindTransferOrbit(original, departureTime, original, arrivalTime);
 
@@ -93,9 +87,6 @@ namespace Tests
 
             double departureTime = 500.0;
             double arrivalTime = 5_000.0;
-
-            Vector3d positionOne = original.Time2Point(departureTime);
-            Vector3d positionTwo = original.Time2Point(arrivalTime);
 
             // Act
             Orbit actual = Orbit.FindTransferOrbit(original, departureTime, original, arrivalTime);
