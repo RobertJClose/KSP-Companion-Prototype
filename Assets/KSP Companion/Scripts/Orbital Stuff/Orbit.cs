@@ -1095,11 +1095,13 @@ public class Orbit
 
     #region Classes
 
+    // This static nested class provides a method for solving Lambert's problem.
+    // The algorithm used to solve Lambert's problem comes from the paper "Revisiting Lambert's Problem" by 
+    // Dario Izzo in 2014.
     protected static class LambertsProblemHelper
     {
-        // Reference paper:
-        // Revisiting Lambert's Problem - Dario Izzo (2014)
-
+        // This method solves Lambert's problem to produce the terminal velocity vectors of a satellite that has a position given 
+        // by positionOne/Two at timeOne/Two. These may then be used, for example, to calculate the orbit of the satellite.
         public static Vector3d[] Solver(GravitationalBody body, Vector3d positionOne, double timeOne, Vector3d positionTwo, double timeTwo)
         {
             double chordLength = (positionTwo - positionOne).magnitude;
@@ -1183,7 +1185,7 @@ public class Orbit
                 T = TOfX(x, y, lambda);
                 Td = TFirstDerivative(x, y, lambda, T);
                 Tdd = TSecondDerivative(x, y, lambda, T, Td);
-                Tddd = TThirdDerivative(x, y, lambda, T, Td, Tdd);
+                Tddd = TThirdDerivative(x, y, lambda, Td, Tdd);
 
                 // Iterate the next guess for x
                 x = x - (T - TStar) * (Td * Td - 0.5 * (T - TStar) * Tdd) / (Td * (Td * Td - (T - TStar) * Tdd) + 1.0 / 6.0 * (T - TStar) * (T - TStar) * Tddd);
@@ -1213,7 +1215,7 @@ public class Orbit
             return 1.0 / (1.0 - x * x) * (3.0 * T + 5.0 * x * TfirstDeriv + 2.0 * (1 - lambda * lambda) * lambda * lambda * lambda / y / y / y);
         }
 
-        private static double TThirdDerivative(double x, double y, double lambda, double T, double TFirstDeriv, double TSecondDeriv)
+        private static double TThirdDerivative(double x, double y, double lambda, double TFirstDeriv, double TSecondDeriv)
         {
             return 1.0 / (1.0 - x * x) * (7.0 * x * TSecondDeriv + 8.0 * TFirstDeriv - 6.0 * (1.0 - lambda * lambda) * Math.Pow(lambda, 5.0) * x / Math.Pow(y, 5.0));
         }
