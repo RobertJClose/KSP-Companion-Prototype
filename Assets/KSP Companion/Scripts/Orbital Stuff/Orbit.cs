@@ -316,8 +316,8 @@ public class Orbit
     /// Gets the maximum possible value for the true anomaly of the satellite, measured in radians.
     /// </summary>
     /// <remarks>
-    /// For open orbits not all values for the true anomaly are possible. For closed orbits all values are possible and this
-    /// property returns null.
+    /// For open orbits not all values for the true anomaly are possible, as the satellite will have escaped to infinity. 
+    /// For closed orbits all values are possible and this property returns null.
     /// </remarks>
     public Angle? MaxTrueAnomaly
     {
