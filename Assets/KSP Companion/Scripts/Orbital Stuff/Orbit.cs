@@ -1078,6 +1078,9 @@ public class Orbit
 
     #region Enums
 
+    /// <summary>
+    /// Specifies what type of conic section matches the orbital trajectory curve for an orbit.
+    /// </summary>
     public enum ConicSection
     {
         Elliptical,
