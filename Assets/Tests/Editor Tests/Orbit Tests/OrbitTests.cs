@@ -152,7 +152,7 @@ namespace Tests
             Assert.That(actual.INC.RadValueMinusPiToPiRange, Is.EqualTo(initial.INC.RadValueMinusPiToPiRange).Within(0.01));
             Assert.That(actual.APE.RadValueMinusPiToPiRange, Is.EqualTo(initial.APE.RadValueMinusPiToPiRange).Within(0.01));
             Assert.That(actual.LAN.RadValueMinusPiToPiRange, Is.EqualTo(initial.LAN.RadValueMinusPiToPiRange).Within(0.01));
-            Assert.That(actual.TPP, Is.EqualTo(4_111.428195).Within(initial.TPP).Percent);
+            Assert.That(actual.TPP, Is.EqualTo(initial.TPP).Within(0.01).Percent);
         }
 
         #endregion
