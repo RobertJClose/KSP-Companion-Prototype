@@ -550,6 +550,23 @@ public class Orbit
 
     #region Public Methods
 
+    /// <summary>
+    /// Calculates an orbit that transfers between two orbits at a given departure time and arrival time.
+    /// </summary>
+    /// <param name="initialOrbit">The orbit that the satellite starts on.</param>
+    /// <param name="departureTime">The time at which the satellite maneuvers off the initial orbit.</param>
+    /// <param name="targetOrbit">The orbit that the satellite will arrive at.</param>
+    /// <param name="arrivalTime">The time at which the satellite arrives at the target orbit.</param>
+    /// <returns>
+    /// An orbit that transfers the satellite from the initial orbit to the target orbit if leaving the initial
+    /// orbit at the departure time and arriving at the target orbit at the arrival time.
+    /// <para>
+    /// For almost all cases there is a unique choice for the transfer orbit. The exceptions to this occur when the angle between 
+    /// the departure and arrival points is 0 or 2PI. In these cases, the transfer orbit's orientation in space is not 
+    /// uniquely determined. The returned orbit is chosen to have the same orientation as the initial orbit. In the case that 
+    /// there is no possible transfer orbit, null is returned.
+    /// </para>
+    /// </returns>
     public static Orbit FindTransferOrbit(Orbit initialOrbit, double departureTime, Orbit targetOrbit, double arrivalTime)
     {
         // First check that the initial and final orbits are around the same body. This should ALWAYS be the case, and if a
@@ -590,7 +607,16 @@ public class Orbit
         return StateVectors2Orbit(initialOrbit.gravitationalBody, departurePoint, terminalVelocities[0], departureTime);
     }
 
-    public static Orbit StateVectors2Orbit(GravitationalBody body, Vector3d position, Vector3d velocity, double time)
+    /// <summary>
+    /// Converts a measurement of the position and velocity of a satellite at a particular time into the orbit that the satellite
+    /// must be on.
+    /// </summary>
+    /// <param name="body">The gravitational body that the satellite is orbiting around.</param>
+    /// <param name="position">The position vector of the satellite.</param>
+    /// <param name="velocity">The velocity vector of the satellite.</param>
+    /// <param name="measurementTime">The time at which the position and velocity vectors were measured.</param>
+    /// <returns>The orbit that the satellite must be travelling on.</returns>
+    public static Orbit StateVectors2Orbit(GravitationalBody body, Vector3d position, Vector3d velocity, double measurementTime)
     {
         double periapsisRadius;
         double eccentricity;
@@ -600,8 +626,11 @@ public class Orbit
         double timeOfPeriapsisPassage;
         float trueAnomaly;
 
+        // Specific angular momentum vector.
         Vector3d hVector = Vector3d.Cross(position, velocity);
+        // Eccentricity vector. Points at the periapsis point with a magnitude of the eccentricity.
         Vector3d eVector = 1.0 / body.GravParameter * Vector3d.Cross(velocity, hVector) - position.normalized;
+        // Nodal vector. Points at the ascending node with a magnitude of Sin(inclination).
         Vector3d nVector = Vector3d.Cross(Vector3d.forward, hVector.normalized);
 
         trueAnomaly = (float)Math.Acos(Vector3d.Dot(eVector, position) / (eVector.magnitude * position.magnitude));
@@ -635,15 +664,50 @@ public class Orbit
                 longitudeOfAscendingNode = 2.0f * Mathf.PI - longitudeOfAscendingNode;
         }
 
+        // The code for calculating the time of periapsis passage is a bit awkward. 
+        // By this point we know the size, shape, and orientation of the orbit, so we can make a new Orbit object that has
+        // the correct geometry, but with the periapsis passage incorrectly set to 0.0s. The TrueAnomaly2Time() method, when
+        // called on that object with the calculated value for the true anomaly, will then return how long it takes to travel
+        // between the periapsis point and the position/velocity measurement point - for an orbit with this geometry.
+        // This time can then be used to work out what the time of periapsis passage must've been for the actual measured satellite. 
         Orbit orbit = new Orbit(periapsisRadius, eccentricity, inclination, argumentOfPeriapsis, longitudeOfAscendingNode, 0.0, body);
         double timeFromPeriapsisToTrueAnomaly = orbit.TrueAnomaly2Time(trueAnomaly);
-        timeOfPeriapsisPassage = time - timeFromPeriapsisToTrueAnomaly;
+        timeOfPeriapsisPassage = measurementTime - timeFromPeriapsisToTrueAnomaly;
         orbit.TPP = timeOfPeriapsisPassage;
 
         return orbit;
     }
 
-    public List<Vector3d> OrbitalPoints(Angle? startTrueAnomaly, Angle? endTrueAnomaly, out List<Angle> trueAnomalies, Angle stepRad)
+    /// <summary>
+    /// Produces a list of points along the orbital trajectory.
+    /// </summary>
+    /// <param name="startTrueAnomaly">
+    /// The true anomaly of the first point in the list. If this value is null, or is equal to <paramref name="endTrueAnomaly"/>,
+    /// then the entire orbit is output.
+    /// </param>
+    /// <param name="endTrueAnomaly">
+    /// The true anomaly of the final point in the list. If this value is null, or is equal to <paramref name="startTrueAnomaly"/>,
+    /// then the entire orbit is output.
+    /// </param>
+    /// <param name="trueAnomalies">Out parameter containing the true anomaly values of the outputted points in the list.</param>
+    /// <param name="maxTrueAnomalyStep">
+    /// The maximum step in true anomaly between adjacent points in the list, in radians. The list requires an integer number of 
+    /// points, so the actual spacing between adjacent points is adjusted be as close to the value of this parameter, but never
+    /// larger than it.
+    /// </param>
+    /// <returns>
+    /// A list of Vector3 points that sit on the orbital trajectory of the orbit. If <paramref name="startTrueAnomaly"/> is null,
+    /// then the first point in the list has a true anomaly of 0.
+    /// <para>
+    /// When outputting a complete elliptical orbit, the final point in the list has a true anomaly slightly smaller than the first
+    /// point in the list. That is, the first and last points in the list are not the same.
+    /// </para>
+    /// <para>
+    /// When outputting a complete open orbit, if the true anomaly of a point is beyond the maximum/minimum true anomaly, then
+    /// the Vector3.positiveInfinity point is output in the list. <see cref="MaxTrueAnomaly"/>
+    /// </para>
+    /// </returns>
+    public List<Vector3d> OrbitalPoints(Angle? startTrueAnomaly, Angle? endTrueAnomaly, out List<Angle> trueAnomalies, Angle maxTrueAnomalyStep)
     {
         // This method returns a List containing 3D points that trace the trajectory of this orbit, starting at the 'startTrueAnomaly' 
         // and ending at the 'endTrueAnomaly'. If the start and end points are the same then the whole orbit is output.
@@ -657,9 +721,9 @@ public class Orbit
         else
             angularRange = endTrueAnomaly.Value - startTrueAnomaly.Value;
 
-        int numberOfPoints = Mathf.CeilToInt(angularRange.RadValue / stepRad.RadValue);
+        int numberOfPoints = Mathf.CeilToInt(angularRange.RadValue / maxTrueAnomalyStep.RadValue);
 
-        // Adjust the angular spacing if 'stepRad' doesn't evenly divide the range of angles.
+        // Adjust the angular spacing to ensure an integer number of points is output.
         Angle actualStep = angularRange.RadValue / numberOfPoints;
 
         // Create the list to be output and fill it with points
@@ -686,12 +750,28 @@ public class Orbit
         return outputPoints;
     }
 
+    /// <summary>
+    /// Calculates the position of the satellite at a given time.
+    /// </summary>
+    /// <param name="time">The time in seconds to calculate the satellite's position.</param>
+    /// <returns>The position of the satellite at the given time.</returns>
     public Vector3d Time2Point(double time)
     {
         Angle trueAnomaly = Time2TrueAnomaly(time);
         return TrueAnomaly2Point(trueAnomaly);
     }
 
+    /// <summary>
+    /// Calculates the true anomaly of the satellite at a given time.
+    /// </summary>
+    /// <param name="time">The time at which the true anomaly is to be calculated. Measured in seconds.</param>
+    /// <returns>
+    /// The true anomaly of the satellite at the given time. Measured in radians.
+    /// <para>
+    /// For open orbits, passing in positive/negative infinity for <paramref name="time"/> will return either the 
+    /// maximum or minimum true anomaly value. <see cref="MaxTrueAnomaly"/>
+    /// </para>
+    /// </returns>
     public Angle Time2TrueAnomaly(double time)
     {
         double meanAnomaly = Time2MeanAnomaly(time);
@@ -727,17 +807,37 @@ public class Orbit
         return trueAnomaly;
     }
 
+    /// <summary>
+    /// Calculates the velocity of the satellite at a given time.
+    /// </summary>
+    /// <param name="time">The time in seconds at which to calculate the velocity of the satellite.</param>
+    /// <returns>The velocity of the satellite at the given time.</returns>
     public Vector3d Time2Velocity(double time)
     {
         Angle trueAnomaly = Time2TrueAnomaly(time);
         return TrueAnomaly2Velocity(trueAnomaly);
     }
 
+    /// <summary>
+    /// Returns a string containing the values of all the orbital elements of the orbit.
+    /// </summary>
+    /// <returns>A string containing the values of all the orbital elements of the orbit.</returns>
     public override string ToString()
     {
         return "RPE: " + radiusOfPeriapsis + "\nECC: " + eccentricity + "\nINCd: " + inclination.DegValue + "\nAPEd: " + argumentOfPeriapsis.DegValue + "\nLANd: " + longitudeOfAscendingNode.DegValue + "\nTPP: " + timeOfPeriapsisPassage + '\n' + base.ToString();
     }
 
+    /// <summary>
+    /// Calculates the position of the satellite for a given true anomaly.
+    /// </summary>
+    /// <param name="trueAnomaly">The true anomaly of the satellite, measured in radians.</param>
+    /// <returns>
+    /// The position of the satellite for the given true anomaly.
+    /// <para>
+    /// For open orbits, if <paramref name="trueAnomaly"/> is beyond the maximum/minimum true anomaly, then
+    /// the positive infinity vector is returned. <see cref="MaxTrueAnomaly"/>
+    /// </para>
+    /// </returns>
     public Vector3d TrueAnomaly2Point(Angle trueAnomaly)
     {
         trueAnomaly = Angle.Expel(trueAnomaly, MaxTrueAnomaly ?? Angle.Zero, -(MaxTrueAnomaly ?? Angle.Zero));
@@ -755,6 +855,20 @@ public class Orbit
         return output;
     }
 
+    /// <summary>
+    /// Calculates at what time the satellite will have a given true anomaly.
+    /// </summary>
+    /// <param name="trueAnomaly">The true anomaly of a point along the orbital trajectory. Measured in radians.</param>
+    /// <returns>
+    /// The time in seconds at which the satellite reaches the point with the given true anomaly.
+    /// <para>
+    /// Elliptical orbits: the returned time is always within one orbital period of the time of periapsis passage. 
+    /// Parabolic orbits: if <paramref name="trueAnomaly"/> is PI, then positive infinity is returned. 
+    /// Hyperbolic orbits: if <paramref name="trueAnomaly"/> is some unreachable value, then either positive or 
+    /// negative infinity is returned depending on whether <paramref name="trueAnomaly"/> is closer to the 
+    /// maximum true anomaly or the minimum true anomaly of the orbit. <see cref="MaxTrueAnomaly"/>
+    /// </para>
+    /// </returns>
     public double TrueAnomaly2Time(Angle trueAnomaly)
     {
         double meanAnomaly;
@@ -784,6 +898,11 @@ public class Orbit
         return time;
     }
 
+    /// <summary>
+    /// Calculates the velocity of the satellite at a given true anomaly.
+    /// </summary>
+    /// <param name="trueAnomaly">The true anomaly of a point along the orbital trajectory. Measured in radians.</param>
+    /// <returns>The velocity of the satellite at the point with the given true anomaly.</returns>
     public Vector3d TrueAnomaly2Velocity(Angle trueAnomaly)
     {
         double angMomentum = SpecificAngularMomentumVector.magnitude;
