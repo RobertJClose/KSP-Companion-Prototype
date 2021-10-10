@@ -6,21 +6,11 @@ public class GravitationalBody
 {
     #region Fields
 
-    public static List<GravitationalBody> ListOfBodies = new List<GravitationalBody> { Kerbin };
-
-    public static List<string> ListOfBodyNames = new List<string> { Kerbin.Name };
-
-    // The height of the atmosphere, if it has one. 
-    // For KSP bodies this is the height quoted in-game and in the wiki.
-    // For Solar planets this variable 
-    protected float atmosphereHeight;
+    public static List<GravitationalBody> ListOfKSPBodies = new List<GravitationalBody> { Kerbin };
 
     // The gravitational parameter for the body. This is equal to the mass of the body multiplied by
     // the gravitational constant G. In writing, this is often represented by the Greek letter mu.
     protected float gravitationalParameter;
-
-    // Indicates whether the gravitational body has an atmosphere.
-    protected bool hasAtmosphere;
 
     // The ID number for the gravitational body.
     // For KSP bodies, this ID number matches the ID number used by KSP.
@@ -44,14 +34,12 @@ public class GravitationalBody
 
     #region Constructors
 
-    private GravitationalBody(int bodyID, string bodyName, float bodyGravParameter, float bodyRadius, bool hasAtmos = false, float atmosHeight = 0f)
+    private GravitationalBody(int bodyID, string bodyName, float bodyGravParameter, float bodyRadius)
     {
         id = bodyID;
         nameOfBody = bodyName;
         gravitationalParameter = bodyGravParameter;
         radius = bodyRadius;
-        hasAtmosphere = hasAtmos;
-        atmosphereHeight = atmosHeight;
     }
 
     #endregion
@@ -70,7 +58,7 @@ public class GravitationalBody
     {
         get
         {
-            return new GravitationalBody(1, "Kerbin", 3.5316e+12f, 6e+5f, true, 7e+4f);
+            return new GravitationalBody(1, "Kerbin", 3.5316e+12f, 6e+5f);
         }
     }
 
@@ -82,19 +70,11 @@ public class GravitationalBody
         }
     }
 
-    public float AtmosphereHeight
-    {
-        get
-        {
-            return (hasAtmosphere == true) ? (atmosphereHeight) : (0f);
-        }
-    }
-
     public Orbit DefaultOrbit
     {
         get
         {
-            double periapsisRadius = Mathf.Ceil((Radius + AtmosphereHeight) * 1.05f / 25000f) * 25000f; // The Ceil() call and factors of 25,000 make the default radius round up to a multiple of 25km
+            double periapsisRadius = Mathf.Ceil(radius * 1.05f / 25000f) * 25000f; // The Ceil() call and factors of 25,000 make the default radius round up to a multiple of 25km
             double eccentricity = 0.2f;
             Angle inclination = 0f;
             Angle argumentOfPeriapsis = 0f;
@@ -110,14 +90,6 @@ public class GravitationalBody
         get
         {
             return gravitationalParameter;
-        }
-    }
-
-    public bool HasAtmosphere
-    {
-        get
-        {
-            return hasAtmosphere;
         }
     }
 
