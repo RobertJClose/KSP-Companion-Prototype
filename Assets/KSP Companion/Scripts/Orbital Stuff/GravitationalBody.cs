@@ -35,7 +35,7 @@ public class GravitationalBody
 
     #region Constructors
 
-    private GravitationalBody(int bodyID, string bodyName, float bodyGravParameter, float bodyRadius)
+    private GravitationalBody(int bodyID, string bodyName, double bodyGravParameter, double bodyRadius)
     {
         id = bodyID;
         nameOfBody = bodyName;
