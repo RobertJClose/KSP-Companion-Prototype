@@ -311,7 +311,7 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     /// <returns>False if the other object is null, of a different type, or is a different GravitationalBody object.</returns>
     public override bool Equals(object obj)
     {
-        if (obj == null && !GetType().Equals(obj.GetType()))
+        if (obj == null || !GetType().Equals(obj.GetType()))
             return false;
 
         return Equals((GravitationalBody)obj);
