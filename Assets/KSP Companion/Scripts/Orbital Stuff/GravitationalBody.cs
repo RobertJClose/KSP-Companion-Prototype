@@ -11,7 +11,7 @@ public class GravitationalBody
 
     // The gravitational parameter for the body. This is equal to the mass of the body multiplied by
     // the gravitational constant G. In writing, this is often represented by the Greek letter mu.
-    protected float gravitationalParameter;
+    protected double gravitationalParameter;
 
     // The ID number for the gravitational body.
     // For KSP bodies, this ID number matches the reference code used by KSP in the save files. See the "Orbit" page on the wiki.
@@ -29,7 +29,7 @@ public class GravitationalBody
     // For KSP bodies, this is the radius quoted in game and in the wiki.
     // For Solar bodies, this value is the equatorial radius quoted on Wikipedia of the planet on the 9th of
     // October, 2021. 
-    protected float radius;
+    protected double radius;
 
     #endregion
 
@@ -75,7 +75,7 @@ public class GravitationalBody
     {
         get
         {
-            double periapsisRadius = Mathf.Ceil(radius * 1.05f / 25000f) * 25000f; // The Ceil() call and factors of 25,000 make the default radius round up to a multiple of 25km
+            double periapsisRadius = Mathd.Ceil(radius * 1.05 / 25000.0) * 25000.0; // The Ceil() call and factors of 25,000 make the default radius round up to a multiple of 25km
             double eccentricity = 0.2f;
             Angle inclination = 0f;
             Angle argumentOfPeriapsis = 0f;
@@ -86,7 +86,7 @@ public class GravitationalBody
         }
     }
 
-    public float GravParameter
+    public double GravParameter
     {
         get
         {
@@ -110,7 +110,7 @@ public class GravitationalBody
         }
     }
 
-    public float Radius
+    public double Radius
     {
         get
         {

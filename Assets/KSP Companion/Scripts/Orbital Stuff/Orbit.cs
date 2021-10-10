@@ -351,7 +351,7 @@ public class Orbit
             if (OrbitType == ConicSection.Parabolic)
             {
                 // Parabolic case
-                return Mathf.Sqrt(Mu);
+                return Mathd.Sqrt(Mu);
             }
 
             return Math.Sqrt(Mu / (Math.Abs(SemiMajorAxis) * Math.Abs(SemiMajorAxis) * Math.Abs(SemiMajorAxis)));
@@ -362,7 +362,7 @@ public class Orbit
     /// Gets the value of the gravitational parameter for the gravitational body that the satellite is orbiting. This is often
     /// represented in writing by the Greek letter mu.
     /// </summary>
-    public float Mu
+    public double Mu
     { 
         get 
         { 
