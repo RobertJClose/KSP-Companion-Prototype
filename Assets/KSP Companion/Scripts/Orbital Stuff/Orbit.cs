@@ -572,12 +572,13 @@ public class Orbit
     /// there is no possible transfer orbit, null is returned.
     /// </para>
     /// </returns>
+    /// <exception cref="ArgumentException">The initial and the target orbit are around different GravitationalBodies.</exception>
     public static Orbit FindTransferOrbit(Orbit initialOrbit, double departureTime, Orbit targetOrbit, double arrivalTime)
     {
         // First check that the initial and final orbits are around the same body. This should ALWAYS be the case, and if a
         // caller is failing to do this that's a developer error.
-        //if (initialOrbit.attractingBody != targetOrbit.attractingBody)
-        //    throw new ArgumentException("The initial and target orbits should be around the same gravitational body", "initialOrbit, targetOrbit");
+        if (initialOrbit.gravitationalBody != targetOrbit.gravitationalBody)
+            throw new ArgumentException("The initial and target orbits must be around the same gravitational body", "initialOrbit, targetOrbit");
 
         // Calculate the departure and arrival points in space
         Vector3d departurePoint = initialOrbit.Time2Point(departureTime);
