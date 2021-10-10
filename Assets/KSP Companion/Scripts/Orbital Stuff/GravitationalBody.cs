@@ -223,6 +223,9 @@ public class GravitationalBody
         }
     }
 
+    /// <summary>
+    /// Gets the value of the gravitational parameter for the body.
+    /// </summary>
     public double GravParameter
     {
         get
@@ -231,6 +234,9 @@ public class GravitationalBody
         }
     }
 
+    /// <summary>
+    /// Gets the ID number for the body.
+    /// </summary>
     public int ID
     {
         get
@@ -239,6 +245,9 @@ public class GravitationalBody
         }
     }
 
+    /// <summary>
+    /// Gets the name of the body.
+    /// </summary>
     public string Name
     {
         get
@@ -247,6 +256,9 @@ public class GravitationalBody
         }
     }
 
+    /// <summary>
+    /// Gets the radius of the body.
+    /// </summary>
     public double Radius
     {
         get
@@ -255,6 +267,9 @@ public class GravitationalBody
         }
     }
 
+    /// <summary>
+    /// Gets an Orbit around this gravitational body, with all the orbital elements set to zero.
+    /// </summary>
     public Orbit ZeroOrbit
     {
         get
