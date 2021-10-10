@@ -200,16 +200,24 @@ public class GravitationalBody
         }
     }
 
+    /// <summary>
+    /// Gets the default orbit around a gravitational body.
+    /// </summary>
+    /// <remarks>
+    /// The default orbit has a periapsis radius equal to the smallest multiple of 25,000 that is larger than 1.05 times the body's
+    /// radius. The eccentricity, inclination, argument of periapsis, longitude of the ascending node, and time of periapsis passage
+    /// for the default orbit is 0.0.
+    /// </remarks>
     public Orbit DefaultOrbit
     {
         get
         {
             double periapsisRadius = Mathd.Ceil(radius * 1.05 / 25000.0) * 25000.0; // The Ceil() call and factors of 25,000 make the default radius round up to a multiple of 25km
-            double eccentricity = 0.2f;
+            double eccentricity = 0.0;
             Angle inclination = 0f;
             Angle argumentOfPeriapsis = 0f;
             Angle longitudeOfAscendingNode = 0f;
-            double timeOfPeriapsisPassage = 0f;
+            double timeOfPeriapsisPassage = 0.0;
 
             return new Orbit(periapsisRadius, eccentricity, inclination, argumentOfPeriapsis, longitudeOfAscendingNode, timeOfPeriapsisPassage, this);
         }
