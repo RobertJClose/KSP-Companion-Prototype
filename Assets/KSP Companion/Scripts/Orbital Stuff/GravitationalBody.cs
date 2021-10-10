@@ -19,15 +19,6 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     // the gravitational constant G. In writing, this is often represented by the Greek letter mu.
     protected double gravitationalParameter;
 
-    // The ID number for the gravitational body.
-    // For KSP bodies, this ID number matches the reference code used by KSP in the save files. See the "Orbit" page on the wiki.
-    // For Solar bodies, the ID number is a three digit number: XYY.
-    // X corresponds to the planet's/parent planet's order out from the Sun.
-    // YY is 00 for planets, and for moons corresponds to the moon's order away from the planet as of semi-major axis
-    // measurements on the 10th of October, 2021.
-    // So Earth: 300. Jupiter: 500. Bergelmir: 451.
-    protected int id;
-
     // The name of the gravitational body.
     protected string nameOfBody;
 
@@ -42,9 +33,8 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     #region Constructors
 
     // Initialises a new GravitationalBody object.
-    private GravitationalBody(int bodyID, string bodyName, double bodyGravParameter, double bodyRadius)
+    private GravitationalBody(string bodyName, double bodyGravParameter, double bodyRadius)
     {
-        id = bodyID;
         nameOfBody = bodyName;
         gravitationalParameter = bodyGravParameter;
         radius = bodyRadius;
@@ -58,7 +48,7 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     {
         get
         {
-            return new GravitationalBody(11, "Bop", 2.4868349e+9, 65_000.0);
+            return new GravitationalBody("Bop", 2.4868349e+9, 65_000.0);
         }
     }
 
@@ -66,7 +56,7 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     {
         get
         {
-            return new GravitationalBody(15, "Dres", 2.1484489e+10, 138_000.0);
+            return new GravitationalBody("Dres", 2.1484489e+10, 138_000.0);
         }
     }
 
@@ -74,7 +64,7 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     {
         get
         {
-            return new GravitationalBody(5, "Duna", 3.0136321e+11, 320_000.0);
+            return new GravitationalBody("Duna", 3.0136321e+11, 320_000.0);
         }
     }
 
@@ -82,7 +72,7 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     {
         get
         {
-            return new GravitationalBody(1, "Earth", 3.986e+14, 6371000.0);
+            return new GravitationalBody("Earth", 3.986e+14, 6371000.0);
         }
     }
 
@@ -90,7 +80,7 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     {
         get
         {
-            return new GravitationalBody(16, "Eeloo", 7.4410815e+10, 210_000.0);
+            return new GravitationalBody("Eeloo", 7.4410815e+10, 210_000.0);
         }
     }
 
@@ -98,7 +88,7 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     {
         get
         {
-            return new GravitationalBody(5, "Eve", 8.1717302e+12, 700_000.0);
+            return new GravitationalBody("Eve", 8.1717302e+12, 700_000.0);
         }
     }
 
@@ -106,7 +96,7 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     {
         get
         {
-            return new GravitationalBody(13, "Gilly", 8_289_449.8, 13_000.0);
+            return new GravitationalBody("Gilly", 8_289_449.8, 13_000.0);
         }
     }
 
@@ -114,7 +104,7 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     {
         get
         {
-            return new GravitationalBody(7, "Ike", 1.8568369e+10, 130_000.0);
+            return new GravitationalBody("Ike", 1.8568369e+10, 130_000.0);
         }
     }
 
@@ -122,7 +112,7 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     {
         get
         {
-            return new GravitationalBody(8, "Jool", 2.8252800e+14, 6_000_000.0);
+            return new GravitationalBody("Jool", 2.8252800e+14, 6_000_000.0);
         }
     }
 
@@ -130,7 +120,7 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     {
         get
         {
-            return new GravitationalBody(2, "Jupiter", 1.2669e+17, 69911000.0);
+            return new GravitationalBody("Jupiter", 1.2669e+17, 69911000.0);
         }
     }
 
@@ -138,7 +128,7 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     {
         get
         {
-            return new GravitationalBody(1, "Kerbin", 3.5316e+12, 6e+5);
+            return new GravitationalBody("Kerbin", 3.5316e+12, 6e+5);
         }
     }
 
@@ -146,7 +136,7 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     {
         get
         {
-            return new GravitationalBody(0, "Kerbol", 1.1723328e+18, 261_600_000.0);
+            return new GravitationalBody("Kerbol", 1.1723328e+18, 261_600_000.0);
         }
     }
 
@@ -154,7 +144,7 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     {
         get
         {
-            return new GravitationalBody(9, "Laythe", 1.9620000e+12, 500_000.0);
+            return new GravitationalBody("Laythe", 1.9620000e+12, 500_000.0);
         }
     }
 
@@ -162,7 +152,7 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     {
         get
         {
-            return new GravitationalBody(3, "Minmus", 1.7658000e+9, 60_000.0);
+            return new GravitationalBody("Minmus", 1.7658000e+9, 60_000.0);
         }
     }
 
@@ -170,7 +160,7 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     {
         get
         {
-            return new GravitationalBody(4, "Moho", 1.6860938e+11, 250_000.0);
+            return new GravitationalBody("Moho", 1.6860938e+11, 250_000.0);
         }
     }
 
@@ -178,7 +168,7 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     {
         get
         {
-            return new GravitationalBody(2, "Mun", 6.5138398e+10, 200_000.0);
+            return new GravitationalBody("Mun", 6.5138398e+10, 200_000.0);
         }
     }
 
@@ -186,7 +176,7 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     {
         get
         {
-            return new GravitationalBody(14, "Pol", 7.2170208e+8, 44_000.0);
+            return new GravitationalBody("Pol", 7.2170208e+8, 44_000.0);
         }
     }
 
@@ -194,7 +184,7 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     {
         get
         {
-            return new GravitationalBody(12, "Tylo", 2.8252800e+12, 600_000.0);
+            return new GravitationalBody("Tylo", 2.8252800e+12, 600_000.0);
         }
     }
 
@@ -202,7 +192,7 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     {
         get
         {
-            return new GravitationalBody(10, "Vall", 2.0748150e+11, 300_000.0);
+            return new GravitationalBody("Vall", 2.0748150e+11, 300_000.0);
         }
     }
 
@@ -237,17 +227,6 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
         get
         {
             return gravitationalParameter;
-        }
-    }
-
-    /// <summary>
-    /// Gets the ID number for the body.
-    /// </summary>
-    public int ID
-    {
-        get
-        {
-            return id;
         }
     }
 
@@ -333,7 +312,7 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
         if (other == null)
             return false;
 
-        return (id == other.ID) && (nameOfBody == other.Name) && (gravitationalParameter == other.GravParameter) && (radius == other.Radius);
+        return (nameOfBody == other.Name) && (gravitationalParameter == other.GravParameter) && (radius == other.Radius);
     }
 
     /// <summary>
@@ -342,7 +321,7 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     /// <returns>A hask code for this GravitationalBody.</returns>
     public override int GetHashCode()
     {
-        return (id + gravitationalParameter + radius).GetHashCode();
+        return (gravitationalParameter + radius).GetHashCode();
     }
 
     #endregion

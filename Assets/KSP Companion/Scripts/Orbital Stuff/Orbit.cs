@@ -740,7 +740,7 @@ public class Orbit : IEquatable<Orbit>
     /// <returns>A hash code for this Orbit.</returns>
     public override int GetHashCode()
     {
-        return (gravitationalBody.ID + gravitationalBody.GravParameter + gravitationalBody.Radius + radiusOfPeriapsis + eccentricity
+        return (gravitationalBody.GravParameter + gravitationalBody.Radius + radiusOfPeriapsis + eccentricity
             + inclination + argumentOfPeriapsis + longitudeOfAscendingNode + timeOfPeriapsisPassage).GetHashCode();
     }
 
