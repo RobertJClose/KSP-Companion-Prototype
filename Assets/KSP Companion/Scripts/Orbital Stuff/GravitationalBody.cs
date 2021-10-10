@@ -35,6 +35,7 @@ public class GravitationalBody
 
     #region Constructors
 
+    // Initialises a new GravitationalBody object.
     private GravitationalBody(int bodyID, string bodyName, double bodyGravParameter, double bodyRadius)
     {
         id = bodyID;
