@@ -6,6 +6,7 @@ public class GravitationalBody
 {
     #region Fields
 
+    // A list of all the gravitational bodies in the KSP solar system.
     public static List<GravitationalBody> ListOfKSPBodies = new List<GravitationalBody> { Kerbin };
 
     // The gravitational parameter for the body. This is equal to the mass of the body multiplied by
@@ -13,7 +14,7 @@ public class GravitationalBody
     protected float gravitationalParameter;
 
     // The ID number for the gravitational body.
-    // For KSP bodies, this ID number matches the ID number used by KSP.
+    // For KSP bodies, this ID number matches the reference code used by KSP in the save files. See the "Orbit" page on the wiki.
     // For Solar bodies, the ID number is a three digit number: XYY.
     // X corresponds to the planet's/parent planet's order out from the Sun.
     // YY is 00 for planets, and for moons corresponds to the moon's order away from the planet as of semi-major axis
