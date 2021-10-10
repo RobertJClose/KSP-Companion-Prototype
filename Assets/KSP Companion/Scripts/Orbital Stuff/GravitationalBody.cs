@@ -2,6 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Represents a celestial body with a gravitational field.
+/// </summary>
+/// <remarks>
+/// Each instance of this class represents a simple celestial body with a name, radius, and gravitational field.
+/// </remarks>
 public class GravitationalBody : System.IEquatable<GravitationalBody>
 {
     #region Fields
