@@ -324,6 +324,9 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     /// <returns>True is the other GravitationalBody is the same. False otherwise.</returns>
     public bool Equals(GravitationalBody other)
     {
+        if (other == null)
+            return false;
+
         return (id == other.ID) && (nameOfBody == other.Name) && (gravitationalParameter == other.GravParameter) && (radius == other.Radius);
     }
 
