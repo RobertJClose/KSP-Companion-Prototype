@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GravitationalBody
+public class GravitationalBody : System.IEquatable<GravitationalBody>
 {
     #region Fields
 
@@ -276,6 +276,38 @@ public class GravitationalBody
         {
             return new Orbit(0.0, 0.0, 0.0f, 0.0f, 0.0f, 0.0, this);
         }
+    }
+
+    #endregion
+
+    #region Public Methods
+
+    public static bool operator==(GravitationalBody bodyOne, GravitationalBody bodyTwo)
+    {
+        return bodyOne.Equals(bodyTwo);
+    }
+
+    public static bool operator!=(GravitationalBody bodyOne, GravitationalBody bodyTwo)
+    {
+        return !bodyOne.Equals(bodyTwo);
+    }
+
+    public override bool Equals(object obj)
+    {
+        if (obj == null && !GetType().Equals(obj.GetType()))
+            return false;
+
+        return Equals((GravitationalBody)obj);
+    }
+
+    public bool Equals(GravitationalBody other)
+    {
+        return (id == other.ID) && (nameOfBody == other.Name) && (gravitationalParameter == other.GravParameter) && (radius == other.Radius);
+    }
+
+    public override int GetHashCode()
+    {
+        return (id + gravitationalParameter + radius).GetHashCode();
     }
 
     #endregion
