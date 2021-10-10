@@ -2,6 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Represents an angle.
+/// </summary>
+/// <remarks>
+/// This struct can be used to make working with floating-point values representing angles much simpler. Each instance of 
+/// this struct stores a float value that represents an angle in radians between 0 and 2PI. Instances of this struct may be
+/// implicitly converted to and from floats, allowing for easy use of Angle type objects in expressions expecting float data.
+/// There are methods to assist in common tasks whose execution is made more challenging by the periodic nature of angular values,
+/// such as working out if an angle is between two other angles (see <see cref="IsBetween(Angle?, Angle?)"/>). 
+/// <para>
+/// Sometimes, care must be taken when working with Angle objects in complex expressions with multiple operators, as the clamping 
+/// of stored values to the range of 0 -> 2PI can lead to intermediate steps in the expression having unexpected values. This can
+/// happen, for example, when trying to naively calculate the average of three large angles. There are methods to cover as many 
+/// of these tricky cases as possible, so be sure to check for a suitable method before attempting a complex expression involving
+/// many angle objects.
+/// </para>
+/// </remarks>
 public readonly struct Angle : System.IEquatable<Angle>, System.IComparable<Angle>
 {
     #region Fields
