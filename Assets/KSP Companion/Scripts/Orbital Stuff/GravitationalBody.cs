@@ -55,19 +55,19 @@ public class GravitationalBody
         }
     }
 
-    public static GravitationalBody Kerbin
-    {
-        get
-        {
-            return new GravitationalBody(1, "Kerbin", 3.5316e+12f, 6e+5f);
-        }
-    }
-
     public static GravitationalBody Jupiter
     {
         get
         {
             return new GravitationalBody(2, "Jupiter", 1.2669e+17f, 69911000f);
+        }
+    }
+
+    public static GravitationalBody Kerbin
+    {
+        get
+        {
+            return new GravitationalBody(1, "Kerbin", 3.5316e+12f, 6e+5f);
         }
     }
 
