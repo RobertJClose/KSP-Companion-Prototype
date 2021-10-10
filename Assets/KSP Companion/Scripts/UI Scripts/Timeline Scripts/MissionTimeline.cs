@@ -436,7 +436,7 @@ public class MissionTimeline : MonoBehaviour
                     orbitalStep.Orbit = null;
                 else
                 {
-                    orbitalStep.Orbit.GravitationalBody = GravitationalBody.ListOfBodies.Find(step => step.ID == nextStepData.orbitGravBodyID);
+                    orbitalStep.Orbit.GravitationalBody = GravitationalBody.ListOfKSPBodies.Find(step => step.ID == nextStepData.orbitGravBodyID);
                     orbitalStep.Orbit.RPE = nextStepData.orbitRPE;
                     orbitalStep.Orbit.ECC = nextStepData.orbitECC;
                     orbitalStep.Orbit.INC = nextStepData.orbitINC;
