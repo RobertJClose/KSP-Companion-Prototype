@@ -282,16 +282,33 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
 
     #region Public Methods
 
+    /// <summary>
+    /// Checks to see to if two GravitationalBody objects are equal.
+    /// </summary>
+    /// <param name="bodyOne">The first GravitationalBody.</param>
+    /// <param name="bodyTwo">The second GravitationalBody.</param>
+    /// <returns>True if the bodies are the same. False otherwise.</returns>
     public static bool operator==(GravitationalBody bodyOne, GravitationalBody bodyTwo)
     {
         return bodyOne.Equals(bodyTwo);
     }
 
+    /// <summary>
+    /// Checks to see to if two GravitationalBody objects are not equal.
+    /// </summary>
+    /// <param name="bodyOne">The first GravitationalBody.</param>
+    /// <param name="bodyTwo">The second GravitationalBody.</param>
+    /// <returns>True if the bodies are not the same, or if either body is null. False otherwise.</returns>
     public static bool operator!=(GravitationalBody bodyOne, GravitationalBody bodyTwo)
     {
         return !bodyOne.Equals(bodyTwo);
     }
 
+    /// <summary>
+    /// Checks to see if an object is the same as this GravitationalBody.
+    /// </summary>
+    /// <param name="obj">The object to be checked for equality.</param>
+    /// <returns>False if the other object is null, of a different type, or is a different GravitationalBody object.</returns>
     public override bool Equals(object obj)
     {
         if (obj == null && !GetType().Equals(obj.GetType()))
@@ -300,11 +317,20 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
         return Equals((GravitationalBody)obj);
     }
 
+    /// <summary>
+    /// Checks to see if another GravitationalBody is the same as this GravitationalBody.
+    /// </summary>
+    /// <param name="other">The other GravitationalBody to be checked for equality.</param>
+    /// <returns>True is the other GravitationalBody is the same. False otherwise.</returns>
     public bool Equals(GravitationalBody other)
     {
         return (id == other.ID) && (nameOfBody == other.Name) && (gravitationalParameter == other.GravParameter) && (radius == other.Radius);
     }
 
+    /// <summary>
+    /// Serves as the hash function for this GravitationalBody.
+    /// </summary>
+    /// <returns>A hask code for this GravitationalBody.</returns>
     public override int GetHashCode()
     {
         return (id + gravitationalParameter + radius).GetHashCode();
