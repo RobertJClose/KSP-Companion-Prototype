@@ -10,16 +10,34 @@ public class GravitationalBody
 
     public static List<string> ListOfBodyNames = new List<string> { Kerbin.Name };
 
+    // The height of the atmosphere, if it has one. 
+    // For KSP bodies this is the height quoted in-game and in the wiki.
+    // For Solar planets this variable 
     protected float atmosphereHeight;
 
+    // The gravitational parameter for the body. This is equal to the mass of the body multiplied by
+    // the gravitational constant G. In writing, this is often represented by the Greek letter mu.
     protected float gravitationalParameter;
 
+    // Indicates whether the gravitational body has an atmosphere.
     protected bool hasAtmosphere;
 
+    // The ID number for the gravitational body.
+    // For KSP bodies, this ID number matches the ID number used by KSP.
+    // For Solar bodies, the ID number is a three digit number: XYY.
+    // X corresponds to the planet's/parent planet's order out from the Sun.
+    // YY is 00 for planets, and for moons corresponds to the moon's order away from the planet as of semi-major axis
+    // measurements on the 10th of October, 2021.
+    // So Earth: 300. Jupiter: 500. Bergelmir: 451.
     protected int id;
 
+    // The name of the gravitational body.
     protected string nameOfBody;
 
+    // The radius of the gravitational body, in metres. 
+    // For KSP bodies, this is the radius quoted in game and in the wiki.
+    // For Solar bodies, this value is the equatorial radius quoted on Wikipedia of the planet on the 9th of
+    // October, 2021. 
     protected float radius;
 
     #endregion
