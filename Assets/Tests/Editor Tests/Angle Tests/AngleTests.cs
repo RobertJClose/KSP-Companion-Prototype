@@ -286,7 +286,7 @@ namespace Tests
 
         #endregion
 
-        #region Approximately tests
+        #region Approximately() tests
 
         [Test]
         public void Approximately_NearlyEqualAngles_ReturnsTrue()
