@@ -123,8 +123,11 @@ public readonly struct Angle : System.IEquatable<Angle>, System.IComparable<Angl
     /// </summary>
     /// <param name="angleOne">The first Angle to be compared.</param>
     /// <param name="angleTwo">The second Angle to be compared.</param>
-    /// <returns>True if the values represented by <paramref name="angleOne"/> and <paramref name="angleTwo"/> are 
-    /// approximately equal according to the UnityEngine.Mathf.Approximately() method.</returns>
+    /// <returns>
+    /// True if the values represented by <paramref name="angleOne"/> and <paramref name="angleTwo"/> are 
+    /// approximately equal according to the UnityEngine.Mathf.Approximately() method. False if the angles are not 
+    /// approximately equal, or if either argument is null.
+    /// </returns>
     public static bool Approximately(Angle? angleOne, Angle? angleTwo)
     {
         if (angleOne == null || angleTwo == null)
