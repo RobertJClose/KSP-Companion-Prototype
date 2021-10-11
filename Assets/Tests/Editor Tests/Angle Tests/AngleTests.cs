@@ -10,6 +10,8 @@ namespace Tests
     {
         private readonly float allowedError = 0.01f;
 
+        #region Constructor tests
+
         [Test]
         public void ConstructorInputValidation_Within2PI_ReturnsEquivalentWithin2PI()
         {
@@ -114,6 +116,10 @@ namespace Tests
             Assert.That(actual, Is.EqualTo(270f).Within(allowedError));
         }
 
+        #endregion
+
+        #region Implicit conversion tests
+
         [Test]
         public void ImplicitFromFloatConversion_CopyAssignment_ConstructsNew()
         {
@@ -155,6 +161,10 @@ namespace Tests
             Assert.That(actual, Is.EqualTo(0.5f).Within(allowedError));
         }
 
+        #endregion
+
+        #region (In)Equality operator tests
+        
         [Test]
         public void EqualityOperator_IfStatementEqualAngles_ReturnsTrue()
         {
@@ -227,33 +237,9 @@ namespace Tests
             Assert.That(areNotEqual, Is.EqualTo(false));
         }
 
-        [Test]
-        public void AdditionOperator_ThreeQuarterTurnAddedToHalfTurn_EqualsQuarterTurn()
-        {
-            // Arrange
-            Angle angleOne = Angle.ThreeQuartersTurn;
-            Angle angleTwo = Angle.HalfTurn;
+        #endregion
 
-            // Act
-            Angle angleSum = angleOne + angleTwo;
-
-            // Assert
-            Assert.That(angleSum.RadValue, Is.EqualTo(Angle.QuarterTurn.RadValue).Within(0.001f).Percent);
-        }
-
-        [Test]
-        public void SubtractionOperator_QuarterTurnMinusHalfTurn_EqualsThreeQuarterTurn()
-        {
-            // Arrange
-            Angle angleOne = Angle.QuarterTurn;
-            Angle angleTwo = Angle.HalfTurn;
-
-            // Act
-            Angle angleSub = angleOne - angleTwo;
-
-            // Assert
-            Assert.That(angleSub, Is.EqualTo(Angle.ThreeQuartersTurn));
-        }
+        #region Comparison operator tests
 
         [Test]
         public void LessThanOperator_HalfTurnLessThanQuarterTurn_ReturnsFalse()
@@ -283,6 +269,10 @@ namespace Tests
             Assert.That(actual, Is.EqualTo(false));
         }
 
+        #endregion
+
+        #region Unary minus operator tests
+
         [Test]
         public void UnaryMinusOperator_MinusQuarterTurn_ReturnsThreeQuartersTurn()
         {
@@ -295,6 +285,59 @@ namespace Tests
             // Assert
             Assert.That(actual.RadValue, Is.EqualTo(Angle.ThreeQuartersTurn.RadValue));
         }
+
+        #endregion
+
+        #region Closer() tests
+
+        [Test]
+        public void Closer_QuarterTurn_IsCloserToHalfTurnThanThreeQuartersTurn()
+        {
+            // Arrange
+            Angle angle = Angle.QuarterTurn;
+            Angle angleOne = Angle.HalfTurn;
+            Angle angleTwo = Angle.ThreeQuartersTurn;
+
+            // Act
+            Angle actual = angle.Closer(angleOne, angleTwo);
+
+            // Assert
+            Assert.That(actual.RadValue, Is.EqualTo(angleOne.RadValue));
+        }
+
+        [Test]
+        public void Closer_OneNullInputAngle_ReturnsOtherValidAngle()
+        {
+            // Arrange
+            Angle angle = Angle.Zero;
+            Angle angleOne = Angle.HalfTurn;
+            Angle? angleNull = null;
+
+            // Act
+            Angle actual = angle.Closer(angleOne, angleNull);
+
+            // Assert
+            Assert.That(actual.RadValue, Is.EqualTo(angleOne.RadValue));
+        }
+
+        [Test]
+        public void Closer_BothInputsNull_ReturnsOriginalAngle()
+        {
+            // Arrange
+            Angle angle = Angle.Zero;
+            Angle? nullOne = null;
+            Angle? nullTwo = null;
+
+            // Act
+            Angle actual = angle.Closer(nullOne, nullTwo);
+
+            // Assert
+            Assert.That(actual.RadValue, Is.EqualTo(angle.RadValue));
+        }
+
+        #endregion
+
+        #region Expel() tests
 
         [Test]
         public void Expel_NoForbiddenRegion_ReturnsOriginalAngle()
@@ -371,6 +414,10 @@ namespace Tests
             Assert.That(actual, Is.EqualTo(upper));
         }
 
+        #endregion
+
+        #region Inbetween() tests
+
         [Test]
         public void IsBetween_HalfTurn_IsBetweenQuarterTurnAndThreeQuartersTurn()
         {
@@ -446,49 +493,35 @@ namespace Tests
             Assert.That(actual, Is.EqualTo(false));
         }
 
+        #endregion
+
         [Test]
-        public void Closer_QuarterTurn_IsCloserToHalfTurnThanThreeQuartersTurn()
+        public void AdditionOperator_ThreeQuarterTurnAddedToHalfTurn_EqualsQuarterTurn()
         {
             // Arrange
-            Angle angle = Angle.QuarterTurn;
-            Angle angleOne = Angle.HalfTurn;
-            Angle angleTwo = Angle.ThreeQuartersTurn;
+            Angle angleOne = Angle.ThreeQuartersTurn;
+            Angle angleTwo = Angle.HalfTurn;
 
             // Act
-            Angle actual = angle.Closer(angleOne, angleTwo);
+            Angle angleSum = angleOne + angleTwo;
 
             // Assert
-            Assert.That(actual.RadValue, Is.EqualTo(angleOne.RadValue));
+            Assert.That(angleSum.RadValue, Is.EqualTo(Angle.QuarterTurn.RadValue).Within(0.001f).Percent);
         }
 
         [Test]
-        public void Closer_OneNullInputAngle_ReturnsOtherValidAngle()
+        public void SubtractionOperator_QuarterTurnMinusHalfTurn_EqualsThreeQuarterTurn()
         {
             // Arrange
-            Angle angle = Angle.Zero;
-            Angle angleOne = Angle.HalfTurn;
-            Angle? angleNull = null;
+            Angle angleOne = Angle.QuarterTurn;
+            Angle angleTwo = Angle.HalfTurn;
 
             // Act
-            Angle actual = angle.Closer(angleOne, angleNull);
+            Angle angleSub = angleOne - angleTwo;
 
             // Assert
-            Assert.That(actual.RadValue, Is.EqualTo(angleOne.RadValue));
+            Assert.That(angleSub, Is.EqualTo(Angle.ThreeQuartersTurn));
         }
 
-        [Test]
-        public void Closer_BothInputsNull_ReturnsOriginalAngle()
-        {
-            // Arrange
-            Angle angle = Angle.Zero;
-            Angle? nullOne = null;
-            Angle? nullTwo = null;
-
-            // Act
-            Angle actual = angle.Closer(nullOne, nullTwo);
-
-            // Assert
-            Assert.That(actual.RadValue, Is.EqualTo(angle.RadValue));
-        }
     }
 }
