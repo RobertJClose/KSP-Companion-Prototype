@@ -286,6 +286,80 @@ namespace Tests
 
         #endregion
 
+        #region Approximately tests
+
+        [Test]
+        public void Approximately_NearlyEqualAngles_ReturnsTrue()
+        {
+            // Arrange
+            Angle angleOne = Angle.Zero;
+            Angle angleTwo = Angle.Epsilon;
+
+            // Act
+            bool areApproximatelyEqual = Angle.Approximately(angleOne, angleTwo);
+
+            // Assert
+            Assert.That(areApproximatelyEqual, Is.EqualTo(true));
+        }
+
+        [Test]
+        public void Approximately_NearlyEqualAnglesOnEitherSideOfTwoPIWrapAround_ReturnTrue()
+        {
+            // Arrange
+            Angle angleOne = Angle.Epsilon;
+            Angle angleTwo = Angle.MaxAngle;
+
+            // Act
+            bool areApproximatelyEqual = Angle.Approximately(angleOne, angleTwo);
+
+            // Assert
+            Assert.That(areApproximatelyEqual, Is.EqualTo(true));
+        }
+
+        [Test]
+        public void Approximately_NotEqualAngles_ReturnsFalse()
+        {
+            // Arrange
+            Angle angleOne = Angle.QuarterTurn;
+            Angle angleTwo = Angle.ThreeQuartersTurn;
+
+            // Act
+            bool areApproximatelyEqual = Angle.Approximately(angleOne, angleTwo);
+
+            // Assert
+            Assert.That(areApproximatelyEqual, Is.EqualTo(false));
+        }
+
+        [Test]
+        public void Approximately_SingleNullArgument_ReturnsFalse()
+        {
+            // Arrange
+            Angle angleOne = Angle.Zero;
+            Angle? angleTwo = null;
+
+            // Act
+            bool areApproximatelyEqual = Angle.Approximately(angleOne, angleTwo);
+
+            // Assert
+            Assert.That(areApproximatelyEqual, Is.EqualTo(false));
+        }
+
+        [Test]
+        public void Approximately_TwoNullArguments_ReturnsFalse()
+        {
+            // Arrange
+            Angle? angleOne = null;
+            Angle? angleTwo = null;
+
+            // Act
+            bool areApproximatelyEqual = Angle.Approximately(angleOne, angleTwo);
+
+            // Assert
+            Assert.That(areApproximatelyEqual, Is.EqualTo(false));
+        }
+
+        #endregion
+
         #region Closer() tests
 
         [Test]
