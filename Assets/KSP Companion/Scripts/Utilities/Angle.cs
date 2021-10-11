@@ -41,6 +41,11 @@ public readonly struct Angle : System.IEquatable<Angle>, System.IComparable<Angl
     #region Properties
 
     /// <summary>
+    /// Gets the smallest Angle that is greater than zero.
+    /// </summary>
+    public static Angle Epsilon => new Angle(float.Epsilon);
+
+    /// <summary>
     /// Gets an angle of one half turn.
     /// </summary>
     public static Angle HalfTurn => new Angle(Mathf.PI);
@@ -59,9 +64,6 @@ public readonly struct Angle : System.IEquatable<Angle>, System.IComparable<Angl
     /// Gets an angle of three quarters of a full turn.
     /// </summary>
     public static Angle ThreeQuartersTurn => new Angle(3f * Mathf.PI / 2f);
-
-    // ************ REPLACE ME *****************
-    public static Angle Tiny => new Angle(0.000001f);
 
     /// <summary>
     /// Gets an angle of no turn.
