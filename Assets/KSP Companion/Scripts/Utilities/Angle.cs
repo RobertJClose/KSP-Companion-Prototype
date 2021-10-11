@@ -282,7 +282,7 @@ public readonly struct Angle : System.IEquatable<Angle>, System.IComparable<Angl
         else if (angleOne != null && angleTwo == null)
             return angleOne.Value;
         else if (angleOne == null && angleTwo == null)
-            return angle;
+            return this;
         else
         {
             float diffOne = Mathf.Abs(angle - angleOne.Value);
@@ -304,7 +304,7 @@ public readonly struct Angle : System.IEquatable<Angle>, System.IComparable<Angl
         if (other == null)
             return 1;
 
-        return angle.CompareTo(other.RadValue);
+        return angle.CompareTo(other.angle);
     }
 
     /// <summary>
