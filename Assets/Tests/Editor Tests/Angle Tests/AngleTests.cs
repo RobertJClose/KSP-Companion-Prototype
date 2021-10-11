@@ -493,33 +493,5 @@ namespace Tests
 
         #endregion
 
-        [Test]
-        public void AdditionOperator_ThreeQuarterTurnAddedToHalfTurn_EqualsQuarterTurn()
-        {
-            // Arrange
-            Angle angleOne = Angle.ThreeQuartersTurn;
-            Angle angleTwo = Angle.HalfTurn;
-
-            // Act
-            Angle angleSum = angleOne + angleTwo;
-
-            // Assert
-            Assert.That(angleSum.RadValue, Is.EqualTo(Angle.QuarterTurn.RadValue).Within(0.001f).Percent);
-        }
-
-        [Test]
-        public void SubtractionOperator_QuarterTurnMinusHalfTurn_EqualsThreeQuarterTurn()
-        {
-            // Arrange
-            Angle angleOne = Angle.QuarterTurn;
-            Angle angleTwo = Angle.HalfTurn;
-
-            // Act
-            Angle angleSub = angleOne - angleTwo;
-
-            // Assert
-            Assert.That(angleSub, Is.EqualTo(Angle.ThreeQuartersTurn));
-        }
-
     }
 }
