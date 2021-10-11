@@ -18,7 +18,7 @@ using UnityEngine;
 /// A good understanding of the 'orbital elements' is helpful when using this class, in particular the meaning of the 
 /// periapsis radius, eccentricity, inclination, argument of periapsis, longitude of the ascending node, 
 /// time of periapsis passage, and the meaning of the true anomaly. This class does not use the traditional semi-major axis
-/// as an orbital element, as the semi-major axis is degenerate for parabolic orbits. The semi-major axis still accessible
+/// as an orbital element, as the semi-major axis is degenerate for parabolic orbits. The semi-major axis is still accessible
 /// through a read-only property.
 /// </para>
 /// </remarks>
