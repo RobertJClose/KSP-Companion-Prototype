@@ -148,38 +148,6 @@ public readonly struct Angle : System.IEquatable<Angle>, System.IComparable<Angl
     }
 
     /// <summary>
-    /// Finds an equivalent angle in the range 0 to 360 degrees.
-    /// </summary>
-    /// <param name="angle">The value of an angle in degrees.</param>
-    /// <returns>A value in the range of 0 to 360 degrees that is the same angle as <paramref name="angle"/>.</returns>
-    private static float EquivalentDeg(float angle)
-    {
-        // Converts an angle in degrees to the equivalent angle in the range 0 < output < 360
-        float output = angle % 360f;
-
-        if (output < 0)
-            output = 360f + output;
-
-        return output;
-    }
-
-    /// <summary>
-    /// Finds an equivalent angle in the range 0 to 2PI.
-    /// </summary>
-    /// <param name="angle">The value of an angle in radians.</param>
-    /// <returns>A value in the range 0 to 2PI radians that is the same angle as <paramref name="angle"/>.</returns>
-    private static float EquivalentRad(float angle)
-    {
-        // Converts an angle in radians to the equivalent angle in the range 0 < output < 2PI 
-        float output = angle % (2f * Mathf.PI);
-
-        if (output < 0)
-            output = 2f * Mathf.PI + output;
-
-        return output;
-    }
-
-    /// <summary>
     /// Expels an angle from a region of forbidden values.
     /// </summary>
     /// <param name="angle">An angle.</param>
@@ -412,6 +380,42 @@ public readonly struct Angle : System.IEquatable<Angle>, System.IComparable<Angl
     public override string ToString()
     {
         return RadValue.ToString();
+    }
+
+    #endregion
+
+    #region Private Methods
+
+    /// <summary>
+    /// Finds an equivalent angle in the range 0 to 360 degrees.
+    /// </summary>
+    /// <param name="angle">The value of an angle in degrees.</param>
+    /// <returns>A value in the range of 0 to 360 degrees that is the same angle as <paramref name="angle"/>.</returns>
+    private static float EquivalentDeg(float angle)
+    {
+        // Converts an angle in degrees to the equivalent angle in the range 0 < output < 360
+        float output = angle % 360f;
+
+        if (output < 0)
+            output = 360f + output;
+
+        return output;
+    }
+
+    /// <summary>
+    /// Finds an equivalent angle in the range 0 to 2PI.
+    /// </summary>
+    /// <param name="angle">The value of an angle in radians.</param>
+    /// <returns>A value in the range 0 to 2PI radians that is the same angle as <paramref name="angle"/>.</returns>
+    private static float EquivalentRad(float angle)
+    {
+        // Converts an angle in radians to the equivalent angle in the range 0 < output < 2PI 
+        float output = angle % (2f * Mathf.PI);
+
+        if (output < 0)
+            output = 2f * Mathf.PI + output;
+
+        return output;
     }
 
     #endregion
