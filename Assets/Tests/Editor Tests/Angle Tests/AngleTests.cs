@@ -121,7 +121,7 @@ namespace Tests
         #region Implicit conversion tests
 
         [Test]
-        public void ImplicitFromFloatConversion_CopyAssignment_ConstructsNew()
+        public void ImplicitFromFloatConversion_CopyAssignment_CallsConstructor()
         {
             // Arrange
             Angle angleVariable;
