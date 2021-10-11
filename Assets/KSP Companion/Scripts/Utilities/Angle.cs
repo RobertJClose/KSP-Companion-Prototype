@@ -119,6 +119,32 @@ public readonly struct Angle : System.IEquatable<Angle>, System.IComparable<Angl
     public static implicit operator Angle(float f) => new Angle(f);
 
     /// <summary>
+    /// Checks for approximate equality between two Angle instances.
+    /// </summary>
+    /// <param name="angleOne">The first Angle to be compared.</param>
+    /// <param name="angleTwo">The second Angle to be compared.</param>
+    /// <returns>True if the values represented by <paramref name="angleOne"/> and <paramref name="angleTwo"/> are 
+    /// approximately equal according to the UnityEngine.Mathf.Approximately() method.</returns>
+    public static bool Approximately(Angle? angleOne, Angle? angleTwo)
+    {
+        if (angleOne == null || angleTwo == null)
+            return false;
+
+        // A special case arises for approximate equality checks because all angles are stored between the values of 0 <= value < 2PI.
+        // Two angles may be close enough to be considered equal, but be split on either side of 2PI, and so have a difference of ~2PI. 
+        // For example: angleOne = 0rad, angleTwo = (2PI - 0.000...0001)rad.
+        // These two angles are approximately equal, but sit on either side of the 0/2PI divide, and so will incorrectly return 
+        // false from the Approximately() method.
+
+        float difference = Mathf.Abs(angleOne.Value - angleTwo.Value);
+
+        if (Mathf.Approximately(difference, 2f * Mathf.PI)) // Special case checking
+            return true;
+
+        return Mathf.Approximately(difference, 0f);
+    }
+
+    /// <summary>
     /// Finds an equivalent angle in the range 0 to 360 degrees.
     /// </summary>
     /// <param name="angle">The value of an angle in degrees.</param>
