@@ -226,19 +226,7 @@ public readonly struct Angle : System.IEquatable<Angle>, System.IComparable<Angl
     /// </returns>
     public static bool operator ==(Angle angleOne, Angle angleTwo)
     {
-        // As their values are stored as floats, we check for equality using the Mathf.Approximately() method. 
-        // A special case arises however, because all angles are stored between the values of 0 <= value < 2PI.
-        // Two angles may be close enough to be considered equal, but be split on either side of 2PI, and so have a difference of ~2PI. 
-        // For example: angleOne = 0rad, angleTwo = (2PI - 0.00000001)rad.
-        // These two angles are approximately equal, but sit on either side of the 0/2PI divide, and so will return 
-        // false from the Approximately() method.
-
-        float difference = Mathf.Abs(angleOne.RadValue - angleTwo.RadValue);
-
-        if (Mathf.Approximately(difference, 2f * Mathf.PI)) // Special case checking
-            return true;
-
-        return Mathf.Approximately(difference, 0f);
+        return angleOne.angle == angleTwo.angle;
     }
 
     /// <summary>
@@ -249,7 +237,7 @@ public readonly struct Angle : System.IEquatable<Angle>, System.IComparable<Angl
     /// <returns>True if the angles are not equal. False if the angles are equal.</returns>
     public static bool operator !=(Angle angleOne, Angle angleTwo)
     {
-        return !(angleOne == angleTwo);
+        return angleOne.angle != angleTwo.angle;
     }
 
     /// <summary>
@@ -307,22 +295,7 @@ public readonly struct Angle : System.IEquatable<Angle>, System.IComparable<Angl
     /// <returns>True if <paramref name="other"/> is equal to this instance. False otherwise.</returns>
     public bool Equals(Angle other)
     {
-        if (other == null)
-            return false;
-
-        // As their values are stored as floats, we check for equality using the Mathf.Approximately() method. 
-        // A special case arises however, because all angles are stored between the values of 0 <= value < 2PI.
-        // Two angles may be close enough to be considered equal, but be split on either side of 2PI, and so have a difference of ~2PI. 
-        // For example: angleOne = 0rad, angleTwo = (2PI - 0.000...0001)rad.
-        // These two angles are approximately equal, but sit on either side of the 0/2PI divide, and so will return 
-        // false from the Approximately() method.
-
-        float difference = Mathf.Abs(angle - other.RadValue);
-
-        if (Mathf.Approximately(difference, 2f * Mathf.PI)) // Special case checking
-            return true;
-
-        return Mathf.Approximately(difference, 0f);
+        return angle.Equals(other.angle);
     }
 
     /// <summary>
