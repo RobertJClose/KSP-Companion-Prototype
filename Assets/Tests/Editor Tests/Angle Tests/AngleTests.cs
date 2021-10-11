@@ -416,7 +416,7 @@ namespace Tests
         {
             // Arrange
             Angle lower = Angle.Zero;
-            Angle upper = 2f * Mathf.PI - 0.000001f;
+            Angle upper = Angle.Zero;
             Angle angle = Angle.QuarterTurn;
 
             // Act
@@ -427,7 +427,7 @@ namespace Tests
         }
 
         [Test]
-        public void Expel_OutsideForbiddenRegionNormalHierarchy_ReturnsOriginalAngle()
+        public void Expel_OutsideForbiddenRegionNormalHierarchyOfRegionBoundaries_ReturnsOriginalAngle()
         {
             // Arrange
             Angle angle = Mathf.PI / 4f;
@@ -442,7 +442,7 @@ namespace Tests
         }
 
         [Test]
-        public void Expel_OutsideForbiddenRegionInvertedHierarchy_ReturnsOriginalAngle()
+        public void Expel_OutsideForbiddenRegionInvertedHierarchyOfRegionBoundaries_ReturnsOriginalAngle()
         {
             // Arrange
             Angle angle = Mathf.PI;
@@ -457,7 +457,7 @@ namespace Tests
         }
 
         [Test]
-        public void Expel_WithinForbiddenCloserToLowerNormalHierarchy_ReturnsLowerBound()
+        public void Expel_WithinCloserToLowerNormalHierarchyOfRegionBoundaries_ReturnsLowerBound()
         {
             // Arrange
             Angle angle = Mathf.PI * 3f / 4f;
@@ -472,7 +472,7 @@ namespace Tests
         }
 
         [Test]
-        public void Expel_WithinForbiddenCloserToUpperInvertedHierarchy_ReturnsUpperBound()
+        public void Expel_WithinCloserToUpperInvertedHierarchyOfRegionBoundaries_ReturnsUpperBound()
         {
             // Arrange
             Angle angle = Mathf.PI / 4f;
