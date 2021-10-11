@@ -166,6 +166,20 @@ namespace Tests
         #region (In)Equality operator tests
         
         [Test]
+        public void EqualityOperator_EpsilonDifferenceBetweenAngles_DeemedUnequal()
+        {
+            // Arrange
+            Angle angleOne = 0.0f;
+            Angle angleTwo = float.Epsilon;
+
+            // Act
+            bool areEqual = angleOne == angleTwo;
+
+            // Assert
+            Assert.That(areEqual, Is.EqualTo(false));
+        }
+
+        [Test]
         public void EqualityOperator_IfStatementEqualAngles_ReturnsTrue()
         {
             // Arrange
@@ -173,32 +187,24 @@ namespace Tests
             Angle angleTwo = Angle.HalfTurn;
 
             // Act
-            bool areEqual;
-            if (angleOne == angleTwo)
-                areEqual = true;
-            else
-                areEqual = false;
+            bool areEqual = angleOne == angleTwo;
 
             // Assert
             Assert.That(areEqual, Is.EqualTo(true));
         }
 
         [Test]
-        public void EqualityOperator_2PISplitSpecialCase_ReturnsTrue()
+        public void EqualityOperator_IfStatementUnequalAngles_ReturnsFalse()
         {
             // Arrange
             Angle angleOne = Angle.Zero;
             Angle angleTwo = Angle.MaxAngle;
 
             // Act
-            bool areEqual;
-            if (angleOne == angleTwo)
-                areEqual = true;
-            else
-                areEqual = false;
+            bool areEqual = angleOne == angleTwo;
 
             // Assert
-            Assert.That(areEqual, Is.EqualTo(true));
+            Assert.That(areEqual, Is.EqualTo(false));
         }
 
         [Test]
@@ -209,29 +215,21 @@ namespace Tests
             Angle angleTwo = Angle.HalfTurn;
 
             // Act
-            bool areNotEqual;
-            if (angleOne != angleTwo)
-                areNotEqual = true;
-            else
-                areNotEqual = false;
+            bool areNotEqual = angleOne != angleTwo;
 
             // Assert
             Assert.That(areNotEqual, Is.EqualTo(true));
         }
 
         [Test]
-        public void InequalityOperator_2PISplitSpecialCase_ReturnsFalse()
+        public void InequalityOperator_IfStatementEqualAngles_ReturnsFalse()
         {
             // Arrange
-            Angle angleOne = Angle.Zero;
-            Angle angleTwo = Angle.MaxAngle;
+            Angle angleOne = Angle.QuarterTurn;
+            Angle angleTwo = Angle.QuarterTurn;
 
             // Act
-            bool areNotEqual;
-            if (angleOne != angleTwo)
-                areNotEqual = true;
-            else
-                areNotEqual = false;
+            bool areNotEqual = angleOne != angleTwo;
 
             // Assert
             Assert.That(areNotEqual, Is.EqualTo(false));
