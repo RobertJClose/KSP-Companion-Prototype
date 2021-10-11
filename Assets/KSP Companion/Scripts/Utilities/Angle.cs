@@ -266,7 +266,7 @@ public readonly struct Angle : System.IEquatable<Angle>, System.IComparable<Angl
     {
         var item = (Angle)obj;
 
-        if (item == null || !GetType().Equals(obj.GetType())
+        if (item == null || !GetType().Equals(obj.GetType()))
             return false;
 
         return Equals(item);
