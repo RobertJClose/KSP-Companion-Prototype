@@ -555,6 +555,13 @@ public partial class Orbit : IEquatable<Orbit>
 
     #region Public Methods
 
+    /// <summary>
+    /// Indicates whether two orbits are approximately equal.
+    /// </summary>
+    /// <param name="orbitOne">The first Orbit to be compared.</param>
+    /// <param name="orbitTwo">The second Orbit to be compared.</param>
+    /// <returns>True if the Orbits are approximately equal, or if both Orbits are null. False if the Orbits are
+    /// noticeably different, or if one of the Orbits is null.</returns>
     public static bool Approximately(Orbit orbitOne, Orbit orbitTwo)
     {
         if (orbitOne is null && orbitTwo is null)
