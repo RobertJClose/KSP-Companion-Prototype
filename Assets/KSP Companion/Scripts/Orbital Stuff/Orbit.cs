@@ -23,7 +23,7 @@ using UnityEngine;
 /// </para>
 /// </remarks>
 [System.Serializable]
-public partial class Orbit 
+public partial class Orbit : IEquatable<Orbit>
 {
     #region Fields
 
