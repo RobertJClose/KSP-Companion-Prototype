@@ -1254,6 +1254,13 @@ public partial class Orbit : IEquatable<Orbit>
     /// <returns>True if the Orbit objects are the same. False if either Orbit is null, or the Orbits are not the same.</returns>
     public static bool operator ==(Orbit orbitOne, Orbit orbitTwo)
     {
+        if (orbitOne is null && orbitTwo is null)
+            return true;
+
+        // This OR condition is unreachable if both conditions are true, so is an effective XOR.
+        if (orbitOne is null || orbitTwo is null)
+            return false;
+
         return orbitOne.Equals(orbitTwo);
     }
 
@@ -1265,6 +1272,13 @@ public partial class Orbit : IEquatable<Orbit>
     /// <returns>True if the Orbits are not the same, or if either Orbit is null. False if the Orbits are the same.</returns>
     public static bool operator !=(Orbit orbitOne, Orbit orbitTwo)
     {
+        if (orbitOne is null && orbitTwo is null)
+            return false;
+
+        // This OR condition is unreachable if both conditions are true, so is an effective XOR.
+        if (orbitOne is null || orbitTwo is null)
+            return true;
+
         return !orbitOne.Equals(orbitTwo);
     }
 
@@ -1288,12 +1302,14 @@ public partial class Orbit : IEquatable<Orbit>
     /// <returns>True if the orbits are the same. False otherwise.</returns>
     public bool Equals(Orbit other)
     {
-        if (other == null)
+        if (other is null)
             return false;
 
-        return (gravitationalBody == other.GravitationalBody) && Mathd.Approximately(radiusOfPeriapsis, other.RPE)
-            && Mathd.Approximately(eccentricity, other.ECC) && (inclination == other.INC) && (argumentOfPeriapsis == other.APE)
-            && (longitudeOfAscendingNode == other.LAN) && Mathd.Approximately(timeOfPeriapsisPassage, other.TPP);
+        bool areTimesOfPeriapsisPassageEquivalent = Time2TrueAnomaly(timeOfPeriapsisPassage) == other.Time2TrueAnomaly(other.timeOfPeriapsisPassage);
+
+        return (gravitationalBody == other.GravitationalBody) && (radiusOfPeriapsis == other.radiusOfPeriapsis) 
+            && (eccentricity == other.eccentricity) && (inclination == other.inclination) && (argumentOfPeriapsis == other.APE)
+            && (longitudeOfAscendingNode == other.LAN) && areTimesOfPeriapsisPassageEquivalent;
     }
 
     /// <summary>
