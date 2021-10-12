@@ -557,6 +557,13 @@ public partial class Orbit : IEquatable<Orbit>
 
     public static bool Approximately(Orbit orbitOne, Orbit orbitTwo)
     {
+        if (orbitOne is null && orbitTwo is null)
+            return true;
+
+        // The previous conditional makes this OR a XOR.
+        if (orbitOne is null || orbitTwo is null)
+            return false;
+
         if (orbitOne.gravitationalBody != orbitTwo.gravitationalBody)
             return false;
 
