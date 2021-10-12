@@ -168,6 +168,20 @@ namespace Tests
             Assert.That(areBodiesEqual, Is.EqualTo(false));
         }
 
+        [Test]
+        public void Equals_OtherObjectIsNotAGravitationalBodyObject_ReturnsFalse()
+        {
+            // Arrange
+            GravitationalBody bodyOne = GravitationalBody.Kerbin;
+            double objectTwo = 1.0;
+
+            // Act
+            bool areObjectsEqual = bodyOne.Equals(objectTwo);
+
+            // Assert
+            Assert.That(areObjectsEqual, Is.EqualTo(false));
+        }
+
         #endregion
     }
 }
