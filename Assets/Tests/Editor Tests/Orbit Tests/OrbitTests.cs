@@ -572,35 +572,7 @@ namespace Tests
         #region StateVectors2Orbit() tests
 
         [Test]
-        public void StateVectors2Orbit_InputFromTime2PointAndTime2VelocityMethodsZeroAnglesElliptical_ReproducesOriginalOrbit()
-        {
-            // Arrange
-            Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
-            orbit.RPE = 2_500_000.0;
-            orbit.ECC = 0.75;
-            orbit.INC = 0.0f;
-            orbit.APE = 0.0f;
-            orbit.LAN = 0.0f;
-            orbit.TPP = 6000.0;
-
-            double time = 7500.0;
-            Vector3d position = orbit.Time2Point(time);
-            Vector3d velocity = orbit.Time2Velocity(time);
-
-            // Act
-            Orbit actual = Orbit.StateVectors2Orbit(GravitationalBody.Earth, position, velocity, time);
-
-            // Assert
-            Assert.That(actual.RPE, Is.EqualTo(orbit.RPE).Within(0.01).Percent);
-            Assert.That(actual.ECC, Is.EqualTo(orbit.ECC).Within(0.01));
-            Assert.That(actual.INC.RadValueMinusPiToPiRange, Is.EqualTo(orbit.INC.RadValueMinusPiToPiRange).Within(0.01));
-            Assert.That(actual.APE.RadValueMinusPiToPiRange, Is.EqualTo(orbit.APE.RadValueMinusPiToPiRange).Within(0.01));
-            Assert.That(actual.LAN.RadValueMinusPiToPiRange, Is.EqualTo(orbit.LAN.RadValueMinusPiToPiRange).Within(0.01));
-            Assert.That(actual.TPP, Is.EqualTo(orbit.TPP).Within(0.01).Percent);
-        }
-
-        [Test]
-        public void StateVectors2Orbit_InputFromTime2PointAndTime2VelocityMethodsNonZeroAnglesElliptical_ReproducesOriginalOrbit()
+        public void StateVectors2Orbit_EllipticalCaseInputFromTime2PointAndTime2VelocityMethods_ReproducesOriginalOrbit()
         {
             // Arrange
             Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
@@ -628,35 +600,7 @@ namespace Tests
         }
 
         [Test]
-        public void StateVectors2Orbit_InputFromTime2PointAndTime2VelocityMethodsOnlyLANAngleElliptical_ReproducesOriginalOrbit()
-        {
-            // Arrange
-            Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
-            orbit.RPE = 2_500_000.0;
-            orbit.ECC = 0.75;
-            orbit.INC = 0.0f;
-            orbit.APE = 0.0f;
-            orbit.LAN = 2.5f;
-            orbit.TPP = 6000.0;
-
-            double time = 7500.0;
-            Vector3d position = orbit.Time2Point(time);
-            Vector3d velocity = orbit.Time2Velocity(time);
-
-            // Act
-            Orbit actual = Orbit.StateVectors2Orbit(GravitationalBody.Earth, position, velocity, time);
-
-            // Assert
-            Assert.That(actual.RPE, Is.EqualTo(orbit.RPE).Within(0.01).Percent);
-            Assert.That(actual.ECC, Is.EqualTo(orbit.ECC).Within(0.01));
-            Assert.That(actual.INC.RadValueMinusPiToPiRange, Is.EqualTo(orbit.INC.RadValueMinusPiToPiRange).Within(0.01));
-            Assert.That(actual.APE.RadValueMinusPiToPiRange, Is.EqualTo(orbit.APE.RadValueMinusPiToPiRange).Within(0.01));
-            Assert.That(actual.LAN.RadValueMinusPiToPiRange, Is.EqualTo(orbit.LAN.RadValueMinusPiToPiRange).Within(0.01));
-            Assert.That(actual.TPP, Is.EqualTo(orbit.TPP).Within(0.01).Percent);
-        }
-
-        [Test]
-        public void StateVectors2Orbit_InputFromTime2PointAndTime2VelocityMethodsParabolic_ReproducesOriginalOrbit()
+        public void StateVectors2Orbit_ParabolicCaseInputFromTime2PointAndTime2VelocityMethods_ReproducesOriginalOrbit()
         {
             // Arrange
             Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
@@ -684,7 +628,7 @@ namespace Tests
         }
 
         [Test]
-        public void StateVectors2Orbit_InputFromTime2PointAndTime2VelocityMethodsHyperbolic_ReproducesOriginalOrbit()
+        public void StateVectors2Orbit_HyperbolicCaseInputFromTime2PointAndTime2VelocityMethods_ReproducesOriginalOrbit()
         {
             // Arrange
             Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
@@ -804,7 +748,7 @@ namespace Tests
         }
 
         [Test]
-        public void Time2TrueAnomaly_ParabolicOrbitNormal_MatchesHandwrittenWork()
+        public void Time2TrueAnomaly_ParabolicOrbit_MatchesHandwrittenWork()
         {
             // Arrange
             Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
@@ -1092,7 +1036,7 @@ namespace Tests
         }
 
         [Test]
-        public void TrueAnomaly2Point_HyperbolicOrbitTrueAnomalyIs2PiMinusMaxTrueAnomaly_InfiniteMagnitudeOutputVector()
+        public void TrueAnomaly2Point_HyperbolicOrbitTrueAnomalyIsMinTrueAnomaly_InfiniteMagnitudeOutputVector()
         {
             // Arrange
             Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
@@ -1124,7 +1068,7 @@ namespace Tests
         }
 
         [Test]
-        public void TrueAnomaly2Point_HyperbolicOrbitTrueAnomalyIsBeyond2PiMinusMaxTrueAnomaly_InfiniteMagnitudeOutputVector()
+        public void TrueAnomaly2Point_HyperbolicOrbitTrueAnomalyIsBeyondMinTrueAnomaly_InfiniteMagnitudeOutputVector()
         {
             // Arrange
             Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
