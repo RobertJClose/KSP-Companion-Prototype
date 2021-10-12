@@ -23,7 +23,7 @@ using UnityEngine;
 /// </para>
 /// </remarks>
 [System.Serializable]
-public class Orbit : IEquatable<Orbit>
+public partial class Orbit 
 {
     #region Fields
 
@@ -685,66 +685,6 @@ public class Orbit : IEquatable<Orbit>
     }
 
     /// <summary>
-    /// Checks to see if two Orbit objects are equal.
-    /// </summary>
-    /// <param name="orbitOne">The first Orbit object.</param>
-    /// <param name="orbitTwo">The second Orbit object.</param>
-    /// <returns>True if the Orbit objects are the same. False if either Orbit is null, or the Orbits are not the same.</returns>
-    public static bool operator==(Orbit orbitOne, Orbit orbitTwo)
-    {
-        return orbitOne.Equals(orbitTwo);
-    }
-
-    /// <summary>
-    /// Checks to see if two Orbit objects are not equal.
-    /// </summary>
-    /// <param name="orbitOne">The first Orbit object.</param>
-    /// <param name="orbitTwo">The second Orbit object.</param>
-    /// <returns>True if the Orbits are not the same, or if either Orbit is null. False if the Orbits are the same.</returns>
-    public static bool operator!=(Orbit orbitOne, Orbit orbitTwo)
-    {
-        return !orbitOne.Equals(orbitTwo);
-    }
-
-    /// <summary>
-    /// Checks to see if another object is equal to this Orbit.
-    /// </summary>
-    /// <param name="obj">The other object to checked for equality.</param>
-    /// <returns>True if the other object is equal to this Orbit. False otherwise.</returns>
-    public override bool Equals(object obj)
-    {
-        if (obj == null || !GetType().Equals(obj.GetType()))
-            return false;
-
-        return Equals((Orbit)obj);
-    }
-
-    /// <summary>
-    /// Checks to see if another Orbit is equal to this Orbit.
-    /// </summary>
-    /// <param name="other">The other Orbit to be checked for equality.</param>
-    /// <returns>True if the orbits are the same. False otherwise.</returns>
-    public bool Equals(Orbit other)
-    {
-        if (other == null)
-            return false;
-
-        return (gravitationalBody == other.GravitationalBody) && Mathd.Approximately(radiusOfPeriapsis, other.RPE) 
-            && Mathd.Approximately(eccentricity, other.ECC) && (inclination == other.INC) && (argumentOfPeriapsis == other.APE) 
-            && (longitudeOfAscendingNode == other.LAN) && Mathd.Approximately(timeOfPeriapsisPassage, other.TPP);
-    }
-
-    /// <summary>
-    /// Serves as the hash function for this Orbit.
-    /// </summary>
-    /// <returns>A hash code for this Orbit.</returns>
-    public override int GetHashCode()
-    {
-        return (gravitationalBody.GravParameter + gravitationalBody.Radius + radiusOfPeriapsis + eccentricity
-            + inclination + argumentOfPeriapsis + longitudeOfAscendingNode + timeOfPeriapsisPassage).GetHashCode();
-    }
-
-    /// <summary>
     /// Produces a list of points along the orbital trajectory.
     /// </summary>
     /// <param name="startTrueAnomaly">
@@ -1301,4 +1241,69 @@ public class Orbit : IEquatable<Orbit>
     }
 
     #endregion
+}
+
+// This partial section of the Orbit class implements the IEquatable<Orbit> interface.
+public partial class Orbit : IEquatable<Orbit>
+{
+    /// <summary>
+    /// Checks to see if two Orbit objects are equal.
+    /// </summary>
+    /// <param name="orbitOne">The first Orbit object.</param>
+    /// <param name="orbitTwo">The second Orbit object.</param>
+    /// <returns>True if the Orbit objects are the same. False if either Orbit is null, or the Orbits are not the same.</returns>
+    public static bool operator ==(Orbit orbitOne, Orbit orbitTwo)
+    {
+        return orbitOne.Equals(orbitTwo);
+    }
+
+    /// <summary>
+    /// Checks to see if two Orbit objects are not equal.
+    /// </summary>
+    /// <param name="orbitOne">The first Orbit object.</param>
+    /// <param name="orbitTwo">The second Orbit object.</param>
+    /// <returns>True if the Orbits are not the same, or if either Orbit is null. False if the Orbits are the same.</returns>
+    public static bool operator !=(Orbit orbitOne, Orbit orbitTwo)
+    {
+        return !orbitOne.Equals(orbitTwo);
+    }
+
+    /// <summary>
+    /// Checks to see if another object is equal to this Orbit.
+    /// </summary>
+    /// <param name="obj">The other object to checked for equality.</param>
+    /// <returns>True if the other object is equal to this Orbit. False otherwise.</returns>
+    public override bool Equals(object obj)
+    {
+        if (obj == null || !GetType().Equals(obj.GetType()))
+            return false;
+
+        return Equals((Orbit)obj);
+    }
+
+    /// <summary>
+    /// Checks to see if another Orbit is equal to this Orbit.
+    /// </summary>
+    /// <param name="other">The other Orbit to be checked for equality.</param>
+    /// <returns>True if the orbits are the same. False otherwise.</returns>
+    public bool Equals(Orbit other)
+    {
+        if (other == null)
+            return false;
+
+        return (gravitationalBody == other.GravitationalBody) && Mathd.Approximately(radiusOfPeriapsis, other.RPE)
+            && Mathd.Approximately(eccentricity, other.ECC) && (inclination == other.INC) && (argumentOfPeriapsis == other.APE)
+            && (longitudeOfAscendingNode == other.LAN) && Mathd.Approximately(timeOfPeriapsisPassage, other.TPP);
+    }
+
+    /// <summary>
+    /// Serves as the hash function for this Orbit.
+    /// </summary>
+    /// <returns>A hash code for this Orbit.</returns>
+    public override int GetHashCode()
+    {
+        return (gravitationalBody.GravParameter + gravitationalBody.Radius + radiusOfPeriapsis + eccentricity
+            + inclination + argumentOfPeriapsis + longitudeOfAscendingNode + timeOfPeriapsisPassage).GetHashCode();
+    }
+
 }
