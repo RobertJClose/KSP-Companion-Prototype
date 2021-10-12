@@ -263,6 +263,74 @@ namespace Tests
 
         #endregion
 
+        #region Approximately() tests
+
+        [Test]
+        public void Approximately_NearlyEqualOrbits_ReturnsTrue()
+        {
+            // Arrange
+            Orbit orbitOne = GravitationalBody.Kerbin.DefaultOrbit;
+            Orbit orbitTwo = GravitationalBody.Kerbin.DefaultOrbit;
+            orbitTwo.RPE = orbitOne.RPE + double.Epsilon;
+            orbitTwo.ECC = orbitOne.ECC - double.Epsilon;
+            orbitTwo.INC = orbitOne.INC + Angle.Epsilon;
+            orbitTwo.APE = orbitOne.APE - Angle.Epsilon;
+            orbitTwo.LAN = orbitOne.LAN + Angle.Epsilon;
+            orbitTwo.TPP = orbitOne.TPP - double.Epsilon;
+
+            // Act
+            bool areOrbitsApproximatelyEqual = Orbit.Approximately(orbitOne, orbitTwo);
+
+            // Assert
+            Assert.That(areOrbitsApproximatelyEqual, Is.EqualTo(true));
+        }
+
+        [Test]
+        public void Approximately_VeryDifferentOrbits_ReturnsFalse()
+        {
+            // Arrange
+            Orbit orbitOne = GravitationalBody.Kerbin.DefaultOrbit;
+            Orbit orbitTwo = GravitationalBody.Kerbin.DefaultOrbit;
+            orbitOne.RPE = 1_500_000.0;
+            orbitTwo.RPE = 2_000_000.0;
+
+            // Act
+            bool areOrbitsApproximatelyEqual = Orbit.Approximately(orbitOne, orbitTwo);
+
+            // Assert
+            Assert.That(areOrbitsApproximatelyEqual, Is.EqualTo(false));
+        }
+
+        [Test]
+        public void Approximately_EitherOrbitIsNull_ReturnsFalse()
+        {
+            // Arrange 
+            Orbit orbitOne = GravitationalBody.Kerbin.DefaultOrbit;
+            Orbit orbitTwo = null;
+
+            // Act
+            bool areOrbitsApproximatelyEqual = Orbit.Approximately(orbitOne, orbitTwo);
+
+            // Assert
+            Assert.That(areOrbitsApproximatelyEqual, Is.EqualTo(false));
+        }
+
+        [Test]
+        public void Approximately_BothOrbitsAreNull_ReturnsTrue()
+        {
+            // Arrange
+            Orbit orbitOne = null;
+            Orbit orbitTwo = null;
+
+            // Act
+            bool areOrbitsApproximatelyEqual = Orbit.Approximately(orbitOne, orbitTwo);
+
+            // Assert
+            Assert.That(areOrbitsApproximatelyEqual, Is.EqualTo(true));
+        }
+
+        #endregion
+
         #region Equals() tests
 
         [Test]
