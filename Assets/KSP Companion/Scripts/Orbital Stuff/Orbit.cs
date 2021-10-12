@@ -555,6 +555,22 @@ public partial class Orbit : IEquatable<Orbit>
 
     #region Public Methods
 
+    public static bool Approximately(Orbit orbitOne, Orbit orbitTwo)
+    {
+        if (orbitOne.gravitationalBody != orbitTwo.gravitationalBody)
+            return false;
+
+        bool areTimesOfPeriapsisApproximatelyEqual = Mathd.Approximately(orbitOne.Time2TrueAnomaly(orbitOne.timeOfPeriapsisPassage),
+            orbitTwo.Time2TrueAnomaly(orbitTwo.timeOfPeriapsisPassage));
+
+        return Mathd.Approximately(orbitOne.radiusOfPeriapsis, orbitTwo.radiusOfPeriapsis)
+            && Mathd.Approximately(orbitOne.eccentricity, orbitTwo.eccentricity)
+            && Angle.Approximately(orbitOne.inclination, orbitTwo.inclination)
+            && Angle.Approximately(orbitOne.argumentOfPeriapsis, orbitTwo.argumentOfPeriapsis)
+            && Angle.Approximately(orbitOne.longitudeOfAscendingNode, orbitTwo.longitudeOfAscendingNode)
+            && areTimesOfPeriapsisApproximatelyEqual;
+    }
+
     /// <summary>
     /// Calculates an orbit that transfers between two orbits at a given departure time and arrival time.
     /// </summary>
