@@ -445,7 +445,7 @@ namespace Tests
         }
 
         [Test]
-        public void FindTransferOrbit_OrbitsAroundDifferentBodies_ThrowsArgumentException()
+        public void FindTransferOrbit_OrbitsAroundDifferentBodies_ReturnsNull()
         {
             // Arrange
             Orbit initial = GravitationalBody.Earth.DefaultOrbit;
@@ -454,10 +454,10 @@ namespace Tests
             double arrivalTime = 1.0;
 
             // Act
-            void FindTransferOrbit() => Orbit.FindTransferOrbit(initial, departureTime, target, arrivalTime);
-
+            Orbit actual = Orbit.FindTransferOrbit(initial, departureTime, target, arrivalTime);
+            
             // Assert
-            Assert.That(FindTransferOrbit, Throws.ArgumentException);
+            Assert.That(actual, Is.Null);
         }
 
         [Test]
