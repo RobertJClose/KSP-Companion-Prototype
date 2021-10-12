@@ -214,7 +214,7 @@ namespace Tests
         }
 
         [Test]
-        public void InequalityOperator_BothOrbitsAreNull_Returnsfalse()
+        public void InequalityOperator_BothOrbitsAreNull_ReturnsFalse()
         {
             // Arrange
             Orbit orbitOne = null;
