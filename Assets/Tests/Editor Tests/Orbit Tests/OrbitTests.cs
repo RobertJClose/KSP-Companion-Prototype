@@ -35,6 +35,350 @@ namespace Tests
 
         #endregion
 
+        #region (In)equality operator tests
+
+        [Test]
+        public void EqualityOperator_SameOrbit_ReturnsTrue()
+        {
+            // Arrange
+            Orbit orbitOne = GravitationalBody.Kerbin.DefaultOrbit;
+            Orbit orbitTwo = GravitationalBody.Kerbin.DefaultOrbit;
+
+            // Act
+            bool areOrbitsEqual = orbitOne == orbitTwo;
+
+            // Assert
+            Assert.That(areOrbitsEqual, Is.EqualTo(true));
+        }
+
+        [Test]
+        public void EqualityOperator_DifferentOrbitsSameGravitationalBody_ReturnsFalse()
+        {
+            // Arrange
+            Orbit orbitOne = GravitationalBody.Kerbin.DefaultOrbit;
+            Orbit orbitTwo = GravitationalBody.Kerbin.DefaultOrbit;
+            orbitOne.RPE = 1_500_000.0;
+            orbitTwo.RPE = 1_000_000.0;
+
+            // Act
+            bool areOrbitsEqual = orbitOne == orbitTwo;
+
+            // Assert
+            Assert.That(areOrbitsEqual, Is.EqualTo(false));
+        }
+
+        [Test]
+        public void EqualityOperator_SameOrbitButDifferentGravitationalBody_ReturnsFalse()
+        {
+            // Arrange
+            Orbit orbitOne = GravitationalBody.Kerbin.DefaultOrbit;
+            Orbit orbitTwo = GravitationalBody.Mun.DefaultOrbit;
+            orbitTwo.RPE = orbitOne.RPE;
+            orbitTwo.ECC = orbitOne.ECC;
+            orbitTwo.INC = orbitOne.INC;
+            orbitTwo.APE = orbitOne.APE;
+            orbitTwo.LAN = orbitOne.LAN;
+            orbitTwo.TPP = orbitOne.TPP;
+
+            // Act
+            bool areOrbitsEqual = orbitOne == orbitTwo;
+
+            // Assert
+            Assert.That(areOrbitsEqual, Is.EqualTo(false));
+        }
+
+        [Test]
+        public void EqualityOperator_OneOrbitIsNull_ReturnsFalse()
+        {
+            // Arrange
+            Orbit orbitOne = GravitationalBody.Kerbin.DefaultOrbit;
+            Orbit orbitTwo = null;
+
+            // Act
+            bool areOrbitsEqual = orbitOne == orbitTwo;
+
+            // Assert
+            Assert.That(areOrbitsEqual, Is.EqualTo(false));
+        }
+
+        [Test]
+        public void EqualityOperator_BothOrbitsAreNull_ReturnsTrue()
+        {
+            // Arrange
+            Orbit orbitOne = null;
+            Orbit orbitTwo = null;
+
+            // Act
+            bool areOrbitsEqual = orbitOne == orbitTwo;
+
+            // Assert
+            Assert.That(areOrbitsEqual, Is.EqualTo(true));
+        }
+
+        [Test]
+        public void EqualityOperator_ApproximatelyEqualOrbits_DeemedUnequal()
+        {
+            // Arrange
+            Orbit orbitOne = GravitationalBody.Kerbin.DefaultOrbit;
+            Orbit orbitTwo = GravitationalBody.Kerbin.DefaultOrbit;
+            orbitOne.ECC = 0.0;
+            orbitTwo.ECC = double.Epsilon;
+
+            // Act
+            bool areOrbitsEqual = orbitOne == orbitTwo;
+
+            // Assert
+            Assert.That(areOrbitsEqual, Is.EqualTo(false));
+        }
+
+        [Test]
+        public void EqualityOperator_EllipticalOrbitsWithTimeOfPeriapsisPassageDifferentByOnePeriod_ReturnsTrue()
+        {
+            // Arrange
+            Orbit orbitOne = GravitationalBody.Kerbin.DefaultOrbit;
+            Orbit orbitTwo = GravitationalBody.Kerbin.DefaultOrbit;
+            orbitOne.ECC = 0.5;
+            orbitTwo.ECC = 0.5;
+            orbitOne.TPP = 100.0;
+            orbitTwo.TPP = orbitOne.TPP + orbitOne.Period;
+
+            // Act
+            bool areOrbitsEqual = orbitOne == orbitTwo;
+
+            // Assert
+            Assert.That(areOrbitsEqual, Is.EqualTo(true));
+        }
+
+        [Test]
+        public void InequalityOperator_SameOrbit_ReturnsFalse()
+        {
+            // Arrange
+            Orbit orbitOne = GravitationalBody.Kerbin.DefaultOrbit;
+            Orbit orbitTwo = GravitationalBody.Kerbin.DefaultOrbit;
+
+            // Act
+            bool areOrbitsDifferent = orbitOne != orbitTwo;
+
+            // Assert
+            Assert.That(areOrbitsDifferent, Is.EqualTo(false));
+        }
+
+        [Test]
+        public void InequalityOperator_DifferentOrbitsSameGravitationalBody_ReturnsTrue()
+        {
+            // Arrange
+            Orbit orbitOne = GravitationalBody.Kerbin.DefaultOrbit;
+            Orbit orbitTwo = GravitationalBody.Kerbin.DefaultOrbit;
+            orbitOne.RPE = 1_500_000.0;
+            orbitTwo.RPE = 1_000_000.0;
+
+            // Act
+            bool areOrbitsDifferent = orbitOne != orbitTwo;
+
+            // Assert
+            Assert.That(areOrbitsDifferent, Is.EqualTo(true));
+        }
+
+        [Test]
+        public void InequalityOperator_SameOrbitButDifferentGravitationalBody_ReturnsTrue()
+        {
+            // Arrange
+            Orbit orbitOne = GravitationalBody.Kerbin.DefaultOrbit;
+            Orbit orbitTwo = GravitationalBody.Mun.DefaultOrbit;
+            orbitTwo.RPE = orbitOne.RPE;
+            orbitTwo.ECC = orbitOne.ECC;
+            orbitTwo.INC = orbitOne.INC;
+            orbitTwo.APE = orbitOne.APE;
+            orbitTwo.LAN = orbitOne.LAN;
+            orbitTwo.TPP = orbitOne.TPP;
+
+            // Act
+            bool areOrbitsDifferent = orbitOne != orbitTwo;
+
+            // Assert
+            Assert.That(areOrbitsDifferent, Is.EqualTo(true));
+        }
+
+        [Test]
+        public void InequalityOperator_OneOrbitIsNull_ReturnsTrue()
+        {
+            // Arrange
+            Orbit orbitOne = GravitationalBody.Kerbin.DefaultOrbit;
+            Orbit orbitTwo = null;
+
+            // Act
+            bool areOrbitsDifferent = orbitOne != orbitTwo;
+
+            // Assert
+            Assert.That(areOrbitsDifferent, Is.EqualTo(true));
+        }
+
+        [Test]
+        public void InequalityOperator_BothOrbitsAreNull_Returnsfalse()
+        {
+            // Arrange
+            Orbit orbitOne = null;
+            Orbit orbitTwo = null;
+
+            // Act
+            bool areOrbitsDifferent = orbitOne != orbitTwo;
+
+            // Assert
+            Assert.That(areOrbitsDifferent, Is.EqualTo(false));
+        }
+
+        [Test]
+        public void InequalityOperator_ApproximatelyEqualOrbits_DeemedUnequal()
+        {
+            // Arrange
+            Orbit orbitOne = GravitationalBody.Kerbin.DefaultOrbit;
+            Orbit orbitTwo = GravitationalBody.Kerbin.DefaultOrbit;
+            orbitOne.ECC = 0.0;
+            orbitTwo.ECC = double.Epsilon;
+
+            // Act
+            bool areOrbitsDifferent = orbitOne != orbitTwo;
+
+            // Assert
+            Assert.That(areOrbitsDifferent, Is.EqualTo(true));
+        }
+
+        [Test]
+        public void InequalityOperator_EllipticalOrbitsWithTimeOfPeriapsisPassageDifferentByOnePeriod_ReturnsFalse()
+        {
+            // Arrange
+            Orbit orbitOne = GravitationalBody.Kerbin.DefaultOrbit;
+            Orbit orbitTwo = GravitationalBody.Kerbin.DefaultOrbit;
+            orbitOne.ECC = 0.5;
+            orbitTwo.ECC = 0.5;
+            orbitOne.TPP = 100.0;
+            orbitTwo.TPP = orbitOne.TPP + orbitOne.Period;
+
+            // Act
+            bool areOrbitsDifferent = orbitOne != orbitTwo;
+
+            // Assert
+            Assert.That(areOrbitsDifferent, Is.EqualTo(false));
+        }
+
+        #endregion
+
+        #region Equals() tests
+
+        [Test]
+        public void Equals_SameOrbit_ReturnsTrue()
+        {
+            // Arrange
+            Orbit orbitOne = GravitationalBody.Kerbin.DefaultOrbit;
+            Orbit orbitTwo = GravitationalBody.Kerbin.DefaultOrbit;
+
+            // Act
+            bool areOrbitsEqual = orbitOne.Equals(orbitTwo);
+
+            // Assert
+            Assert.That(areOrbitsEqual, Is.EqualTo(true));
+        }
+
+        [Test]
+        public void Equals_DifferentOrbitsSameGravitationalBody_ReturnsFalse()
+        {
+            // Arrange
+            Orbit orbitOne = GravitationalBody.Kerbin.DefaultOrbit;
+            Orbit orbitTwo = GravitationalBody.Kerbin.DefaultOrbit;
+            orbitOne.RPE = 1_500_000.0;
+            orbitTwo.RPE = 1_000_000.0;
+
+            // Act
+            bool areOrbitsEqual = orbitOne.Equals(orbitTwo);
+
+            // Assert
+            Assert.That(areOrbitsEqual, Is.EqualTo(false));
+        }
+
+        [Test]
+        public void Equals_SameOrbitButDifferentGravitationalBody_ReturnsFalse()
+        {
+            // Arrange
+            Orbit orbitOne = GravitationalBody.Kerbin.DefaultOrbit;
+            Orbit orbitTwo = GravitationalBody.Mun.DefaultOrbit;
+            orbitTwo.RPE = orbitOne.RPE;
+            orbitTwo.ECC = orbitOne.ECC;
+            orbitTwo.INC = orbitOne.INC;
+            orbitTwo.APE = orbitOne.APE;
+            orbitTwo.LAN = orbitOne.LAN;
+            orbitTwo.TPP = orbitOne.TPP;
+
+            // Act
+            bool areOrbitsEqual = orbitOne.Equals(orbitTwo);
+
+            // Assert
+            Assert.That(areOrbitsEqual, Is.EqualTo(false));
+        }
+
+        [Test]
+        public void Equals_OtherOrbitIsNull_ReturnsFalse()
+        {
+            // Arrange
+            Orbit orbitOne = GravitationalBody.Kerbin.DefaultOrbit;
+            Orbit orbitTwo = null;
+
+            // Act
+            bool areOrbitsEqual = orbitOne.Equals(orbitTwo);
+
+            // Assert
+            Assert.That(areOrbitsEqual, Is.EqualTo(false));
+        }
+
+        [Test]
+        public void Equals_OtherObjectIsNotAnOrbitObject_ReturnsFalse()
+        {
+            // Arrange
+            Orbit orbitOne = GravitationalBody.Kerbin.DefaultOrbit;
+            double notAnOrbit = 1.0;
+
+            // Act
+            bool areObjectsEqual = orbitOne.Equals(notAnOrbit);
+
+            // Assert
+            Assert.That(areObjectsEqual, Is.EqualTo(false));
+        }
+
+        [Test]
+        public void Equals_ApproximatelyEqualOrbits_DeemedUnequal()
+        {
+            // Arrange
+            Orbit orbitOne = GravitationalBody.Kerbin.DefaultOrbit;
+            Orbit orbitTwo = GravitationalBody.Kerbin.DefaultOrbit;
+            orbitOne.ECC = 0.0;
+            orbitTwo.ECC = double.Epsilon;
+
+            // Act
+            bool areOrbitsEqual = orbitOne.Equals(orbitTwo);
+
+            // Assert
+            Assert.That(areOrbitsEqual, Is.EqualTo(false));
+        }
+
+        [Test]
+        public void Equals_EllipticalOrbitsWithTimeOfPeriapsisPassageDifferentByOnePeriod_ReturnsTrue()
+        {
+            // Arrange
+            Orbit orbitOne = GravitationalBody.Kerbin.DefaultOrbit;
+            Orbit orbitTwo = GravitationalBody.Kerbin.DefaultOrbit;
+            orbitOne.ECC = 0.5;
+            orbitTwo.ECC = 0.5;
+            orbitOne.TPP = 100.0;
+            orbitTwo.TPP = orbitOne.TPP + orbitOne.Period;
+
+            // Act
+            bool areOrbitsEqual = orbitOne.Equals(orbitTwo);
+
+            // Assert
+            Assert.That(areOrbitsEqual, Is.EqualTo(true));
+        }
+
+        #endregion
+
         #region FindTransferOrbit() tests
 
         [Test]
