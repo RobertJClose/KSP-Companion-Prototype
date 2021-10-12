@@ -275,6 +275,13 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     /// <returns>True if the bodies are the same. False otherwise.</returns>
     public static bool operator==(GravitationalBody bodyOne, GravitationalBody bodyTwo)
     {
+        if (bodyOne is null && bodyTwo is null)
+            return true;
+
+        // This OR condition is unreachable if both conditions are true, so is an effective XOR.
+        if (bodyOne is null || bodyTwo is null)
+            return false;
+
         return bodyOne.Equals(bodyTwo);
     }
 
@@ -286,6 +293,13 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     /// <returns>True if the bodies are not the same, or if either body is null. False otherwise.</returns>
     public static bool operator!=(GravitationalBody bodyOne, GravitationalBody bodyTwo)
     {
+        if (bodyOne is null && bodyTwo is null)
+            return false;
+
+        // This OR condition is unreachable if both conditions are true, so is an effective XOR.
+        if (bodyOne is null || bodyTwo is null)
+            return true;
+
         return !bodyOne.Equals(bodyTwo);
     }
 
@@ -306,13 +320,13 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     /// Checks to see if another GravitationalBody is the same as this GravitationalBody.
     /// </summary>
     /// <param name="other">The other GravitationalBody to be checked for equality.</param>
-    /// <returns>True is the other GravitationalBody is the same. False otherwise.</returns>
+    /// <returns>True is the other GravitationalBody has the same name. False otherwise.</returns>
     public bool Equals(GravitationalBody other)
     {
-        if (other == null)
+        if (other is null)
             return false;
 
-        return (nameOfBody == other.Name) && (gravitationalParameter == other.GravParameter) && (radius == other.Radius);
+        return nameOfBody == other.Name;
     }
 
     /// <summary>
