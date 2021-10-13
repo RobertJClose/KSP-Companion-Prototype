@@ -687,7 +687,138 @@ namespace Tests
         }
 
         #endregion
-        
+
+        #region Time2Point() tests
+
+        [Test]
+        public void Time2Point_EllipticalOrbit_MatchesHandwrittenResult()
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
+            orbit.RPE = 1e+8;
+            orbit.ECC = 0.5;
+            orbit.INC = 0.5f;
+            orbit.APE = 1.2f;
+            orbit.LAN = 3.0f;
+            orbit.TPP = 500;
+            double time = 1e+4;
+
+            // Act
+            Vector3d actual = orbit.Time2Point(time);
+
+            // Assert
+            Assert.That(actual.x, Is.EqualTo(-26_298_864.41).Within(0.1).Percent);
+            Assert.That(actual.y, Is.EqualTo(-84_814_355.77).Within(0.1).Percent);
+            Assert.That(actual.z, Is.EqualTo(47_898_093.35).Within(0.1).Percent);
+        }
+
+        [Test]
+        public void Time2Point_ParabolicOrbit_MatchesHandwrittenResult()
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
+            orbit.RPE = 1e+8;
+            orbit.ECC = 1.0;
+            orbit.INC = 0.5f;
+            orbit.APE = 1.2f;
+            orbit.LAN = 3.0f;
+            orbit.TPP = 500;
+            double time = 1e+4;
+
+            // Act
+            Vector3d actual = orbit.Time2Point(time);
+
+            // Assert
+            Assert.That(actual.x, Is.EqualTo(-23_165_600.92).Within(0.1).Percent);
+            Assert.That(actual.y, Is.EqualTo(-86_415_299.48).Within(0.1).Percent);
+            Assert.That(actual.z, Is.EqualTo(48_522_383.85).Within(0.1).Percent);
+        }
+
+        [Test]
+        public void Time2Point_HyperbolicOrbit_MatchesHandwrittenResult()
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
+            orbit.RPE = 1e+8;
+            orbit.ECC = 1.5;
+            orbit.INC = 0.5f;
+            orbit.APE = 1.2f;
+            orbit.LAN = 3.0f;
+            orbit.TPP = 500;
+            double time = 1e+4;
+
+            // Act
+            Vector3d actual = orbit.Time2Point(time);
+
+            // Assert
+            Assert.That(actual.x, Is.EqualTo(-20_405_151.09).Within(0.1).Percent);
+            Assert.That(actual.y, Is.EqualTo(-87_826_547.68).Within(0.1).Percent);
+            Assert.That(actual.z, Is.EqualTo(49_072_822.08).Within(0.1).Percent);
+        }
+
+        [Test]
+        public void Time2Point_EllipticalOrbitInfiniteTimeInput_ThrowsArgumentException()
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
+
+            // Act
+            void Time2PointTestDelegate() => orbit.Time2Point(double.PositiveInfinity);
+
+            // Assert
+            Assert.That(Time2PointTestDelegate, Throws.ArgumentException);
+        }
+
+        [Test]
+        public void Time2Point_ParabolicOrbitInfiniteTimeInput_ReturnsPositiveInfinityVector()
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
+            orbit.ECC = 1.0;
+            double time = double.PositiveInfinity;
+
+            // Act
+            Vector3d actual = orbit.Time2Point(time);
+
+            // Assert
+            Assert.That(actual.x, Is.EqualTo(double.PositiveInfinity));
+            Assert.That(actual.y, Is.EqualTo(double.PositiveInfinity));
+            Assert.That(actual.z, Is.EqualTo(double.PositiveInfinity));
+        }
+
+        [Test]
+        public void Time2Point_HyperbolicOrbitInfiniteTimeInput_ReturnsPositiveInfinityVector()
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
+            orbit.ECC = 1.5;
+            double time = double.PositiveInfinity;
+
+            // Act
+            Vector3d actual = orbit.Time2Point(time);
+
+            // Assert
+            Assert.That(actual.x, Is.EqualTo(double.PositiveInfinity));
+            Assert.That(actual.y, Is.EqualTo(double.PositiveInfinity));
+            Assert.That(actual.z, Is.EqualTo(double.PositiveInfinity));
+        }
+
+        [Test]
+        public void Time2Point_NaNTimeInput_ThrowsArgumentException()
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
+            double time = double.NaN;
+
+            // Act
+            void Time2PointTestDelegate() => orbit.Time2Point(time);
+
+            // Assert
+            Assert.That(Time2PointTestDelegate, Throws.ArgumentException);
+        }
+
+        #endregion
+
         #region Time2TrueAnomaly() tests
 
         [Test]
