@@ -1366,5 +1366,203 @@ namespace Tests
 
         #endregion
 
+        #region TrueAnomaly2Velocity() tests
+
+        [Test]
+        public void TrueAnomaly2Velocity_EllipticalOrbit_MatchesHandwrittenWork()
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
+            orbit.RPE = 1e+8;
+            orbit.ECC = 0.5;
+            orbit.INC = 0.5f;
+            orbit.APE = 1.2f;
+            orbit.LAN = 3.0f;
+            orbit.TPP = 500.0;
+            Angle trueAnomaly = 0.2309184684f;
+
+            // Act
+            Vector3d actual = orbit.TrueAnomaly2Velocity(trueAnomaly);
+
+            // Assert
+            Assert.That(actual.x, Is.EqualTo(2281.47839).Within(0.1).Percent);
+            Assert.That(actual.y, Is.EqualTo(-816.6012467).Within(0.1).Percent);
+            Assert.That(actual.z, Is.EqualTo(250.5584854).Within(0.1).Percent);
+        }
+
+        [Test]
+        public void TrueAnomaly2Velocity_ParabolicOrbit_MatchesHandwrittenWork()
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
+            orbit.RPE = 1e+8;
+            orbit.ECC = 1.0;
+            orbit.INC = 0.5f;
+            orbit.APE = 1.2f;
+            orbit.LAN = 3.0f;
+            orbit.TPP = 500.0;
+            Angle trueAnomaly = 0.2650866775f;
+
+            // Act
+            Vector3d actual = orbit.TrueAnomaly2Velocity(trueAnomaly);
+
+            // Assert
+            Assert.That(actual.x, Is.EqualTo(2610.632316).Within(0.1).Percent);
+            Assert.That(actual.y, Is.EqualTo(-957.648237).Within(0.1).Percent);
+            Assert.That(actual.z, Is.EqualTo(394.2082868).Within(0.1).Percent);
+        }
+
+        [Test]
+        public void TrueAnomaly2Velocity_HyperbolicOrbit_MatchesHandwrittenWork()
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
+            orbit.RPE = 1e+8;
+            orbit.ECC = 1.5;
+            orbit.INC = 0.5f;
+            orbit.APE = 1.2f;
+            orbit.LAN = 3.0f;
+            orbit.TPP = 500.0;
+            Angle trueAnomaly = 0.2946731859f;
+
+            // Act
+            Vector3d actual = orbit.TrueAnomaly2Velocity(trueAnomaly);
+
+            // Assert
+            Assert.That(actual.x, Is.EqualTo(2897.205314).Within(0.1).Percent);
+            Assert.That(actual.y, Is.EqualTo(-1106.502648).Within(0.1).Percent);
+            Assert.That(actual.z, Is.EqualTo(375.0780042).Within(0.1).Percent);
+        }
+
+        [Test]
+        public void TrueAnomaly2Velocity_ParabolicOrbitTrueAnomalyIsPI_ReturnsZeroVector()
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
+            orbit.RPE = 1e+8;
+            orbit.ECC = 1.0;
+            orbit.INC = 0.5f;
+            orbit.APE = 1.2f;
+            orbit.LAN = 3.0f;
+            orbit.TPP = 500.0;
+
+            Angle trueAnomaly = Mathf.PI;
+
+            // Act
+            Vector3d actual = orbit.TrueAnomaly2Velocity(trueAnomaly);
+
+            // Assert
+            Assert.That(actual.x, Is.EqualTo(Vector3d.zero.x).Within(1e-3));
+            Assert.That(actual.y, Is.EqualTo(Vector3d.zero.y).Within(1e-3));
+            Assert.That(actual.z, Is.EqualTo(Vector3d.zero.z).Within(1e-3));
+        }
+
+        [Test]
+        public void TrueAnomaly2Velocity_HyperbolicOrbitTrueAnomalyIsMaxAnomaly_ReturnsEscapeVelocityVector()
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
+            orbit.RPE = 1e+8;
+            orbit.ECC = 1.5;
+            orbit.INC = 0.5f;
+            orbit.APE = 1.2f;
+            orbit.LAN = 3.0f;
+            orbit.TPP = 500.0;
+
+            Angle trueAnomaly = orbit.MaxTrueAnomaly.Value;
+
+            // Act
+            Vector3d actual = orbit.TrueAnomaly2Velocity(trueAnomaly);
+
+            // Assert
+            Assert.That(actual.x, Is.EqualTo(1369.958045).Within(0.1).Percent);
+            Assert.That(actual.y, Is.EqualTo(244.3150799).Within(0.1).Percent);
+            Assert.That(actual.z, Is.EqualTo(-237.7500712).Within(0.1).Percent);
+        }
+
+        [Test]
+        public void TrueAnomaly2Velocity_HyperbolicOrbitTrueAnomalyIsMinAnomaly_ReturnsEntryVelocityVector()
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
+            orbit.RPE = 1e+8;
+            orbit.ECC = 1.5;
+            orbit.INC = 0.5f;
+            orbit.APE = 1.2f;
+            orbit.LAN = 3.0f;
+            orbit.TPP = 500.0;
+
+            Angle trueAnomaly = -orbit.MaxTrueAnomaly.Value;
+
+            // Act
+            Vector3d actual = orbit.TrueAnomaly2Velocity(trueAnomaly);
+
+            // Assert
+            Assert.That(actual.x, Is.EqualTo(477.4406487).Within(0.1).Percent);
+            Assert.That(actual.y, Is.EqualTo(-1183.646565).Within(0.1).Percent);
+            Assert.That(actual.z, Is.EqualTo(603.3500122).Within(0.1).Percent);
+        }
+
+        [Test]
+        public void TrueAnomaly2Velocity_HyperbolicOrbitTrueAnomalyIsBeyondMaxTrueAnomaly_ReturnsEscapeVelocityVector()
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
+            orbit.RPE = 1e+8;
+            orbit.ECC = 1.5;
+            orbit.INC = 0.5f;
+            orbit.APE = 1.2f;
+            orbit.LAN = 3.0f;
+            orbit.TPP = 500.0;
+
+            Angle trueAnomaly = orbit.MaxTrueAnomaly.Value + 0.1f;
+
+            // Act
+            Vector3d actual = orbit.TrueAnomaly2Velocity(trueAnomaly);
+
+            // Assert
+            Assert.That(actual.x, Is.EqualTo(1369.958045).Within(0.1).Percent);
+            Assert.That(actual.y, Is.EqualTo(244.3150799).Within(0.1).Percent);
+            Assert.That(actual.z, Is.EqualTo(-237.7500712).Within(0.1).Percent);
+        }
+
+        [Test]
+        public void TrueAnomaly2Velocity_HyperbolicOrbitTrueAnomalyIsBeyondMinTrueAnomaly_ReturnsEntryVelocityVector()
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
+            orbit.RPE = 1e+8;
+            orbit.ECC = 1.5;
+            orbit.INC = 0.5f;
+            orbit.APE = 1.2f;
+            orbit.LAN = 3.0f;
+            orbit.TPP = 500.0;
+
+            Angle trueAnomaly = -(orbit.MaxTrueAnomaly.Value + 0.1f);
+
+            // Act
+            Vector3d actual = orbit.TrueAnomaly2Velocity(trueAnomaly);
+
+            // Assert
+            Assert.That(actual.x, Is.EqualTo(477.4406487).Within(0.1).Percent);
+            Assert.That(actual.y, Is.EqualTo(-1183.646565).Within(0.1).Percent);
+            Assert.That(actual.z, Is.EqualTo(603.3500122).Within(0.1).Percent);
+        }
+
+        [Test]
+        public void TrueAnomaly2Velocity_NaNTrueAnomalyInput_ThrowsArgumentException()
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
+            Angle trueAnomaly = float.NaN;
+
+            // Act
+            void TrueAnomaly2VelocityTestDelegate() => orbit.TrueAnomaly2Velocity(trueAnomaly);
+
+            // Assert
+            Assert.That(TrueAnomaly2VelocityTestDelegate, Throws.ArgumentException);
+        }
+
+        #endregion
     }
 }
