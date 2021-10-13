@@ -790,8 +790,15 @@ public partial class Orbit : IEquatable<Orbit>
     /// </summary>
     /// <param name="time">The time in seconds to calculate the satellite's position.</param>
     /// <returns>The position of the satellite at the given time.</returns>
+    /// <exception cref="ArgumentException"><paramref name="time"/> was NaN, or the orbit is elliptical and <paramref name="time"/> is infinite.</exception>
     public Vector3d Time2Point(double time)
     {
+        if (double.IsNaN(time))
+            throw new ArgumentException("The input time can not be NaN.", "time");
+
+        if (double.IsInfinity(time) && OrbitType == ConicSection.Elliptical)
+            throw new ArgumentException("For elliptical orbits, the input time cannot be infinite.", "time");
+
         Angle trueAnomaly = Time2TrueAnomaly(time);
         return TrueAnomaly2Point(trueAnomaly);
     }
