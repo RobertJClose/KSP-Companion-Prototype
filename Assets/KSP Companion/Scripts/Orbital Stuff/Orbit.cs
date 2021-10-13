@@ -952,8 +952,12 @@ public partial class Orbit : IEquatable<Orbit>
     /// </summary>
     /// <param name="trueAnomaly">The true anomaly of a point along the orbital trajectory. Measured in radians.</param>
     /// <returns>The velocity of the satellite at the point with the given true anomaly.</returns>
+    /// <exception cref="ArgumentException">The input true anomaly angle cannot be NaN.</exception>
     public Vector3d TrueAnomaly2Velocity(Angle trueAnomaly)
     {
+        if (float.IsNaN(trueAnomaly))
+            throw new ArgumentException("The true anomaly input angle cannot be NaN", "trueAnomaly");
+
         double angMomentum = SpecificAngularMomentumVector.magnitude;
 
         Vector3d output;
