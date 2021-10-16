@@ -7,7 +7,7 @@ public class TimelineStepData
     public double transitionTime;
 
     public bool isOrbitalStepOrbitNull;
-    public int orbitGravBodyID;
+    public string orbitGravBodyName;
     public double orbitRPE;
     public double orbitECC;
     public float orbitINC;

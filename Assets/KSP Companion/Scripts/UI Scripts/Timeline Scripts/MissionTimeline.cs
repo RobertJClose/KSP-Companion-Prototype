@@ -383,7 +383,7 @@ public class MissionTimeline : MonoBehaviour
                 else
                 {
                     saveData.isOrbitalStepOrbitNull = false;
-                    saveData.orbitGravBodyID = orbitalStep.Orbit.GravitationalBody.ID;
+                    saveData.orbitGravBodyName = orbitalStep.Orbit.GravitationalBody.Name;
                     saveData.orbitRPE = orbitalStep.Orbit.RPE;
                     saveData.orbitECC = orbitalStep.Orbit.ECC;
                     saveData.orbitINC = orbitalStep.Orbit.INC;
@@ -436,7 +436,7 @@ public class MissionTimeline : MonoBehaviour
                     orbitalStep.Orbit = null;
                 else
                 {
-                    orbitalStep.Orbit.GravitationalBody = GravitationalBody.ListOfBodies.Find(step => step.ID == nextStepData.orbitGravBodyID);
+                    orbitalStep.Orbit.GravitationalBody = GravitationalBody.ListOfKSPBodies.Find(step => step.Name == nextStepData.orbitGravBodyName);
                     orbitalStep.Orbit.RPE = nextStepData.orbitRPE;
                     orbitalStep.Orbit.ECC = nextStepData.orbitECC;
                     orbitalStep.Orbit.INC = nextStepData.orbitINC;
