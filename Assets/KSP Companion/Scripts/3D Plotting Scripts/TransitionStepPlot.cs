@@ -14,7 +14,7 @@ public class TransitionStepPlot : InspectablePlot
         mainCameraTransform = Camera.main.transform;
 
         spriteRenderer = GetComponent<SpriteRenderer>();
-        childSpriteRenderer = GetComponentInChildren<ChildTransitionStepPlot>().GetComponent<SpriteRenderer>();
+        childSpriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
 
         childSpriteRenderer.gameObject.SetActive(false);
     }
