@@ -208,7 +208,7 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     {
         get
         {
-            double periapsisRadius = Mathd.Ceil(radius * 1.05 / 25000.0) * 25000.0; // The Ceil() call and factors of 25,000 make the default radius round up to a multiple of 25km
+            double periapsisRadius = Mathd.Ceil(radius * 1.2 / 25000.0) * 25000.0; // The Ceil() call and factors of 25,000 make the default radius round up to a multiple of 25km
             double eccentricity = 0.0;
             Angle inclination = 0f;
             Angle argumentOfPeriapsis = 0f;
