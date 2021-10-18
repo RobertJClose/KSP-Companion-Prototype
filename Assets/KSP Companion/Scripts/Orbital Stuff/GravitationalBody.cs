@@ -44,6 +44,9 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
 
     #region Properties
 
+    /// <summary>
+    /// Gets a GravitationalBody representing the KSP moon Bop.
+    /// </summary>
     public static GravitationalBody Bop
     {
         get
@@ -52,6 +55,9 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
         }
     }
 
+    /// <summary>
+    /// Gets a GravitationalBody representing the KSP planet Dres.
+    /// </summary>
     public static GravitationalBody Dres
     {
         get
@@ -60,6 +66,9 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
         }
     }
 
+    /// <summary>
+    /// Gets a GravitationalBody representing the KSP planet Duna.
+    /// </summary>
     public static GravitationalBody Duna
     {
         get
@@ -68,6 +77,9 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
         }
     }
 
+    /// <summary>
+    /// Gets a GravitationalBody representing the planet Earth.
+    /// </summary>
     public static GravitationalBody Earth
     {
         get
@@ -76,6 +88,9 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
         }
     }
 
+    /// <summary>
+    /// Gets a GravitationalBody representing the KSP planet Eeloo.
+    /// </summary>
     public static GravitationalBody Eeloo
     {
         get
@@ -84,6 +99,9 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
         }
     }
 
+    /// <summary>
+    /// Gets a GravitationalBody representing the KSP planet Eve.
+    /// </summary>
     public static GravitationalBody Eve
     {
         get
@@ -92,6 +110,9 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
         }
     }
 
+    /// <summary>
+    /// Gets a GravitationalBody representing the KSP moon Gilly.
+    /// </summary>
     public static GravitationalBody Gilly
     {
         get
@@ -100,6 +121,9 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
         }
     }
 
+    /// <summary>
+    /// Gets a GravitationalBody representing the KSP moon Ike.
+    /// </summary>
     public static GravitationalBody Ike
     {
         get
@@ -108,6 +132,9 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
         }
     }
 
+    /// <summary>
+    /// Gets a GravitationalBody representing the KSP planet Jool.
+    /// </summary>
     public static GravitationalBody Jool
     {
         get
@@ -116,6 +143,9 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
         }
     }
 
+    /// <summary>
+    /// Gets a GravitationalBody representing the planet Jupiter.
+    /// </summary>
     public static GravitationalBody Jupiter
     {
         get
@@ -124,6 +154,9 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
         }
     }
 
+    /// <summary>
+    /// Gets a GravitationalBody representing the KSP planet Kerbin.
+    /// </summary>
     public static GravitationalBody Kerbin
     {
         get
@@ -132,6 +165,9 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
         }
     }
 
+    /// <summary>
+    /// Gets a GravitationalBody representing the KSP star Kerbol.
+    /// </summary>
     public static GravitationalBody Kerbol
     {
         get
@@ -140,6 +176,9 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
         }
     }
 
+    /// <summary>
+    /// Gets a GravitationalBody representing the KSP moon Laythe.
+    /// </summary>
     public static GravitationalBody Laythe
     {
         get
@@ -148,6 +187,9 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
         }
     }
 
+    /// <summary>
+    /// Gets a GravitationalBody representing the KSP moon Minmus.
+    /// </summary>
     public static GravitationalBody Minmus
     {
         get
@@ -156,6 +198,9 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
         }
     }
 
+    /// <summary>
+    /// Gets a GravitationalBody representing the KSP planet Moho.
+    /// </summary>
     public static GravitationalBody Moho
     {
         get
@@ -164,6 +209,9 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
         }
     }
 
+    /// <summary>
+    /// Gets a GravitationalBody representing the KSP moon Mun.
+    /// </summary>
     public static GravitationalBody Mun
     {
         get
@@ -172,6 +220,9 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
         }
     }
 
+    /// <summary>
+    /// Gets a GravitationalBody representing the KSP moon Pol.
+    /// </summary>
     public static GravitationalBody Pol
     {
         get
@@ -180,6 +231,9 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
         }
     }
 
+    /// <summary>
+    /// Gets a GravitationalBody representing the KSP moon Tylo.
+    /// </summary>
     public static GravitationalBody Tylo
     {
         get
@@ -188,6 +242,9 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
         }
     }
 
+    /// <summary>
+    /// Gets a GravitationalBody representing the KSP moon Vall.
+    /// </summary>
     public static GravitationalBody Vall
     {
         get
