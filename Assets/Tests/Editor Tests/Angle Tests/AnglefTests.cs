@@ -6,7 +6,7 @@ using UnityEngine.TestTools;
 
 namespace Tests
 {
-    public class AngleTests
+    public class AnglefTests
     {
         private readonly float allowedError = 0.01f;
 
