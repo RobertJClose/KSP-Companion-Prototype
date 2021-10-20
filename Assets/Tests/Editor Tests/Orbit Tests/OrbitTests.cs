@@ -273,9 +273,9 @@ namespace Tests
             Orbit orbitTwo = GravitationalBody.Kerbin.DefaultOrbit;
             orbitTwo.RPE = orbitOne.RPE + double.Epsilon;
             orbitTwo.ECC = orbitOne.ECC - double.Epsilon;
-            orbitTwo.INC = orbitOne.INC + Angle.Epsilon;
-            orbitTwo.APE = orbitOne.APE - Angle.Epsilon;
-            orbitTwo.LAN = orbitOne.LAN + Angle.Epsilon;
+            orbitTwo.INC = orbitOne.INC + Anglef.Epsilon;
+            orbitTwo.APE = orbitOne.APE - Anglef.Epsilon;
+            orbitTwo.LAN = orbitOne.LAN + Anglef.Epsilon;
             orbitTwo.TPP = orbitOne.TPP - double.Epsilon;
 
             // Act
@@ -831,10 +831,10 @@ namespace Tests
             orbit.TPP = 1500.0;
 
             double time = -10000.0;
-            Angle result = 3.032453601f;
+            Anglef result = 3.032453601f;
 
             // Act
-            Angle actual = orbit.Time2TrueAnomaly(time);
+            Anglef actual = orbit.Time2TrueAnomaly(time);
 
             // Assert
             Assert.That(actual.RadValue, Is.EqualTo(result.RadValue));
@@ -850,10 +850,10 @@ namespace Tests
             orbit.TPP = 1500.0;
 
             double time = -10000.0;
-            Angle result = -2.284620281f;
+            Anglef result = -2.284620281f;
 
             // Act
-            Angle actual = orbit.Time2TrueAnomaly(time);
+            Anglef actual = orbit.Time2TrueAnomaly(time);
 
             // Assert
             Assert.That(actual.RadValue, Is.EqualTo(result.RadValue));
@@ -869,10 +869,10 @@ namespace Tests
             orbit.TPP = 1_500.0;
 
             double time = -10000.0;
-            Angle result = -2.249168754f;
+            Anglef result = -2.249168754f;
 
             // Act
-            Angle actual = orbit.Time2TrueAnomaly(time);
+            Anglef actual = orbit.Time2TrueAnomaly(time);
 
             // Assert
             Assert.That(actual.RadValue, Is.EqualTo(result.RadValue));
@@ -888,10 +888,10 @@ namespace Tests
             orbit.TPP = 3_000.0;
 
             double time = 5_000.0;
-            Angle result = 1.288831085f;
+            Anglef result = 1.288831085f;
 
             // Act
-            Angle actual = orbit.Time2TrueAnomaly(time);
+            Anglef actual = orbit.Time2TrueAnomaly(time);
 
             // Assert
             Assert.That(actual.RadValue, Is.EqualTo(result.RadValue));
@@ -905,10 +905,10 @@ namespace Tests
             orbit.ECC = 1.0;
 
             double time = double.PositiveInfinity;
-            Angle result = Angle.HalfTurn;
+            Anglef result = Anglef.HalfTurn;
 
             // Act
-            Angle actual = orbit.Time2TrueAnomaly(time);
+            Anglef actual = orbit.Time2TrueAnomaly(time);
 
             // Assert
             Assert.That(actual.RadValue, Is.EqualTo(result.RadValue));
@@ -922,10 +922,10 @@ namespace Tests
             orbit.ECC = 1.0;
 
             double time = double.NegativeInfinity;
-            Angle result = Angle.HalfTurn;
+            Anglef result = Anglef.HalfTurn;
 
             // Act
-            Angle actual = orbit.Time2TrueAnomaly(time);
+            Anglef actual = orbit.Time2TrueAnomaly(time);
 
             // Assert
             Assert.That(actual.RadValue, Is.EqualTo(result.RadValue));
@@ -939,10 +939,10 @@ namespace Tests
             orbit.ECC = 1.0;
 
             double time = 1e+35;
-            Angle result = Angle.HalfTurn;
+            Anglef result = Anglef.HalfTurn;
 
             // Act
-            Angle actual = orbit.Time2TrueAnomaly(time);
+            Anglef actual = orbit.Time2TrueAnomaly(time);
 
             // Assert
             Assert.That(actual.RadValue, Is.EqualTo(result.RadValue));
@@ -956,10 +956,10 @@ namespace Tests
             orbit.ECC = 1.0;
 
             double time = -1e+35;
-            Angle result = Angle.HalfTurn;
+            Anglef result = Anglef.HalfTurn;
 
             // Act
-            Angle actual = orbit.Time2TrueAnomaly(time);
+            Anglef actual = orbit.Time2TrueAnomaly(time);
 
             // Assert
             Assert.That(actual.RadValue, Is.EqualTo(result.RadValue));
@@ -975,10 +975,10 @@ namespace Tests
             orbit.TPP = 2_000.0;
 
             double time = 100.0;
-            Angle result = -1.269606064f;
+            Anglef result = -1.269606064f;
 
             // Act
-            Angle actual = orbit.Time2TrueAnomaly(time);
+            Anglef actual = orbit.Time2TrueAnomaly(time);
 
             // Assert
             Assert.That(actual.RadValue, Is.EqualTo(result.RadValue));
@@ -992,10 +992,10 @@ namespace Tests
             orbit.ECC = 1.5;
 
             double time = double.PositiveInfinity;
-            Angle result = orbit.MaxTrueAnomaly ?? Angle.Zero;
+            Anglef result = orbit.MaxTrueAnomaly ?? Anglef.Zero;
 
             // Act
-            Angle actual = orbit.Time2TrueAnomaly(time);
+            Anglef actual = orbit.Time2TrueAnomaly(time);
 
             // Assert
             Assert.That(actual.RadValue, Is.EqualTo(result.RadValue));
@@ -1009,10 +1009,10 @@ namespace Tests
             orbit.ECC = 1.5;
 
             double time = double.NegativeInfinity;
-            Angle result = 2f * Mathf.PI - (orbit.MaxTrueAnomaly ?? Angle.Zero);
+            Anglef result = 2f * Mathf.PI - (orbit.MaxTrueAnomaly ?? Anglef.Zero);
 
             // Act
-            Angle actual = orbit.Time2TrueAnomaly(time);
+            Anglef actual = orbit.Time2TrueAnomaly(time);
 
             // Assert
             Assert.That(actual.RadValue, Is.EqualTo(result.RadValue));
@@ -1026,10 +1026,10 @@ namespace Tests
             orbit.ECC = 1.5;
 
             double time = 1e+30;
-            Angle result = orbit.MaxTrueAnomaly ?? Angle.Zero;
+            Anglef result = orbit.MaxTrueAnomaly ?? Anglef.Zero;
 
             // Act
-            Angle actual = orbit.Time2TrueAnomaly(time);
+            Anglef actual = orbit.Time2TrueAnomaly(time);
 
             // Assert
             Assert.That(actual.RadValue, Is.EqualTo(result.RadValue));
@@ -1043,10 +1043,10 @@ namespace Tests
             orbit.ECC = 1.5;
 
             double time = -1e+30;
-            Angle result = 2f * Mathf.PI - (orbit.MaxTrueAnomaly ?? Angle.Zero);
+            Anglef result = 2f * Mathf.PI - (orbit.MaxTrueAnomaly ?? Anglef.Zero);
 
             // Act
-            Angle actual = orbit.Time2TrueAnomaly(time);
+            Anglef actual = orbit.Time2TrueAnomaly(time);
 
             // Assert
             Assert.That(actual.RadValue, Is.EqualTo(result.RadValue));
@@ -1232,7 +1232,7 @@ namespace Tests
             orbit.APE = Mathf.PI / 2.0f;
             orbit.LAN = Mathf.PI;
 
-            Angle trueAnomaly = 0.5f;
+            Anglef trueAnomaly = 0.5f;
 
             float xResult = 499821.1467f;
             float yResult = -646943.6416f;
@@ -1258,7 +1258,7 @@ namespace Tests
             orbit.APE = Mathf.PI / 2.0f;
             orbit.LAN = Mathf.PI;
 
-            Angle trueAnomaly = 0.5f;
+            Anglef trueAnomaly = 0.5f;
 
             float xResult = 510683.8424f;
             float yResult = -661003.7749f;
@@ -1284,7 +1284,7 @@ namespace Tests
             orbit.APE = Mathf.PI / 2.0f;
             orbit.LAN = Mathf.PI;
 
-            Angle trueAnomaly = 0.5f;
+            Anglef trueAnomaly = 0.5f;
 
             float xResult = 527893.0221f;
             float yResult = -683278.4815f;
@@ -1306,7 +1306,7 @@ namespace Tests
             Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
             orbit.ECC = 1.0;
 
-            Angle trueAnomaly = Mathf.PI;
+            Anglef trueAnomaly = Mathf.PI;
 
             // Act
             Vector3d actual = orbit.TrueAnomaly2Point(trueAnomaly);
@@ -1322,7 +1322,7 @@ namespace Tests
             Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
             orbit.ECC = 3.0;
 
-            Angle trueAnomaly = orbit.MaxTrueAnomaly ?? Angle.Zero;
+            Anglef trueAnomaly = orbit.MaxTrueAnomaly ?? Anglef.Zero;
 
             // Act
             Vector3d actual = orbit.TrueAnomaly2Point(trueAnomaly);
@@ -1338,7 +1338,7 @@ namespace Tests
             Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
             orbit.ECC = 3.0;
 
-            Angle trueAnomaly = -(orbit.MaxTrueAnomaly ?? Angle.Zero);
+            Anglef trueAnomaly = -(orbit.MaxTrueAnomaly ?? Anglef.Zero);
 
             // Act
             Vector3d actual = orbit.TrueAnomaly2Point(trueAnomaly);
@@ -1354,7 +1354,7 @@ namespace Tests
             Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
             orbit.ECC = 3.0;
 
-            Angle trueAnomaly = (Mathf.PI + (orbit.MaxTrueAnomaly ?? Angle.Zero).RadValue) / 2.0f;
+            Anglef trueAnomaly = (Mathf.PI + (orbit.MaxTrueAnomaly ?? Anglef.Zero).RadValue) / 2.0f;
 
             // Act
             Vector3d actual = orbit.TrueAnomaly2Point(trueAnomaly);
@@ -1370,7 +1370,7 @@ namespace Tests
             Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
             orbit.ECC = 3.0;
 
-            Angle trueAnomaly = (Mathf.PI + -(orbit.MaxTrueAnomaly ?? Angle.Zero)) / 2.0f;
+            Anglef trueAnomaly = (Mathf.PI + -(orbit.MaxTrueAnomaly ?? Anglef.Zero)) / 2.0f;
 
             // Act
             Vector3d actual = orbit.TrueAnomaly2Point(trueAnomaly);
@@ -1392,7 +1392,7 @@ namespace Tests
             orbit.TPP = 1000.0;
             orbit.ECC = 0.2;
 
-            Angle trueAnomaly = 3f * Mathf.PI / 4f;
+            Anglef trueAnomaly = 3f * Mathf.PI / 4f;
             double result = 143887.2589;
 
             // Act
@@ -1411,7 +1411,7 @@ namespace Tests
             orbit.TPP = 1000.0;
             orbit.ECC = 1.0;
 
-            Angle trueAnomaly = 3f * Mathf.PI / 4f;
+            Anglef trueAnomaly = 3f * Mathf.PI / 4f;
             double result = 504250.3872;
 
             // Act
@@ -1428,7 +1428,7 @@ namespace Tests
             Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
             orbit.ECC = 1.0;
 
-            Angle trueAnomaly = Mathf.PI;
+            Anglef trueAnomaly = Mathf.PI;
             double result = double.PositiveInfinity;
 
             // Act
@@ -1447,7 +1447,7 @@ namespace Tests
             orbit.TPP = 1000.0;
             orbit.ECC = 1.1;
 
-            Angle trueAnomaly = 3f * Mathf.PI / 4f;
+            Anglef trueAnomaly = 3f * Mathf.PI / 4f;
             double result = 686502.5948;
 
             // Act
@@ -1464,7 +1464,7 @@ namespace Tests
             Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
             orbit.ECC = 1.5;
 
-            Angle trueAnomaly = orbit.MaxTrueAnomaly ?? Angle.Zero;
+            Anglef trueAnomaly = orbit.MaxTrueAnomaly ?? Anglef.Zero;
 
             double result = double.PositiveInfinity;
 
@@ -1482,7 +1482,7 @@ namespace Tests
             Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
             orbit.ECC = 1.5;
 
-            Angle trueAnomaly = Angle.Zero - (orbit.MaxTrueAnomaly ?? Angle.Zero).RadValue;
+            Anglef trueAnomaly = Anglef.Zero - (orbit.MaxTrueAnomaly ?? Anglef.Zero).RadValue;
 
             double result = double.NegativeInfinity;
 
@@ -1500,7 +1500,7 @@ namespace Tests
             Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
             orbit.ECC = 1.5;
 
-            Angle trueAnomaly = ((orbit.MaxTrueAnomaly ?? Angle.Zero).RadValue + Mathf.PI) / 2f;
+            Anglef trueAnomaly = ((orbit.MaxTrueAnomaly ?? Anglef.Zero).RadValue + Mathf.PI) / 2f;
 
             double result = double.PositiveInfinity;
 
@@ -1518,7 +1518,7 @@ namespace Tests
             Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
             orbit.ECC = 1.5f;
 
-            Angle trueAnomaly = (3f * Mathf.PI - (orbit.MaxTrueAnomaly ?? Angle.Zero).RadValue) / 2f;
+            Anglef trueAnomaly = (3f * Mathf.PI - (orbit.MaxTrueAnomaly ?? Anglef.Zero).RadValue) / 2f;
 
             double result = double.NegativeInfinity;
 
@@ -1544,7 +1544,7 @@ namespace Tests
             orbit.APE = 1.2f;
             orbit.LAN = 3.0f;
             orbit.TPP = 500.0;
-            Angle trueAnomaly = 0.2309184684f;
+            Anglef trueAnomaly = 0.2309184684f;
 
             // Act
             Vector3d actual = orbit.TrueAnomaly2Velocity(trueAnomaly);
@@ -1566,7 +1566,7 @@ namespace Tests
             orbit.APE = 1.2f;
             orbit.LAN = 3.0f;
             orbit.TPP = 500.0;
-            Angle trueAnomaly = 0.2650866775f;
+            Anglef trueAnomaly = 0.2650866775f;
 
             // Act
             Vector3d actual = orbit.TrueAnomaly2Velocity(trueAnomaly);
@@ -1588,7 +1588,7 @@ namespace Tests
             orbit.APE = 1.2f;
             orbit.LAN = 3.0f;
             orbit.TPP = 500.0;
-            Angle trueAnomaly = 0.2946731859f;
+            Anglef trueAnomaly = 0.2946731859f;
 
             // Act
             Vector3d actual = orbit.TrueAnomaly2Velocity(trueAnomaly);
@@ -1611,7 +1611,7 @@ namespace Tests
             orbit.LAN = 3.0f;
             orbit.TPP = 500.0;
 
-            Angle trueAnomaly = Mathf.PI;
+            Anglef trueAnomaly = Mathf.PI;
 
             // Act
             Vector3d actual = orbit.TrueAnomaly2Velocity(trueAnomaly);
@@ -1634,7 +1634,7 @@ namespace Tests
             orbit.LAN = 3.0f;
             orbit.TPP = 500.0;
 
-            Angle trueAnomaly = orbit.MaxTrueAnomaly.Value;
+            Anglef trueAnomaly = orbit.MaxTrueAnomaly.Value;
 
             // Act
             Vector3d actual = orbit.TrueAnomaly2Velocity(trueAnomaly);
@@ -1657,7 +1657,7 @@ namespace Tests
             orbit.LAN = 3.0f;
             orbit.TPP = 500.0;
 
-            Angle trueAnomaly = -orbit.MaxTrueAnomaly.Value;
+            Anglef trueAnomaly = -orbit.MaxTrueAnomaly.Value;
 
             // Act
             Vector3d actual = orbit.TrueAnomaly2Velocity(trueAnomaly);
@@ -1680,7 +1680,7 @@ namespace Tests
             orbit.LAN = 3.0f;
             orbit.TPP = 500.0;
 
-            Angle trueAnomaly = orbit.MaxTrueAnomaly.Value + 0.1f;
+            Anglef trueAnomaly = orbit.MaxTrueAnomaly.Value + 0.1f;
 
             // Act
             Vector3d actual = orbit.TrueAnomaly2Velocity(trueAnomaly);
@@ -1703,7 +1703,7 @@ namespace Tests
             orbit.LAN = 3.0f;
             orbit.TPP = 500.0;
 
-            Angle trueAnomaly = -(orbit.MaxTrueAnomaly.Value + 0.1f);
+            Anglef trueAnomaly = -(orbit.MaxTrueAnomaly.Value + 0.1f);
 
             // Act
             Vector3d actual = orbit.TrueAnomaly2Velocity(trueAnomaly);
@@ -1719,7 +1719,7 @@ namespace Tests
         {
             // Arrange
             Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
-            Angle trueAnomaly = float.NaN;
+            Anglef trueAnomaly = float.NaN;
 
             // Act
             void TrueAnomaly2VelocityTestDelegate() => orbit.TrueAnomaly2Velocity(trueAnomaly);

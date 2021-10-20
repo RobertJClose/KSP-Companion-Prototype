@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Represents an angle.
+/// Represents an angle with float precision.
 /// </summary>
 /// <remarks>
 /// This struct can be used to make working with floating-point values representing angles much simpler. Each instance of 
 /// this struct stores a float value that represents an angle in radians between 0 and 2PI. Instances of this struct may be
 /// implicitly converted to and from floats, allowing for easy use of Angle type objects in expressions expecting float data.
 /// There are methods to assist in common tasks whose execution is made more challenging by the periodic nature of angular values,
-/// such as working out if an angle is between two other angles (see <see cref="IsBetween(Angle?, Angle?)"/>).
+/// such as working out if an angle is between two other angles (see <see cref="IsBetween(Anglef?, Anglef?)"/>).
 /// </remarks>
-public readonly struct Angle : System.IEquatable<Angle>, System.IComparable<Angle>
+public readonly struct Anglef : System.IEquatable<Anglef>, System.IComparable<Anglef>
 {
     #region Fields
 
@@ -28,7 +28,7 @@ public readonly struct Angle : System.IEquatable<Angle>, System.IComparable<Angl
     /// </summary>
     /// <param name="f">The value of the angle.</param>
     /// <param name="isDeg">Indicates whether <paramref name="f"/> is a value in radians or degrees.</param>
-    public Angle(float f, bool isDeg = false)
+    public Anglef(float f, bool isDeg = false)
     {
         if (isDeg)
             angle = EquivalentDeg(f) * Mathf.Deg2Rad;
@@ -43,32 +43,32 @@ public readonly struct Angle : System.IEquatable<Angle>, System.IComparable<Angl
     /// <summary>
     /// Gets the smallest Angle that is greater than zero.
     /// </summary>
-    public static Angle Epsilon => new Angle(float.Epsilon);
+    public static Anglef Epsilon => new Anglef(float.Epsilon);
 
     /// <summary>
     /// Gets an angle of one half turn.
     /// </summary>
-    public static Angle HalfTurn => new Angle(Mathf.PI);
+    public static Anglef HalfTurn => new Anglef(Mathf.PI);
 
     /// <summary>
     /// Gets an angle with the largest possible value for an angle before wrapping around 2PI.
     /// </summary>
-    public static Angle MaxAngle => new Angle(6.283185243f);
+    public static Anglef MaxAngle => new Anglef(6.283185243f);
     
     /// <summary>
     /// Gets an angle of one quarter turn.
     /// </summary>
-    public static Angle QuarterTurn => new Angle(Mathf.PI / 2f);
+    public static Anglef QuarterTurn => new Anglef(Mathf.PI / 2f);
     
     /// <summary>
     /// Gets an angle of three quarters of a full turn.
     /// </summary>
-    public static Angle ThreeQuartersTurn => new Angle(3f * Mathf.PI / 2f);
+    public static Anglef ThreeQuartersTurn => new Anglef(3f * Mathf.PI / 2f);
 
     /// <summary>
     /// Gets an angle of no turn.
     /// </summary>
-    public static Angle Zero => new Angle(0f);
+    public static Anglef Zero => new Anglef(0f);
     
     /// <summary>
     /// Gets the value of the angle in degrees, in the range of 0 to 360.
@@ -116,7 +116,7 @@ public readonly struct Angle : System.IEquatable<Angle>, System.IComparable<Angl
     /// Implicitly converts a float value to an Angle, where the float value is interpreted as an angle in radians.
     /// </summary>
     /// <param name="f">The value of the angle in radians.</param>
-    public static implicit operator Angle(float f) => new Angle(f);
+    public static implicit operator Anglef(float f) => new Anglef(f);
 
     /// <summary>
     /// Checks for approximate equality between two Angle instances.
@@ -128,7 +128,7 @@ public readonly struct Angle : System.IEquatable<Angle>, System.IComparable<Angl
     /// approximately equal according to the UnityEngine.Mathf.Approximately() method. False if the angles are not 
     /// approximately equal, or if either argument is null.
     /// </returns>
-    public static bool Approximately(Angle? angleOne, Angle? angleTwo)
+    public static bool Approximately(Anglef? angleOne, Anglef? angleTwo)
     {
         if (angleOne == null || angleTwo == null)
             return false;
@@ -160,7 +160,7 @@ public readonly struct Angle : System.IEquatable<Angle>, System.IComparable<Angl
     /// </param>
     /// <returns>If <paramref name="angle"/> is not in the forbidden region, then it is returned. If it is in the 
     /// forbidden region, the closer of the two boundary values is returned.</returns>
-    public static Angle Expel(Angle angle, Angle forbiddenStartValue, Angle forbiddenEndValue)
+    public static Anglef Expel(Anglef angle, Anglef forbiddenStartValue, Anglef forbiddenEndValue)
     {
         // Check if the forbidden region is non-existant
         if (forbiddenStartValue == forbiddenEndValue)
@@ -180,7 +180,7 @@ public readonly struct Angle : System.IEquatable<Angle>, System.IComparable<Angl
     /// Implicitly converts an Angle in radians to a float value.
     /// </summary>
     /// <param name="angle">The angle to be converted.</param>
-    public static implicit operator float(Angle angle) => angle.RadValue;
+    public static implicit operator float(Anglef angle) => angle.RadValue;
 
     /// <summary>
     /// Checks for equality between two angles.
@@ -195,7 +195,7 @@ public readonly struct Angle : System.IEquatable<Angle>, System.IComparable<Angl
     /// even if they are split in such a manner.
     /// </para>
     /// </returns>
-    public static bool operator ==(Angle angleOne, Angle angleTwo)
+    public static bool operator ==(Anglef angleOne, Anglef angleTwo)
     {
         return angleOne.angle == angleTwo.angle;
     }
@@ -206,7 +206,7 @@ public readonly struct Angle : System.IEquatable<Angle>, System.IComparable<Angl
     /// <param name="angleOne">The first angle to compare.</param>
     /// <param name="angleTwo">The second angle to compare.</param>
     /// <returns>True if the angles are not equal. False if the angles are equal.</returns>
-    public static bool operator !=(Angle angleOne, Angle angleTwo)
+    public static bool operator !=(Anglef angleOne, Anglef angleTwo)
     {
         return angleOne.angle != angleTwo.angle;
     }
@@ -217,7 +217,7 @@ public readonly struct Angle : System.IEquatable<Angle>, System.IComparable<Angl
     /// <param name="angleOne">The first angle to compare.</param>
     /// <param name="angleTwo">The second angle to compare.</param>
     /// <returns>True if <paramref name="angleOne"/> is smaller than <paramref name="angleTwo"/>. False otherwise.</returns>
-    public static bool operator <(Angle angleOne, Angle angleTwo)
+    public static bool operator <(Anglef angleOne, Anglef angleTwo)
     {
         return angleOne.RadValue < angleTwo.RadValue;
     }
@@ -228,7 +228,7 @@ public readonly struct Angle : System.IEquatable<Angle>, System.IComparable<Angl
     /// <param name="angleOne">The first angle to compare.</param>
     /// <param name="angleTwo">The second angle to compare.</param>
     /// <returns>True if <paramref name="angleOne"/> is greater than <paramref name="angleTwo"/>. False otherwise.</returns>
-    public static bool operator >(Angle angleOne, Angle angleTwo)
+    public static bool operator >(Anglef angleOne, Anglef angleTwo)
     {
         return angleOne.RadValue > angleTwo.RadValue;
     }
@@ -239,9 +239,9 @@ public readonly struct Angle : System.IEquatable<Angle>, System.IComparable<Angl
     /// <param name="angle">The angle to be flipped.</param>
     /// <returns>2PI minus <paramref name="angle"/>. This is the same as rotating by the same amount as <paramref name="angle"/>,
     /// but in the opposite direction.</returns>
-    public static Angle operator -(Angle angle)
+    public static Anglef operator -(Anglef angle)
     {
-        return new Angle(2.0f * Mathf.PI - angle.angle);
+        return new Anglef(2.0f * Mathf.PI - angle.angle);
     }
 
     /// <summary>
@@ -251,7 +251,7 @@ public readonly struct Angle : System.IEquatable<Angle>, System.IComparable<Angl
     /// <returns>True if <paramref name="obj"/> is an instance of Angle and equals the value of this Angle. False otherwise.</returns>
     public override bool Equals(object obj)
     {
-        var item = (Angle)obj;
+        var item = (Anglef)obj;
 
         if (item == null || !GetType().Equals(obj.GetType()))
             return false;
@@ -264,7 +264,7 @@ public readonly struct Angle : System.IEquatable<Angle>, System.IComparable<Angl
     /// </summary>
     /// <param name="other">The object to be compared.</param>
     /// <returns>True if <paramref name="other"/> is equal to this instance. False otherwise.</returns>
-    public bool Equals(Angle other)
+    public bool Equals(Anglef other)
     {
         return angle.Equals(other.angle);
     }
@@ -275,7 +275,7 @@ public readonly struct Angle : System.IEquatable<Angle>, System.IComparable<Angl
     /// <param name="angleOne">The first Angle.</param>
     /// <param name="angleTwo">The second Angle.</param>
     /// <returns>The closer of <paramref name="angleOne"/> and <paramref name="angleTwo"/> to this instance's value.</returns>
-    public Angle Closer(Angle? angleOne, Angle? angleTwo)
+    public Anglef Closer(Anglef? angleOne, Anglef? angleTwo)
     {
         if (angleOne == null && angleTwo != null)
             return angleTwo.Value;
@@ -299,7 +299,7 @@ public readonly struct Angle : System.IEquatable<Angle>, System.IComparable<Angl
     /// <returns>Returns zero if the values are equal. Returns an integer less than zero if this instance's value is 
     /// less than <paramref name="other"/>'s value. Returns an integer greater than zero if this instance's value is 
     /// greater than <paramref name="other"/>'s value.</returns>
-    public int CompareTo(Angle other)
+    public int CompareTo(Anglef other)
     {
         if (other == null)
             return 1;
@@ -328,7 +328,7 @@ public readonly struct Angle : System.IEquatable<Angle>, System.IComparable<Angl
     /// between the two angles is wrapped around at 2PI.
     /// </param>
     /// <returns>True if this angle instance is in the region between the two bounds. False otherwise.</returns>
-    public bool IsBetween(Angle? lowerBound, Angle? upperBound)
+    public bool IsBetween(Anglef? lowerBound, Anglef? upperBound)
     {
         // This function uses the 'lowerBound' and 'upperBound' parameters to define a region that is checked to see if this angle is in.
         // If either bound is null then false is returned.

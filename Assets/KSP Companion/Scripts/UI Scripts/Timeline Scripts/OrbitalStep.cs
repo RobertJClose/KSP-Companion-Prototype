@@ -57,7 +57,7 @@ public class OrbitalStep : TimelineStep, IInspectable, IPlottable
             return FinalTime - StartTime;
         }
     }
-    public Angle? StartTrueAnomaly
+    public Anglef? StartTrueAnomaly
     {
         get
         {
@@ -67,7 +67,7 @@ public class OrbitalStep : TimelineStep, IInspectable, IPlottable
                 return null;
         }
     }
-    public Angle? FinalTrueAnomaly
+    public Anglef? FinalTrueAnomaly
     {
         get
         {

@@ -27,7 +27,7 @@ public class ManeuverTransitionStep : TransitionStep
         }
     }    
 
-    public Angle? ManeuverAzimuth
+    public Anglef? ManeuverAzimuth
     {
         get
         {
@@ -38,7 +38,7 @@ public class ManeuverTransitionStep : TransitionStep
         }
     }
 
-    public Angle? ManeuverElevation
+    public Anglef? ManeuverElevation
     {
         get
         {
