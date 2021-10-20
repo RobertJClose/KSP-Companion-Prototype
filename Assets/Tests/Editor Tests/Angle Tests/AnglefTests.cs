@@ -409,6 +409,94 @@ namespace Tests
 
         #endregion
 
+        #region CompareTo() tests
+
+        [Test]
+        public void CompareTo_EqualValues_ReturnsZero([Values(float.NegativeInfinity, float.PositiveInfinity, float.NaN, 0.0f)] float value)
+        {
+            // Arrange
+            Anglef angleOne = value;
+            Anglef angleTwo = value;
+
+            // Act
+            int actual = angleOne.CompareTo(angleTwo);
+
+            // Assert
+            Assert.That(actual, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void CompareTo_ThisValueIsGreaterThanOthersValue_ReturnsPositiveOne()
+        {
+            // Arrange
+            Anglef angleOne = Anglef.HalfTurn;
+            Anglef angleTwo = Anglef.QuarterTurn;
+
+            // Act
+            int actual = angleOne.CompareTo(angleTwo);
+
+            // Assert
+            Assert.That(actual, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void CompareTo_ThisValueIsLessThanOthersValue_ReturnsNegativeOne()
+        {
+            // Arrange
+            Anglef angleOne = Anglef.HalfTurn;
+            Anglef angleTwo = Anglef.ThreeQuartersTurn;
+
+            // Act
+            int actual = angleOne.CompareTo(angleTwo);
+
+            // Assert
+            Assert.That(actual, Is.EqualTo(-1));
+        }
+
+        [Test]
+        public void CompareTo_ThisIsNaNWhileOtherHasValue_ReturnNegativeOne()
+        {
+            // Arrange
+            Anglef angleOne = float.NaN;
+            Anglef angleTwo = Anglef.Zero;
+
+            // Act
+            int actual = angleOne.CompareTo(angleTwo);
+
+            // Assert
+            Assert.That(actual, Is.EqualTo(-1));
+        }
+
+        [Test]
+        public void CompareTo_ThisHasValueWhileOtherIsNaN_ReturnPositiveOne()
+        {
+            // Arrange
+            Anglef angleOne = Anglef.Zero;
+            Anglef angleTwo = float.NaN;
+
+            // Act
+            int actual = angleOne.CompareTo(angleTwo);
+
+            // Assert
+            Assert.That(actual, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void CompareTo_OtherIsNull_ReturnsPositiveOne()
+        {
+            // Arrange
+            Anglef angleOne = Anglef.Zero;
+            Anglef? angleTwo = null;
+
+            // Act
+            int actual = angleOne.CompareTo(angleTwo);
+
+            // Assert
+            Assert.That(actual, Is.EqualTo(1));
+        }
+
+        #endregion
+
         #region Expel() tests
 
         [Test]
