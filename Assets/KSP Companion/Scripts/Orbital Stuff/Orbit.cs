@@ -29,7 +29,7 @@ public partial class Orbit : IEquatable<Orbit>
 
     // This orbital element specifies the angle in radians between the ascending node vector and the point of
     // periapsis of the orbit.
-    protected Angle argumentOfPeriapsis;
+    protected Anglef argumentOfPeriapsis;
 
     // This orbital element defines the shape of the orbit. This value is strictly positive and dimensionless.
     // Circular orbit:      Eccentricity = 0
@@ -40,14 +40,14 @@ public partial class Orbit : IEquatable<Orbit>
 
     // This orbital element specifies the angle in radians between the orbital plane and the reference plane, which
     // this class takes to be the XY plane.
-    protected Angle inclination;
+    protected Anglef inclination;
     
     // The gravitational body that the satellite is orbiting.
     protected GravitationalBody gravitationalBody;
 
     // This orbital element specifies the angle in radians between the reference direction (X axis) and the ascending
     // node of the orbit.
-    protected Angle longitudeOfAscendingNode;
+    protected Anglef longitudeOfAscendingNode;
 
     // This orbital element defines the size of the orbit, and has a value equal to the distance between the satellite and
     // the gravitational body when they are at their closest. The point at which this happens is known as the periapsis.
@@ -84,7 +84,7 @@ public partial class Orbit : IEquatable<Orbit>
     /// <see cref="APE"/>
     /// <see cref="LAN"/>
     /// <see cref="TPP"/>
-    public Orbit(double radiusOfPeriapsis, double eccentricity, Angle inclination, Angle argumentOfPeriapsis, Angle longitudeOfAscendingNode, double timeOfPeriapsisPassage, GravitationalBody gravitationalBody)
+    public Orbit(double radiusOfPeriapsis, double eccentricity, Anglef inclination, Anglef argumentOfPeriapsis, Anglef longitudeOfAscendingNode, double timeOfPeriapsisPassage, GravitationalBody gravitationalBody)
     {
         RPE = radiusOfPeriapsis;
         ECC = eccentricity;
@@ -110,7 +110,7 @@ public partial class Orbit : IEquatable<Orbit>
     /// <exception cref="ArgumentException">An attempt was made to set the argument of periapsis to NaN.</exception>
     /// <see cref="AscendingNode"/>
     /// <see cref="PeriapsisPoint"/>
-    public Angle APE
+    public Anglef APE
     {
         get
         {
@@ -139,7 +139,7 @@ public partial class Orbit : IEquatable<Orbit>
             if (OrbitType != ConicSection.Elliptical)
                 return null;
             else
-                return TrueAnomaly2Point(Angle.HalfTurn);
+                return TrueAnomaly2Point(Anglef.HalfTurn);
         }
     }
 
@@ -187,7 +187,7 @@ public partial class Orbit : IEquatable<Orbit>
     {
         get
         {
-            Vector3d node = TrueAnomaly2Point(-argumentOfPeriapsis + Angle.HalfTurn);
+            Vector3d node = TrueAnomaly2Point(-argumentOfPeriapsis + Anglef.HalfTurn);
             if (node.magnitude == float.PositiveInfinity)
                 return null;
             else
@@ -278,7 +278,7 @@ public partial class Orbit : IEquatable<Orbit>
     /// The value of this orbital element is the angle in radians between the orbital plane and the reference XY plane.
     /// </remarks>
     /// <exception cref="ArgumentException">An attempt was made to set the inclination to NaN.</exception>
-    public Angle INC
+    public Anglef INC
     {
         get
         {
@@ -302,7 +302,7 @@ public partial class Orbit : IEquatable<Orbit>
     /// </remarks>
     /// <exception cref="ArgumentException">An attempt was made to set the longitude of the ascending node to NaN.</exception>
     /// <see cref="AscendingNode"/>
-    public Angle LAN
+    public Anglef LAN
     {
         get
         {
@@ -324,7 +324,7 @@ public partial class Orbit : IEquatable<Orbit>
     /// For open orbits not all values for the true anomaly are possible, as the satellite will have escaped to infinity. 
     /// For closed orbits all values are possible and this property returns null.
     /// </remarks>
-    public Angle? MaxTrueAnomaly
+    public Anglef? MaxTrueAnomaly
     {
         get
         {
@@ -398,7 +398,7 @@ public partial class Orbit : IEquatable<Orbit>
     {
         get
         {
-            return TrueAnomaly2Point(Angle.Zero);
+            return TrueAnomaly2Point(Anglef.Zero);
         }
     }
 
@@ -579,9 +579,9 @@ public partial class Orbit : IEquatable<Orbit>
 
         return Mathd.Approximately(orbitOne.radiusOfPeriapsis, orbitTwo.radiusOfPeriapsis)
             && Mathd.Approximately(orbitOne.eccentricity, orbitTwo.eccentricity)
-            && Angle.Approximately(orbitOne.inclination, orbitTwo.inclination)
-            && Angle.Approximately(orbitOne.argumentOfPeriapsis, orbitTwo.argumentOfPeriapsis)
-            && Angle.Approximately(orbitOne.longitudeOfAscendingNode, orbitTwo.longitudeOfAscendingNode)
+            && Anglef.Approximately(orbitOne.inclination, orbitTwo.inclination)
+            && Anglef.Approximately(orbitOne.argumentOfPeriapsis, orbitTwo.argumentOfPeriapsis)
+            && Anglef.Approximately(orbitOne.longitudeOfAscendingNode, orbitTwo.longitudeOfAscendingNode)
             && areTimesOfPeriapsisApproximatelyEqual;
     }
 
@@ -742,7 +742,7 @@ public partial class Orbit : IEquatable<Orbit>
     /// the Vector3.positiveInfinity point is output in the list. <see cref="MaxTrueAnomaly"/>
     /// </para>
     /// </returns>
-    public List<Vector3d> OrbitalPoints(Angle? startTrueAnomaly, Angle? endTrueAnomaly, out List<Angle> trueAnomalies, Angle maxTrueAnomalyStep)
+    public List<Vector3d> OrbitalPoints(Anglef? startTrueAnomaly, Anglef? endTrueAnomaly, out List<Anglef> trueAnomalies, Anglef maxTrueAnomalyStep)
     {
         // This method returns a List containing 3D points that trace the trajectory of this orbit, starting at the 'startTrueAnomaly' 
         // and ending at the 'endTrueAnomaly'. If the start and end points are the same then the whole orbit is output.
@@ -750,22 +750,22 @@ public partial class Orbit : IEquatable<Orbit>
         // angular spacing may be slightly adjusted to ensure this. The actual spacing will never be larger than 'stepRad'.
 
         // If the start and end points are the same, or if either of the points are null, output the entire orbit
-        Angle angularRange;
+        Anglef angularRange;
         if (startTrueAnomaly == null || endTrueAnomaly == null || (startTrueAnomaly == endTrueAnomaly))
-            angularRange = Angle.MaxAngle;
+            angularRange = Anglef.MaxAngle;
         else
             angularRange = endTrueAnomaly.Value - startTrueAnomaly.Value;
 
         int numberOfPoints = Mathf.CeilToInt(angularRange.RadValue / maxTrueAnomalyStep.RadValue);
 
         // Adjust the angular spacing to ensure an integer number of points is output.
-        Angle actualStep = angularRange.RadValue / numberOfPoints;
+        Anglef actualStep = angularRange.RadValue / numberOfPoints;
 
         // Create the list to be output and fill it with points
         List<Vector3d> outputPoints = new List<Vector3d>(numberOfPoints);
-        trueAnomalies = new List<Angle>(numberOfPoints);
+        trueAnomalies = new List<Anglef>(numberOfPoints);
 
-        Angle angle = startTrueAnomaly ?? Angle.Zero;
+        Anglef angle = startTrueAnomaly ?? Anglef.Zero;
         Vector3d newPoint;
         for (int index = 0; index < outputPoints.Capacity; index++)
         {
@@ -799,7 +799,7 @@ public partial class Orbit : IEquatable<Orbit>
         if (double.IsInfinity(time) && OrbitType == ConicSection.Elliptical)
             throw new ArgumentException("For elliptical orbits, the input time cannot be infinite.", "time");
 
-        Angle trueAnomaly = Time2TrueAnomaly(time);
+        Anglef trueAnomaly = Time2TrueAnomaly(time);
         return TrueAnomaly2Point(trueAnomaly);
     }
 
@@ -814,10 +814,10 @@ public partial class Orbit : IEquatable<Orbit>
     /// maximum or minimum true anomaly value. <see cref="MaxTrueAnomaly"/>
     /// </para>
     /// </returns>
-    public Angle Time2TrueAnomaly(double time)
+    public Anglef Time2TrueAnomaly(double time)
     {
         double meanAnomaly = Time2MeanAnomaly(time);
-        Angle trueAnomaly;
+        Anglef trueAnomaly;
 
         if (OrbitType == ConicSection.Elliptical)
         {
@@ -830,10 +830,10 @@ public partial class Orbit : IEquatable<Orbit>
         {
             // Hyperbolic orbit case
             if (time == double.PositiveInfinity)
-                return MaxTrueAnomaly ?? Angle.Zero;
+                return MaxTrueAnomaly ?? Anglef.Zero;
 
             if (time == double.NegativeInfinity)
-                return 2f * Mathf.PI - (MaxTrueAnomaly ?? Angle.Zero).RadValue;
+                return 2f * Mathf.PI - (MaxTrueAnomaly ?? Anglef.Zero).RadValue;
 
             double hyperbolicAnomaly = MeanAnomaly2HyperbolicAnomaly(meanAnomaly);
             trueAnomaly = HyperbolicAnomaly2TrueAnomaly(hyperbolicAnomaly);
@@ -842,7 +842,7 @@ public partial class Orbit : IEquatable<Orbit>
 
         // Parabolic orbit case
         if (time == double.PositiveInfinity || time == double.NegativeInfinity)
-            return Angle.HalfTurn;
+            return Anglef.HalfTurn;
 
         double parabolicAnomaly = MeanAnomaly2ParabolicAnomaly(meanAnomaly);
         trueAnomaly = ParabolicAnomaly2TrueAnomaly(parabolicAnomaly);
@@ -863,7 +863,7 @@ public partial class Orbit : IEquatable<Orbit>
         if (double.IsInfinity(time) && OrbitType == ConicSection.Elliptical)
             throw new ArgumentException("For elliptical orbits, the input time cannot be infinite.", "time");
 
-        Angle trueAnomaly = Time2TrueAnomaly(time);
+        Anglef trueAnomaly = Time2TrueAnomaly(time);
         return TrueAnomaly2Velocity(trueAnomaly);
     }
 
@@ -887,9 +887,9 @@ public partial class Orbit : IEquatable<Orbit>
     /// the positive infinity vector is returned. <see cref="MaxTrueAnomaly"/>
     /// </para>
     /// </returns>
-    public Vector3d TrueAnomaly2Point(Angle trueAnomaly)
+    public Vector3d TrueAnomaly2Point(Anglef trueAnomaly)
     {
-        trueAnomaly = Angle.Expel(trueAnomaly, MaxTrueAnomaly ?? Angle.Zero, -(MaxTrueAnomaly ?? Angle.Zero));
+        trueAnomaly = Anglef.Expel(trueAnomaly, MaxTrueAnomaly ?? Anglef.Zero, -(MaxTrueAnomaly ?? Anglef.Zero));
 
         double radius;
         if (trueAnomaly >= MaxTrueAnomaly && trueAnomaly <= -MaxTrueAnomaly)
@@ -918,7 +918,7 @@ public partial class Orbit : IEquatable<Orbit>
     /// maximum true anomaly or the minimum true anomaly of the orbit. <see cref="MaxTrueAnomaly"/>
     /// </para>
     /// </returns>
-    public double TrueAnomaly2Time(Angle trueAnomaly)
+    public double TrueAnomaly2Time(Anglef trueAnomaly)
     {
         double meanAnomaly;
         double time;
@@ -953,7 +953,7 @@ public partial class Orbit : IEquatable<Orbit>
     /// <param name="trueAnomaly">The true anomaly of a point along the orbital trajectory. Measured in radians.</param>
     /// <returns>The velocity of the satellite at the point with the given true anomaly.</returns>
     /// <exception cref="ArgumentException">The input true anomaly angle cannot be NaN.</exception>
-    public Vector3d TrueAnomaly2Velocity(Angle trueAnomaly)
+    public Vector3d TrueAnomaly2Velocity(Anglef trueAnomaly)
     {
         if (float.IsNaN(trueAnomaly))
             throw new ArgumentException("The true anomaly input angle cannot be NaN", "trueAnomaly");
@@ -984,7 +984,7 @@ public partial class Orbit : IEquatable<Orbit>
     }
 
     // Used by Time2TrueAnomaly() in the elliptical orbit case.
-    private Angle EccentricAnomaly2TrueAnomaly(double eccentricAnomaly)
+    private Anglef EccentricAnomaly2TrueAnomaly(double eccentricAnomaly)
     {
         return (float)(2.0 * Math.Atan2(Math.Sqrt(1.0 + eccentricity) * Math.Tan(eccentricAnomaly / 2.0), Math.Sqrt(1.0 - eccentricity)));
     }
@@ -1001,7 +1001,7 @@ public partial class Orbit : IEquatable<Orbit>
     }
 
     // Used by Time2TrueAnomaly() in the hyperbolic orbit case.
-    private Angle HyperbolicAnomaly2TrueAnomaly(double hyperbolicAnomaly)
+    private Anglef HyperbolicAnomaly2TrueAnomaly(double hyperbolicAnomaly)
     {
         return (float)(2.0 * Math.Atan2(Math.Sqrt(eccentricity + 1.0) * Math.Tanh(hyperbolicAnomaly / 2.0), Math.Sqrt(eccentricity - 1.0)));
     }
@@ -1086,7 +1086,7 @@ public partial class Orbit : IEquatable<Orbit>
     }
 
     // Used by Time2TrueAnomaly() in the parabolic orbit case.
-    private Angle ParabolicAnomaly2TrueAnomaly(double parabolicAnomaly)
+    private Anglef ParabolicAnomaly2TrueAnomaly(double parabolicAnomaly)
     {
         return (float)(2.0f * Math.Atan(parabolicAnomaly / Math.Sqrt(2.0 * radiusOfPeriapsis)));
     }
@@ -1098,17 +1098,17 @@ public partial class Orbit : IEquatable<Orbit>
     }
 
     // Used by TrueAnomaly2Time() in the elliptical orbit case.
-    private double TrueAnomaly2EccentricAnomaly(Angle trueAnomaly)
+    private double TrueAnomaly2EccentricAnomaly(Anglef trueAnomaly)
     {
         return 2.0 * Math.Atan2(Math.Sqrt(1.0 - eccentricity) * Math.Tan(trueAnomaly / 2.0), Math.Sqrt(1.0 + eccentricity));
     }
 
     // Used by TrueAnomaly2Time() in the hyperbolic orbit case.
-    private double TrueAnomaly2HyperbolicAnomaly(Angle trueAnomaly)
+    private double TrueAnomaly2HyperbolicAnomaly(Anglef trueAnomaly)
     {
         // If the input true anomaly is unreachable by this hyperbolic orbit, change the true anomaly to whichever of the
         // max/min true anomaly is closest.
-        trueAnomaly = Angle.Expel(trueAnomaly, MaxTrueAnomaly ?? Angle.Zero, 2f * Mathf.PI - (MaxTrueAnomaly ?? Angle.Zero));
+        trueAnomaly = Anglef.Expel(trueAnomaly, MaxTrueAnomaly ?? Anglef.Zero, 2f * Mathf.PI - (MaxTrueAnomaly ?? Anglef.Zero));
 
         if (trueAnomaly == MaxTrueAnomaly)
             return double.PositiveInfinity;
@@ -1120,7 +1120,7 @@ public partial class Orbit : IEquatable<Orbit>
     }
 
     // Used by TrueAnomaly2Time() in the parabolic orbit case.
-    private double TrueAnomaly2ParabolicAnomaly(Angle trueAnomaly)
+    private double TrueAnomaly2ParabolicAnomaly(Anglef trueAnomaly)
     {
         if (trueAnomaly.RadValue == Mathf.PI)
             return float.PositiveInfinity;
