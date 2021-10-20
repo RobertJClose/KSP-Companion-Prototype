@@ -298,12 +298,9 @@ public readonly struct Anglef : System.IEquatable<Anglef>, System.IComparable<An
     /// <param name="other">An Angle to be compared.</param>
     /// <returns>Returns zero if the values are equal. Returns an integer less than zero if this instance's value is 
     /// less than <paramref name="other"/>'s value. Returns an integer greater than zero if this instance's value is 
-    /// greater than <paramref name="other"/>'s value, or if <paramref name="other"/> is null.</returns>
+    /// greater than <paramref name="other"/>'s value.</returns>
     public int CompareTo(Anglef other)
     {
-        if (other == null)
-            return 1;
-
         return angle.CompareTo(other.angle);
     }
 
