@@ -297,8 +297,26 @@ public readonly struct Anglef : System.IEquatable<Anglef>, System.IComparable<An
     /// </summary>
     /// <param name="other">An Angle to be compared.</param>
     /// <returns>Returns zero if the values are equal. Returns an integer less than zero if this instance's value is 
-    /// less than <paramref name="other"/>'s value. Returns an integer greater than zero if this instance's value is 
-    /// greater than <paramref name="other"/>'s value.</returns>
+    /// less than <paramref name="other"/>'s value, or this instace is not a number (NaN) and <paramref name="other"/> has a value. 
+    /// Returns an integer greater than zero if this instance's value is greater than <paramref name="other"/>'s value, or if this instance
+    /// has a value while <paramref name="other"/> is not a number (NaN), or <paramref name="other"/> is null.</returns>
+    public int CompareTo(object other)
+    {
+        if (other is null)
+            return 1;
+
+        return angle.CompareTo(other);
+    }
+
+    /// <summary>
+    /// Compares this instance to a specified Angle and returns an integer indicating whether the value of this instance
+    /// is less than, equal to, or greater than the value of the specified Angle.
+    /// </summary>
+    /// <param name="other">An Angle to be compared.</param>
+    /// <returns>Returns zero if the values are equal. Returns an integer less than zero if this instance's value is 
+    /// less than <paramref name="other"/>'s value, or this instace is not a number (NaN) and <paramref name="other"/> has a value. 
+    /// Returns an integer greater than zero if this instance's value is greater than <paramref name="other"/>'s value, or if this instance
+    /// has a value while <paramref name="other"/> is not a number (NaN).</returns>
     public int CompareTo(Anglef other)
     {
         return angle.CompareTo(other.angle);
