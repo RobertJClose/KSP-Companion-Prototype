@@ -53,7 +53,7 @@ public readonly struct Anglef : System.IEquatable<Anglef>, System.IComparable<An
     /// <summary>
     /// Gets an angle with the largest possible value for an angle before wrapping around 2PI.
     /// </summary>
-    public static Anglef MaxAngle => new Anglef(6.283185243f);
+    public static Anglef MaxAngle => new Anglef(6.28318500519f);
     
     /// <summary>
     /// Gets an angle of one quarter turn.
