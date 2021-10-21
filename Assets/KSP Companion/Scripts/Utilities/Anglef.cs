@@ -187,14 +187,7 @@ public readonly struct Anglef : System.IEquatable<Anglef>, System.IComparable<An
     /// </summary>
     /// <param name="angleOne">The first angle.</param>
     /// <param name="angleTwo">The second angle.</param>
-    /// <returns>
-    /// True the two angles are equal. False otherwise. 
-    /// <para>
-    /// Two angles may be close enough that their values are considered equal, but the angles are split on either
-    /// side of the 0/2PI wrap around. This operator checks for that case and will return true if the angles are close enough
-    /// even if they are split in such a manner.
-    /// </para>
-    /// </returns>
+    /// <returns> True if the two angles are equal. False otherwise. </returns>
     public static bool operator ==(Anglef angleOne, Anglef angleTwo)
     {
         return angleOne.angle == angleTwo.angle;
