@@ -244,12 +244,10 @@ public readonly struct Anglef : System.IEquatable<Anglef>, System.IComparable<An
     /// <returns>True if <paramref name="obj"/> is an instance of Angle and equals the value of this Angle. False otherwise.</returns>
     public override bool Equals(object obj)
     {
-        var item = (Anglef)obj;
-
-        if (item == null || !GetType().Equals(obj.GetType()))
+        if (obj == null || !GetType().Equals(obj.GetType()))
             return false;
 
-        return Equals(item);
+        return Equals(obj);
     }
 
     /// <summary>
