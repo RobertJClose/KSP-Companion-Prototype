@@ -113,10 +113,22 @@ public readonly struct Anglef : System.IEquatable<Anglef>, System.IComparable<An
     #region Public Methods
 
     /// <summary>
-    /// Implicitly converts a float value to an Angle, where the float value is interpreted as an angle in radians.
+    /// Implicitly converts a float value to an Anglef, where the float's value is interpreted as an angle in radians.
     /// </summary>
     /// <param name="f">The value of the angle in radians.</param>
     public static implicit operator Anglef(float f) => new Anglef(f);
+
+    /// <summary>
+    /// Explicitly casts a double value to an Anglef, where the double's value is interpreted as an angle in radians.
+    /// </summary>
+    /// <param name="d">The value of the angle in radians.</param>
+    public static explicit operator Anglef(double d) => new Anglef((float)d);
+
+    /// <summary>
+    /// Explicitly casts an Angled to an Anglef. This is a narrowing conversion.
+    /// </summary>
+    /// <param name="a">The Angled to be cast.</param>
+    public static explicit operator Anglef(Angled a) => new Anglef((float)a.RadValue);
 
     /// <summary>
     /// Checks for approximate equality between two Angle instances.
