@@ -49,7 +49,7 @@ public readonly struct Angled : System.IEquatable<Angled>, System.IComparable<An
     /// <summary>
     /// Gets an angle with the largest possible value for an angle before wrapping around 2PI.
     /// </summary>
-    public static Angled MaxAngle => new Angled(6.28318530717958623199592693708837032318115234375);
+    public static Angled MaxAngle => new Angled(6.28318530717958534381750723696313798427581787109375);
 
     /// <summary>
     /// Gets an angle of one quarter turn.
