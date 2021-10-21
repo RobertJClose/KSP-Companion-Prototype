@@ -121,6 +121,12 @@ public readonly struct Angled : System.IEquatable<Angled>, System.IComparable<An
     public static implicit operator Angled(float f) => new Angled(f);
 
     /// <summary>
+    /// Implicitly converts an Anglef to an Angled.
+    /// </summary>
+    /// <param name="a">The Anglef to be converted.</param>
+    public static implicit operator Angled(Anglef a) => new Angled(a.RadValue);
+
+    /// <summary>
     /// Checks for approximate equality between two Angled instances.
     /// </summary>
     /// <param name="angleOne">The first Angled to be compared.</param>
