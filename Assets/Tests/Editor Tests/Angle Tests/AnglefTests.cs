@@ -163,8 +163,40 @@ namespace Tests
 
         #endregion
 
+        #region Explicit conversion tests
+
+        [Test]
+        public void ExplicitFromDoubleCast_CopyAssignment_CallsConstructor()
+        {
+            // Arrange
+            Anglef angle;
+            double d = 1.5;
+
+            // Act
+            angle = (Anglef)d;
+
+            // Assert
+            Assert.That(angle.RadValue, Is.EqualTo((float)d));
+        }
+
+        [Test]
+        public void ExplicitFromAngledCast_CopyAssignment_CallsConstructor()
+        {
+            // Arrange
+            Anglef anglef;
+            Angled angled = Angled.HalfTurn;
+
+            // Act
+            anglef = (Anglef)angled;
+
+            // Assert
+            Assert.That(anglef.RadValue, Is.EqualTo((float)angled.RadValue));
+        }
+
+        #endregion
+
         #region (In)Equality operator tests
-        
+
         [Test]
         public void EqualityOperator_ApproximatelyEqualAngles_DeemedUnequal()
         {
