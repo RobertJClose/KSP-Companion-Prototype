@@ -166,7 +166,7 @@ namespace Tests
         #region (In)Equality operator tests
         
         [Test]
-        public void EqualityOperator_EpsilonDifferenceBetweenAngles_DeemedUnequal()
+        public void EqualityOperator_ApproximatelyEqualAngles_DeemedUnequal()
         {
             // Arrange
             Anglef angleOne = 0.0f;
@@ -180,7 +180,7 @@ namespace Tests
         }
 
         [Test]
-        public void EqualityOperator_IfStatementEqualAngles_ReturnsTrue()
+        public void EqualityOperator_EqualAngles_ReturnsTrue()
         {
             // Arrange
             Anglef angleOne = Anglef.HalfTurn;
@@ -194,7 +194,7 @@ namespace Tests
         }
 
         [Test]
-        public void EqualityOperator_IfStatementUnequalAngles_ReturnsFalse()
+        public void EqualityOperator_UnequalAngles_ReturnsFalse()
         {
             // Arrange
             Anglef angleOne = Anglef.Zero;
@@ -208,7 +208,7 @@ namespace Tests
         }
 
         [Test]
-        public void InequalityOperator_IfStatementUnequalAngles_ReturnsTrue()
+        public void InequalityOperator_UnequalAngles_ReturnsTrue()
         {
             // Arrange
             Anglef angleOne = Anglef.QuarterTurn;
@@ -222,7 +222,7 @@ namespace Tests
         }
 
         [Test]
-        public void InequalityOperator_IfStatementEqualAngles_ReturnsFalse()
+        public void InequalityOperator_EqualAngles_ReturnsFalse()
         {
             // Arrange
             Anglef angleOne = Anglef.QuarterTurn;
