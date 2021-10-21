@@ -191,6 +191,12 @@ public readonly struct Angled : System.IEquatable<Angled>, System.IComparable<An
     }
 
     /// <summary>
+    /// Explicitly casts an Angled to a float.
+    /// </summary>
+    /// <param name="a">The Angled to be cast.</param>
+    public static explicit operator float(Angled a) => (float)a.angle;
+
+    /// <summary>
     /// Checks for equality between two Angled instances.
     /// </summary>
     /// <param name="angleOne">The first angle.</param>
