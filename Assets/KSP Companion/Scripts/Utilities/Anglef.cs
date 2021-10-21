@@ -179,8 +179,8 @@ public readonly struct Anglef : System.IEquatable<Anglef>, System.IComparable<An
     /// <summary>
     /// Implicitly converts an Angle in radians to a float value.
     /// </summary>
-    /// <param name="angle">The angle to be converted.</param>
-    public static implicit operator float(Anglef angle) => angle.RadValue;
+    /// <param name="a">The angle to be converted.</param>
+    public static implicit operator float(Anglef a) => a.angle;
 
     /// <summary>
     /// Checks for equality between two angles.
@@ -212,7 +212,7 @@ public readonly struct Anglef : System.IEquatable<Anglef>, System.IComparable<An
     /// <returns>True if <paramref name="angleOne"/> is smaller than <paramref name="angleTwo"/>. False otherwise.</returns>
     public static bool operator <(Anglef angleOne, Anglef angleTwo)
     {
-        return angleOne.RadValue < angleTwo.RadValue;
+        return angleOne.angle < angleTwo.angle;
     }
 
     /// <summary>
@@ -223,7 +223,7 @@ public readonly struct Anglef : System.IEquatable<Anglef>, System.IComparable<An
     /// <returns>True if <paramref name="angleOne"/> is greater than <paramref name="angleTwo"/>. False otherwise.</returns>
     public static bool operator >(Anglef angleOne, Anglef angleTwo)
     {
-        return angleOne.RadValue > angleTwo.RadValue;
+        return angleOne.angle > angleTwo.angle;
     }
 
     /// <summary>
@@ -385,7 +385,7 @@ public readonly struct Anglef : System.IEquatable<Anglef>, System.IComparable<An
     /// <returns>The string representation of this instance.</returns>
     public override string ToString()
     {
-        return RadValue.ToString();
+        return angle.ToString();
     }
 
     #endregion
