@@ -497,6 +497,66 @@ namespace Tests
 
         #endregion
 
+        #region Equals() tests
+
+        [Test]
+        public void Equals_EqualAngles_ReturnsTrue()
+        {
+            // Arrange
+            Anglef angleOne = Anglef.HalfTurn;
+            Anglef angleTwo = Anglef.HalfTurn;
+
+            // Act
+            bool actual = angleOne.Equals(angleTwo);
+
+            // Assert
+            Assert.That(actual, Is.EqualTo(true));
+        }
+
+        [Test]
+        public void Equals_DifferentAngles_ReturnsFalse()
+        {
+            // Arrange
+            Anglef angleOne = Anglef.HalfTurn;
+            Anglef angleTwo = Anglef.QuarterTurn;
+
+            // Act
+            bool actual = angleOne.Equals(angleTwo);
+
+            // Assert
+            Assert.That(actual, Is.EqualTo(false));
+        }
+
+        [Test]
+        public void Equals_DifferentTypeObject_ReturnsFalse()
+        {
+            // Arrange
+            Anglef angle = Anglef.HalfTurn;
+            string s = "asdf";
+
+            // Act
+            bool actual = angle.Equals(s);
+
+            // Assert
+            Assert.That(actual, Is.EqualTo(false));
+        }
+
+        [Test]
+        public void Equals_ApproximatelyEqualAngles_DeemedUnequal()
+        {
+            // Arrange
+            Anglef angleOne = 0.0f;
+            Anglef angleTwo = float.Epsilon;
+
+            // Act
+            bool actual = angleOne.Equals(angleTwo);
+
+            // Assert
+            Assert.That(actual, Is.EqualTo(false));
+        }
+
+        #endregion
+
         #region Expel() tests
 
         [Test]
