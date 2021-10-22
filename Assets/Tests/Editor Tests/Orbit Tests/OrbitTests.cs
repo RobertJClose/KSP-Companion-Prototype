@@ -1075,8 +1075,8 @@ namespace Tests
             Vector3d actual = orbit.Time2Velocity(time);
 
             // Assert
-            Assert.That(actual.x, Is.EqualTo(2281.47839).Within(0.1).Percent);
-            Assert.That(actual.y, Is.EqualTo(-816.6012467).Within(0.1).Percent);
+            Assert.That(actual.x, Is.EqualTo(2285.40472).Within(0.1).Percent);
+            Assert.That(actual.y, Is.EqualTo(-789.057048).Within(0.1).Percent);
             Assert.That(actual.z, Is.EqualTo(250.5584854).Within(0.1).Percent);
         }
 
@@ -1099,7 +1099,7 @@ namespace Tests
             // Assert
             Assert.That(actual.x, Is.EqualTo(2610.632316).Within(0.1).Percent);
             Assert.That(actual.y, Is.EqualTo(-957.648237).Within(0.1).Percent);
-            Assert.That(actual.z, Is.EqualTo(394.2082868).Within(0.1).Percent);
+            Assert.That(actual.z, Is.EqualTo(316.5065052).Within(0.1).Percent);
         }
 
         [Test]
@@ -1552,8 +1552,8 @@ namespace Tests
             Vector3d actual = orbit.TrueAnomaly2Velocity(trueAnomaly);
 
             // Assert
-            Assert.That(actual.x, Is.EqualTo(2281.47839).Within(0.1).Percent);
-            Assert.That(actual.y, Is.EqualTo(-816.6012467).Within(0.1).Percent);
+            Assert.That(actual.x, Is.EqualTo(2285.40472).Within(0.1).Percent);
+            Assert.That(actual.y, Is.EqualTo(-789.0570548).Within(0.1).Percent);
             Assert.That(actual.z, Is.EqualTo(250.5584854).Within(0.1).Percent);
         }
 
@@ -1576,7 +1576,7 @@ namespace Tests
             // Assert
             Assert.That(actual.x, Is.EqualTo(2610.632316).Within(0.1).Percent);
             Assert.That(actual.y, Is.EqualTo(-957.648237).Within(0.1).Percent);
-            Assert.That(actual.z, Is.EqualTo(394.2082868).Within(0.1).Percent);
+            Assert.That(actual.z, Is.EqualTo(316.5065052).Within(0.1).Percent);
         }
 
         [Test]
