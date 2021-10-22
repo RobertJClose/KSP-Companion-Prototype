@@ -945,6 +945,8 @@ public partial class Orbit : IEquatable<Orbit>
     /// <exception cref="ArgumentException">The input true anomaly angle cannot be NaN.</exception>
     public Vector3d TrueAnomaly2Velocity(Angled trueAnomaly)
     {
+        trueAnomaly = Angled.Expel(trueAnomaly, MaxTrueAnomaly ?? Angled.Zero, -(MaxTrueAnomaly ?? Angled.Zero));
+
         if (double.IsNaN(trueAnomaly))
             throw new ArgumentException("The true anomaly input angle cannot be NaN", "trueAnomaly");
 
