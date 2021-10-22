@@ -662,7 +662,7 @@ public partial class Orbit : IEquatable<Orbit>
         if (Vector3d.Dot(position, velocity) < 0)
             trueAnomaly = 2.0 * Math.PI - trueAnomaly;
 
-        eccentricity = eVector.magnitude;
+        eccentricity = Mathd.Approximately(eVector.magnitude, 1.0) ? 1.0 : eVector.magnitude;
 
         double semiLatusRectum = position.magnitude * (1.0 + eccentricity * Math.Cos(trueAnomaly));
         periapsisRadius = semiLatusRectum / (1.0 + eccentricity);
