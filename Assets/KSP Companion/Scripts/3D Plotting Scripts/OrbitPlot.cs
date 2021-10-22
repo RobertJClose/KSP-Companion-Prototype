@@ -61,11 +61,11 @@ public class OrbitPlot : InspectablePlot
 
         // 1. Plot the orbital trajectory
         // First get a list of Vector3 points along the orbital trajectory.
-        List<Vector3d> orbitPoints = orbit.OrbitalPoints(-orbit.MaxTrueAnomaly, orbit.MaxTrueAnomaly, out List<Anglef> trueAnomalies, Constants.OrbitDefaultStepRad);
+        List<Vector3d> orbitPoints = orbit.OrbitalPoints(-orbit.MaxTrueAnomaly, orbit.MaxTrueAnomaly, out List<Angled> trueAnomalies, Constants.OrbitDefaultStepRad);
 
         // Now each one of these points must be turned into a PolylinePoint by being given a colour and thickness.
         PolylinePoint nextPoint;
-        Anglef nextPointTrueAnomaly;
+        Angled nextPointTrueAnomaly;
         int pointIndex = 0;
         List<PolylinePoint> polylinePoints = new List<PolylinePoint>(orbitPoints.Count);
         foreach (Vector3d point in orbitPoints)
@@ -150,10 +150,10 @@ public class OrbitPlot : InspectablePlot
         lineOfNodes.End = descendingNodeSphere.transform.position;
     }
 
-    private bool DetermineIfPointIsTravelledOn(Anglef pointTrueAnomaly, Orbit orbit, double? startTime, double? endTime)
+    private bool DetermineIfPointIsTravelledOn(Angled pointTrueAnomaly, Orbit orbit, double? startTime, double? endTime)
     {
-        Anglef? startTrueAnomaly;
-        Anglef? endTrueAnomaly;
+        Angled? startTrueAnomaly;
+        Angled? endTrueAnomaly;
 
         if (startTime.HasValue)
             startTrueAnomaly = orbit.Time2TrueAnomaly(startTime.Value);

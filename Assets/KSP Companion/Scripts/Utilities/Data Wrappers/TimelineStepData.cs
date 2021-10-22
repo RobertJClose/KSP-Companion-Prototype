@@ -10,9 +10,9 @@ public class TimelineStepData
     public string orbitGravBodyName;
     public double orbitRPE;
     public double orbitECC;
-    public float orbitINC;
-    public float orbitAPE;
-    public float orbitLAN;
+    public double orbitINC;
+    public double orbitAPE;
+    public double orbitLAN;
     public double orbitTPP;
     public string stepName;
     public bool mayUserEditOrbit;
