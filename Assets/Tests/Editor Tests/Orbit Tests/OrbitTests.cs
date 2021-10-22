@@ -5,6 +5,8 @@ namespace Tests
 {
     public class OrbitTests
     {
+        private readonly double _absoluteAllowedErrorOnAngles = 0.001;
+
         #region Backing field input validator tests
 
         [Test]
@@ -837,7 +839,7 @@ namespace Tests
             Angled actual = orbit.Time2TrueAnomaly(time);
 
             // Assert
-            Assert.That(actual.RadValue, Is.EqualTo(result.RadValue));
+            Assert.That(actual.RadValue, Is.EqualTo(result.RadValue).Within(_absoluteAllowedErrorOnAngles));
         }
 
         [Test]
@@ -856,7 +858,7 @@ namespace Tests
             Angled actual = orbit.Time2TrueAnomaly(time);
 
             // Assert
-            Assert.That(actual.RadValue, Is.EqualTo(result.RadValue));
+            Assert.That(actual.RadValue, Is.EqualTo(result.RadValue).Within(_absoluteAllowedErrorOnAngles));
         }
 
         [Test]
@@ -875,7 +877,7 @@ namespace Tests
             Angled actual = orbit.Time2TrueAnomaly(time);
 
             // Assert
-            Assert.That(actual.RadValue, Is.EqualTo(result.RadValue));
+            Assert.That(actual.RadValue, Is.EqualTo(result.RadValue).Within(_absoluteAllowedErrorOnAngles));
         }
 
         [Test]
@@ -894,7 +896,7 @@ namespace Tests
             Angled actual = orbit.Time2TrueAnomaly(time);
 
             // Assert
-            Assert.That(actual.RadValue, Is.EqualTo(result.RadValue));
+            Assert.That(actual.RadValue, Is.EqualTo(result.RadValue).Within(_absoluteAllowedErrorOnAngles));
         }
 
         [Test]
@@ -911,7 +913,7 @@ namespace Tests
             Angled actual = orbit.Time2TrueAnomaly(time);
 
             // Assert
-            Assert.That(actual.RadValue, Is.EqualTo(result.RadValue));
+            Assert.That(actual.RadValue, Is.EqualTo(result.RadValue).Within(_absoluteAllowedErrorOnAngles));
         }
 
         [Test]
@@ -928,7 +930,7 @@ namespace Tests
             Angled actual = orbit.Time2TrueAnomaly(time);
 
             // Assert
-            Assert.That(actual.RadValue, Is.EqualTo(result.RadValue));
+            Assert.That(actual.RadValue, Is.EqualTo(result.RadValue).Within(_absoluteAllowedErrorOnAngles));
         }
 
         [Test]
@@ -945,7 +947,7 @@ namespace Tests
             Angled actual = orbit.Time2TrueAnomaly(time);
 
             // Assert
-            Assert.That(actual.RadValue, Is.EqualTo(result.RadValue));
+            Assert.That(actual.RadValue, Is.EqualTo(result.RadValue).Within(_absoluteAllowedErrorOnAngles));
         }
 
         [Test]
@@ -962,7 +964,7 @@ namespace Tests
             Angled actual = orbit.Time2TrueAnomaly(time);
 
             // Assert
-            Assert.That(actual.RadValue, Is.EqualTo(result.RadValue));
+            Assert.That(actual.RadValue, Is.EqualTo(result.RadValue).Within(_absoluteAllowedErrorOnAngles));
         }
 
         [Test]
@@ -981,7 +983,7 @@ namespace Tests
             Angled actual = orbit.Time2TrueAnomaly(time);
 
             // Assert
-            Assert.That(actual.RadValue, Is.EqualTo(result.RadValue));
+            Assert.That(actual.RadValue, Is.EqualTo(result.RadValue).Within(_absoluteAllowedErrorOnAngles));
         }
 
         [Test]
@@ -998,7 +1000,7 @@ namespace Tests
             Angled actual = orbit.Time2TrueAnomaly(time);
 
             // Assert
-            Assert.That(actual.RadValue, Is.EqualTo(result.RadValue));
+            Assert.That(actual.RadValue, Is.EqualTo(result.RadValue).Within(_absoluteAllowedErrorOnAngles));
         }
 
         [Test]
@@ -1015,7 +1017,7 @@ namespace Tests
             Angled actual = orbit.Time2TrueAnomaly(time);
 
             // Assert
-            Assert.That(actual.RadValue, Is.EqualTo(result.RadValue));
+            Assert.That(actual.RadValue, Is.EqualTo(result.RadValue).Within(_absoluteAllowedErrorOnAngles));
         }
 
         [Test]
@@ -1032,7 +1034,7 @@ namespace Tests
             Angled actual = orbit.Time2TrueAnomaly(time);
 
             // Assert
-            Assert.That(actual.RadValue, Is.EqualTo(result.RadValue));
+            Assert.That(actual.RadValue, Is.EqualTo(result.RadValue).Within(_absoluteAllowedErrorOnAngles));
         }
 
         [Test]
@@ -1049,7 +1051,7 @@ namespace Tests
             Angled actual = orbit.Time2TrueAnomaly(time);
 
             // Assert
-            Assert.That(actual.RadValue, Is.EqualTo(result.RadValue));
+            Assert.That(actual.RadValue, Is.EqualTo(result.RadValue).Within(_absoluteAllowedErrorOnAngles));
         }
 
         #endregion
