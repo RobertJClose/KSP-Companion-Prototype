@@ -714,31 +714,26 @@ public partial class Orbit : IEquatable<Orbit>
     /// The true anomaly of the final point in the list. If this value is null, or is equal to <paramref name="startTrueAnomaly"/>,
     /// then the entire orbit is output.
     /// </param>
-    /// <param name="trueAnomalies">Out parameter containing the true anomaly values of the outputted points in the list.</param>
     /// <param name="maxTrueAnomalyStep">
     /// The maximum step in true anomaly between adjacent points in the list, in radians. The list requires an integer number of 
     /// points, so the actual spacing between adjacent points is adjusted be as close to the value of this parameter, but never
     /// larger than it.
     /// </param>
     /// <returns>
-    /// A list of Vector3 points that sit on the orbital trajectory of the orbit. If <paramref name="startTrueAnomaly"/> is null,
-    /// then the first point in the list has a true anomaly of 0.
+    /// A list of Vector3d points that sit on the orbital trajectory of the orbit, and a list of Angled objects whose values correspond to the true 
+    /// anomaly values of the Vector3d points. If <paramref name="startTrueAnomaly"/> is null, then the first point in the list has a true 
+    /// anomaly of 0.
     /// <para>
     /// When outputting a complete elliptical orbit, the final point in the list has a true anomaly slightly smaller than the first
     /// point in the list. That is, the first and last points in the list are not the same.
     /// </para>
     /// <para>
     /// When outputting a complete open orbit, if the true anomaly of a point is beyond the maximum/minimum true anomaly, then
-    /// the Vector3.positiveInfinity point is output in the list. <see cref="MaxTrueAnomaly"/>
+    /// the Vector3.positiveInfinity point is output in the list. See <see cref="MaxTrueAnomaly"/>.
     /// </para>
     /// </returns>
-    public List<Vector3d> OrbitalPoints(Angled? startTrueAnomaly, Angled? endTrueAnomaly, out List<Angled> trueAnomalies, Angled maxTrueAnomalyStep)
+    public (List<Vector3d> points, List<Angled> trueAnomalies) OrbitalPoints(Angled? startTrueAnomaly, Angled? endTrueAnomaly, Angled maxTrueAnomalyStep)
     {
-        // This method returns a List containing 3D points that trace the trajectory of this orbit, starting at the 'startTrueAnomaly' 
-        // and ending at the 'endTrueAnomaly'. If the start and end points are the same then the whole orbit is output.
-        // The 'stepRad' parameter decides the angular spacing of the points in radians. An integer number of points must be output, so the actual
-        // angular spacing may be slightly adjusted to ensure this. The actual spacing will never be larger than 'stepRad'.
-
         // If the start and end points are the same, or if either of the points are null, output the entire orbit
         Angled angularRange;
         if (startTrueAnomaly == null || endTrueAnomaly == null || (startTrueAnomaly == endTrueAnomaly))
@@ -753,7 +748,7 @@ public partial class Orbit : IEquatable<Orbit>
 
         // Create the list to be output and fill it with points
         List<Vector3d> outputPoints = new List<Vector3d>(numberOfPoints);
-        trueAnomalies = new List<Angled>(numberOfPoints);
+        List<Angled> trueAnomalies = new List<Angled>(numberOfPoints);
 
         Angled angle = startTrueAnomaly ?? Angled.Zero;
         Vector3d newPoint;
@@ -772,7 +767,7 @@ public partial class Orbit : IEquatable<Orbit>
             angle += actualStep;
         }
 
-        return outputPoints;
+        return (outputPoints, trueAnomalies);
     }
 
     /// <summary>

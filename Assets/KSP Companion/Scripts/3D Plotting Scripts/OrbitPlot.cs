@@ -61,7 +61,7 @@ public class OrbitPlot : InspectablePlot
 
         // 1. Plot the orbital trajectory
         // First get a list of Vector3 points along the orbital trajectory.
-        List<Vector3d> orbitPoints = orbit.OrbitalPoints(-orbit.MaxTrueAnomaly, orbit.MaxTrueAnomaly, out List<Angled> trueAnomalies, Constants.OrbitDefaultStepRad);
+        (List<Vector3d> orbitPoints, List<Angled> trueAnomalies) = orbit.OrbitalPoints(-orbit.MaxTrueAnomaly, orbit.MaxTrueAnomaly, Constants.OrbitDefaultStepRad);
 
         // Now each one of these points must be turned into a PolylinePoint by being given a colour and thickness.
         PolylinePoint nextPoint;
