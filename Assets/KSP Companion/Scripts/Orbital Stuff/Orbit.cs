@@ -724,8 +724,9 @@ public partial class Orbit : IEquatable<Orbit>
     /// anomaly values of the Vector3d points. If <paramref name="startTrueAnomaly"/> is null, then the first point in the list has a true 
     /// anomaly of 0.
     /// <para>
-    /// When outputting a complete orbit, the final point in the list has a true anomaly slightly smaller than the first
-    /// point in the list. That is, the first and last points in the list are not the same.
+    /// When outputting a complete orbit, the final point in the list has approximately the same true anomaly as the first point in the list. 
+    /// That is, the first and last points are the nearly the same. They are unlikely to be exactly the same, due to floating point rounding
+    /// errors not allowing a perfect integer division of the range 2PI.
     /// </para>
     /// <para>
     /// When outputting a complete open orbit, if the true anomaly of a point is beyond the maximum/minimum true anomaly, then
@@ -739,16 +740,16 @@ public partial class Orbit : IEquatable<Orbit>
             throw new ArgumentException("Step between points cannot be NaN.", "maxTrueAnomalyStep");
 
         // If the start and end points are the same, or if either of the points are null, output the entire orbit
-        Angled angularRange;
+        double angularRange;
         if (startTrueAnomaly == null || endTrueAnomaly == null || (startTrueAnomaly == endTrueAnomaly))
-            angularRange = Angled.MaxAngle;
+            angularRange = 2.0 * Math.PI;
         else
             angularRange = endTrueAnomaly.Value.RadValue - startTrueAnomaly.Value.RadValue;
 
-        int numberOfPoints = Mathd.CeilToInt(angularRange.RadValue / maxTrueAnomalyStep.RadValue) + 1;
+        int numberOfPoints = Mathd.CeilToInt(angularRange / maxTrueAnomalyStep.RadValue) + 1;
 
         // Adjust the angular spacing to ensure an integer number of points is output.
-        Angled actualStep = angularRange.RadValue / (numberOfPoints - 1);
+        Angled actualStep = angularRange / (numberOfPoints - 1);
 
         // Create the list to be output and fill it with points
         List<Vector3d> outputPoints = new List<Vector3d>(numberOfPoints);
