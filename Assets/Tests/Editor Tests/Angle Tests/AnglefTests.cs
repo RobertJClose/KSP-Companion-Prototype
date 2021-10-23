@@ -747,5 +747,34 @@ namespace Tests
 
         #endregion
 
+        #region IsNaN() tests
+
+        [Test]
+        public void IsNaN_AngleIsNotNaN_ReturnsFalse()
+        {
+            // Arrange
+            Anglef angle = 0.0f;
+
+            // Act
+            bool isNaN = Anglef.IsNaN(angle);
+
+            // Assert
+            Assert.That(isNaN, Is.EqualTo(false));
+        }
+
+        [Test]
+        public void IsNaN_AngleIsNaN_ReturnsTrue()
+        {
+            // Arrange
+            Anglef angle = float.NaN;
+
+            // Act
+            bool isNaN = Anglef.IsNaN(angle);
+
+            // Assert
+            Assert.That(isNaN, Is.EqualTo(true));
+        }
+
+        #endregion
     }
 }
