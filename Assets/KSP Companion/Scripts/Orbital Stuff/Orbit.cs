@@ -724,7 +724,7 @@ public partial class Orbit : IEquatable<Orbit>
     /// anomaly values of the Vector3d points. If <paramref name="startTrueAnomaly"/> is null, then the first point in the list has a true 
     /// anomaly of 0.
     /// <para>
-    /// When outputting a complete elliptical orbit, the final point in the list has a true anomaly slightly smaller than the first
+    /// When outputting a complete orbit, the final point in the list has a true anomaly slightly smaller than the first
     /// point in the list. That is, the first and last points in the list are not the same.
     /// </para>
     /// <para>
@@ -745,10 +745,10 @@ public partial class Orbit : IEquatable<Orbit>
         else
             angularRange = endTrueAnomaly.Value.RadValue - startTrueAnomaly.Value.RadValue;
 
-        int numberOfPoints = Mathd.CeilToInt(angularRange.RadValue / maxTrueAnomalyStep.RadValue);
+        int numberOfPoints = Mathd.CeilToInt(angularRange.RadValue / maxTrueAnomalyStep.RadValue) + 1;
 
         // Adjust the angular spacing to ensure an integer number of points is output.
-        Angled actualStep = angularRange.RadValue / numberOfPoints;
+        Angled actualStep = angularRange.RadValue / (numberOfPoints - 1);
 
         // Create the list to be output and fill it with points
         List<Vector3d> outputPoints = new List<Vector3d>(numberOfPoints);
