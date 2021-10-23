@@ -574,26 +574,6 @@ namespace Tests
         #region OrbitalPoints() tests
 
         [Test]
-        public void OrbitalPoints_SinglePoint_MatchesTrueAnomaly2PointOutput()
-        {
-            // Arrange
-            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
-            Angled trueAnomaly = 0.1;
-            Angled step = 0.1;
-            Vector3d resultPoint = orbit.TrueAnomaly2Point(trueAnomaly);
-
-            // Act
-            var (points, _) = orbit.OrbitalPoints(trueAnomaly, trueAnomaly + step, step);
-
-
-            // Assert
-            Assert.That(points.Count, Is.EqualTo(1));
-            Assert.That(points[0].x, Is.EqualTo(resultPoint.x).Within(0.01).Percent);
-            Assert.That(points[0].y, Is.EqualTo(resultPoint.y).Within(0.01).Percent);
-            Assert.That(points[0].z, Is.EqualTo(resultPoint.z).Within(0.01).Percent);
-        }
-
-        [Test]
         public void OrbitalPoints_TwoPoints_MatchesTrueAnomaly2PointOutput()
         {
             // Arrange
@@ -674,10 +654,12 @@ namespace Tests
         }
 
         [Test]
-        public void OrbitalPoints_EntireEllipticalOrbit_FinalPointTrueAnomalyIsDifferentFromFirstPointTrueAnomaly()
+        public void OrbitalPoints_EntireOrbit_FinalPointTrueAnomalyIsDifferentFromFirstPointTrueAnomaly(
+            [Values(0.5, 1.0, 1.5)] double eccentricity)
         {
             // Arrange
             Orbit orbit = GravitationalBody.Bop.DefaultOrbit;
+            orbit.ECC = eccentricity;
             var (_, trueAnomalies) = orbit.OrbitalPoints(null, null, Constants.OrbitDefaultStepRad);
 
             // Act
@@ -693,8 +675,8 @@ namespace Tests
             // Arrange
             Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
             orbit.ECC = 1.5;
-            Angled startTrueAnomaly = orbit.MaxTrueAnomaly.Value;
-            Angled endTrueAnomaly = -orbit.MaxTrueAnomaly.Value;
+            Angled startTrueAnomaly = orbit.MaxTrueAnomaly.Value + 0.1;
+            Angled endTrueAnomaly = -orbit.MaxTrueAnomaly.Value - 0.1;
             int numOfPoints = 5;
             Angled step = (endTrueAnomaly - startTrueAnomaly) / numOfPoints;
 
@@ -709,7 +691,7 @@ namespace Tests
         }
 
         [Test]
-        public void OrbitalPoints_AngularStepLargerThanDifferenceBetweenStartAndEndTrueAnomalies_OnlyStartPointIsOutput()
+        public void OrbitalPoints_AngularStepLargerThanDifferenceBetweenStartAndEndTrueAnomalies_OnlyStartPointAndEndPointIsOutput()
         {
             // Arrange
             Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
@@ -721,8 +703,9 @@ namespace Tests
             var (_, trueAnomalies) = orbit.OrbitalPoints(start, end, step);
 
             // Assert
-            Assert.That(trueAnomalies.Count, Is.EqualTo(1));
+            Assert.That(trueAnomalies.Count, Is.EqualTo(2));
             Assert.That(trueAnomalies[0].RadValue, Is.EqualTo(start.RadValue));
+            Assert.That(trueAnomalies[1].RadValue, Is.EqualTo(end.RadValue));
         }
 
         [Test]
@@ -760,7 +743,7 @@ namespace Tests
         }
 
         [Test]
-        public void OrbitalPoints_OutputtingEntireOrbit_DifferenceBetweenStartAndFinalTrueAnomalyInListIsEpsilon()
+        public void OrbitalPoints_OutputtingEntireOrbit_FirstAndLastOutputPointsAreApproximatelyEqual()
         {
             // Arrange
             Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
@@ -770,10 +753,10 @@ namespace Tests
 
             // Act
             var (_, trueAnomalies) = orbit.OrbitalPoints(start, end, step);
-            Angled angularRange = trueAnomalies[trueAnomalies.Count - 1] - trueAnomalies[0];
+            double differenceBetweenFirstAndLastPointAngle = System.Math.Abs(trueAnomalies[0] - trueAnomalies[trueAnomalies.Count - 1]);
 
             // Assert
-            Assert.That(angularRange.RadValue, Is.EqualTo(Angled.MaxAngle.RadValue));
+            Assert.That(differenceBetweenFirstAndLastPointAngle, Is.LessThanOrEqualTo(1e-10));
         }
 
         [TestCase(null, 0.0)]
@@ -784,14 +767,14 @@ namespace Tests
         {
             // Arrange
             Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
-            Angled step = 0.1;
+            Angled step = 0.01;
 
             // Act
             var (_, trueAnomalies) = orbit.OrbitalPoints(start, end, step);
-            Angled angularRange = trueAnomalies[trueAnomalies.Count - 1] - trueAnomalies[0];
+            double differenceBetweenFirstAndLastPointAngle = System.Math.Abs(trueAnomalies[0] - trueAnomalies[trueAnomalies.Count - 1]);
 
             // Assert
-            Assert.That(angularRange.RadValue, Is.EqualTo(Angled.MaxAngle.RadValue));
+            Assert.That(differenceBetweenFirstAndLastPointAngle, Is.LessThanOrEqualTo(1e-10));
         }
 
         [Test]
