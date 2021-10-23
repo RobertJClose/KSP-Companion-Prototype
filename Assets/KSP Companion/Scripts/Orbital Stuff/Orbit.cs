@@ -732,8 +732,12 @@ public partial class Orbit : IEquatable<Orbit>
     /// the Vector3.positiveInfinity point is output in the list. See <see cref="MaxTrueAnomaly"/>.
     /// </para>
     /// </returns>
+    /// <exception cref="ArgumentException">Step between output points cannot be NaN.</exception>
     public (List<Vector3d> points, List<Angled> trueAnomalies) OrbitalPoints(Angled? startTrueAnomaly, Angled? endTrueAnomaly, Angled maxTrueAnomalyStep)
     {
+        if (Angled.IsNaN(maxTrueAnomalyStep))
+            throw new ArgumentException("Step between points cannot be NaN.", "maxTrueAnomalyStep");
+
         // If the start and end points are the same, or if either of the points are null, output the entire orbit
         Angled angularRange;
         if (startTrueAnomaly == null || endTrueAnomaly == null || (startTrueAnomaly == endTrueAnomaly))
