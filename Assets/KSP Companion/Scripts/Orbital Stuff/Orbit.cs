@@ -740,11 +740,11 @@ public partial class Orbit : IEquatable<Orbit>
             throw new ArgumentException("Step between points cannot be NaN.", "maxTrueAnomalyStep");
 
         // If the start and end points are the same, or if either of the points are null, output the entire orbit
-        double angularRange;
+        Angled angularRange;
         if (startTrueAnomaly == null || endTrueAnomaly == null ||
             Angled.IsNaN(startTrueAnomaly.Value) || Angled.IsNaN(endTrueAnomaly.Value) ||
             (startTrueAnomaly == endTrueAnomaly))
-            angularRange = 2.0 * Math.PI;
+            angularRange = Angled.MaxAngle;
         else
             angularRange = endTrueAnomaly.Value.RadValue - startTrueAnomaly.Value.RadValue;
 
