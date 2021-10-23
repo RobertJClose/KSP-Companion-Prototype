@@ -156,7 +156,7 @@ public readonly struct Anglef : System.IEquatable<Anglef>, System.IComparable<An
         if (Mathf.Approximately(difference, 2f * Mathf.PI)) // Special case checking
             return true;
 
-        return Mathf.Approximately(difference, 0f);
+        return Mathf.Approximately(angleOne.Value, angleTwo.Value);
     }
 
     /// <summary>

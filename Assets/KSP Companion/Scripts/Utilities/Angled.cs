@@ -152,7 +152,7 @@ public readonly struct Angled : System.IEquatable<Angled>, System.IComparable<An
         if (UnityEngine.Mathd.Approximately(difference, 2.0 * System.Math.PI)) // Special case checking.
             return true;
 
-        return UnityEngine.Mathd.Approximately(difference, 0.0);
+        return UnityEngine.Mathd.Approximately(angleOne.Value, angleTwo.Value);
     }
 
     /// <summary>
