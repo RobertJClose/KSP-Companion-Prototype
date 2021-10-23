@@ -741,7 +741,9 @@ public partial class Orbit : IEquatable<Orbit>
 
         // If the start and end points are the same, or if either of the points are null, output the entire orbit
         double angularRange;
-        if (startTrueAnomaly == null || endTrueAnomaly == null || (startTrueAnomaly == endTrueAnomaly))
+        if (startTrueAnomaly == null || endTrueAnomaly == null ||
+            Angled.IsNaN(startTrueAnomaly.Value) || Angled.IsNaN(endTrueAnomaly.Value) ||
+            (startTrueAnomaly == endTrueAnomaly))
             angularRange = 2.0 * Math.PI;
         else
             angularRange = endTrueAnomaly.Value.RadValue - startTrueAnomaly.Value.RadValue;
@@ -755,7 +757,11 @@ public partial class Orbit : IEquatable<Orbit>
         List<Vector3d> outputPoints = new List<Vector3d>(numberOfPoints);
         List<Angled> trueAnomalies = new List<Angled>(numberOfPoints);
 
-        Angled angle = startTrueAnomaly ?? Angled.Zero;
+        Angled angle;
+        if (!startTrueAnomaly.HasValue || Angled.IsNaN(startTrueAnomaly.Value))
+            angle = Angled.Zero;
+        else
+            angle = startTrueAnomaly.Value;
         Vector3d newPoint;
         for (int index = 0; index < outputPoints.Capacity; index++)
         {
