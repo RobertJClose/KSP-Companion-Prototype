@@ -197,6 +197,16 @@ public readonly struct Angled : System.IEquatable<Angled>, System.IComparable<An
     public static explicit operator float(Angled a) => (float)a.angle;
 
     /// <summary>
+    /// Returns a value that indicates whether the specified angle is not a number (NaN).
+    /// </summary>
+    /// <param name="angle">An Angled angle.</param>
+    /// <returns>True is the angle stored is NaN, false otherwise.</returns>
+    public static bool IsNaN(Angled angle)
+    {
+        return double.IsNaN(angle.angle);
+    }
+
+    /// <summary>
     /// Checks for equality between two Angled instances.
     /// </summary>
     /// <param name="angleOne">The first angle.</param>

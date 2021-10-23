@@ -195,6 +195,16 @@ public readonly struct Anglef : System.IEquatable<Anglef>, System.IComparable<An
     public static implicit operator float(Anglef a) => a.angle;
 
     /// <summary>
+    /// Returns a value that indicates whether the specified angle is not a number (NaN).
+    /// </summary>
+    /// <param name="angle">An Angled angle.</param>
+    /// <returns>True is the angle stored is NaN, false otherwise.</returns>
+    public static bool IsNaN(Anglef angle)
+    {
+        return float.IsNaN(angle.angle);
+    }
+
+    /// <summary>
     /// Checks for equality between two angles.
     /// </summary>
     /// <param name="angleOne">The first angle.</param>
