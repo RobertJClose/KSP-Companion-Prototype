@@ -1879,10 +1879,10 @@ RectTransform:
   m_Father: {fileID: 77756322}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 360, y: -10.001699}
-  m_SizeDelta: {x: 80, y: 20.003399}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 80, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &513732591
 MonoBehaviour:
@@ -2524,10 +2524,10 @@ RectTransform:
   m_Father: {fileID: 77756322}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 120, y: -10.001699}
-  m_SizeDelta: {x: 80, y: 20.003399}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 80, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &604153011
 MonoBehaviour:
@@ -3456,10 +3456,10 @@ RectTransform:
   m_Father: {fileID: 77756322}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 200, y: -10.001699}
-  m_SizeDelta: {x: 80, y: 20.003399}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 80, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &717399910
 MonoBehaviour:
@@ -5682,10 +5682,10 @@ RectTransform:
   m_Father: {fileID: 77756322}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 40, y: -10.001699}
-  m_SizeDelta: {x: 80, y: 20.003399}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 80, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1838725313
 MonoBehaviour:
@@ -6024,10 +6024,10 @@ RectTransform:
   m_Father: {fileID: 77756322}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 280, y: -10.001699}
-  m_SizeDelta: {x: 80, y: 20.003399}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 80, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1946188921
 MonoBehaviour:
@@ -7331,7 +7331,53 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -20, y: -20}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &5680159444669561912
+--- !u!222 &5680159444669561915
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5680159444669561916}
+  m_CullTransparentMesh: 1
+--- !u!1 &5680159444669561916
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5680159444669561917}
+  - component: {fileID: 5680159444669561915}
+  - component: {fileID: 5680159444669561919}
+  - component: {fileID: 5680159444669561918}
+  m_Layer: 5
+  m_Name: Help Text
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &5680159444669561917
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5680159444669561916}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5680159446020695629}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 1802.16}
+  m_Pivot: {x: 0.5, y: 1}
+--- !u!114 &5680159444669561918
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -7345,7 +7391,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
   m_VerticalFit: 2
---- !u!114 &5680159444669561914
+--- !u!114 &5680159444669561919
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -7378,29 +7424,61 @@ MonoBehaviour:
     orbits that would be more efficient to transfer into first rather than going
     directly. This tool allows you to specify those intermediate orbits and calculate
     the transfer orbits between those as well. By inspecting the calculated maneuvers
-    you can see all the information needed to perform the maneuvers in KSP. \nCurrently,
+    you can see all the information needed to perform the maneuvers in KSP. \n\nCurrently,
     the transfer orbits are specified by the times at which the maneuvers between
     the two orbits will occur, which is internally the most simple method, but isn't
     very user friendly and makes it very tricky to find transfer orbits that are
     optimally efficient. It also deceptively means that transfer orbits also depend
     on the 'time of periapsis passage' orbital elements of the surrounding orbits
     (see below), which is not very intuitive. The plan in the future is to make this
-    easier to use via a 'pork-chop plot'. \n\nWhen inspecting an orbit, you may edit
-    the following orbital elements if it is not a transfer orbit:\nPeriapsis Radius:\nThe
-    separation between the satellite and the gravitational body at the closest point
-    in the orbit. This value controls the size of the orbit.\n\nEccentricity:\nThis
-    value controls the shape of the orbit. A value of zero indicates a circular trajectory,
+    easier to use via a 'pork-chop plot'.\n\n<size=32><b>Glossary of Terms:</b></size>\n<size=24><b>Apoapsis:</b></size>\nThis
+    is the point in the orbit where the satellite has the maximum separation from
+    the attracting gravitational body. In this tool, the apoapsis is shown as a red
+    sphere when an orbit is selected.\n\n<size=24><b>Argument of Periapsis:</b></size>\nThis
+    <b>orbital element</b> is the angle between the <b>periapsis</b> and the <b>ascending
+    node</b>. Changing this element has the effect of rotating the orbit around in
+    the <b>orbital plane</b>.\n\n<size=24><b>Ascending Node:</b></size>\nThis is
+    the point in the orbit where the satellite crosses the <b>reference plane</b>
+    from below.\n\n<size=24><b>Eccentricity:</b></size>\nThis <b>orbital element</b>
+    controls the shape of the orbit. A value of zero indicates a circular trajectory,
     a value between zero and one is an elliptical trajectory, a value of exactly
-    one is a parabolic trajectory, and a value greater than one is a hyperbolic trajectory.\n\nInclination:\nThis
-    is the angle that the orbital plane makes with a reference plane, which in KSP
-    is the equatorial plane of Kerbin.\n\nArgument of Periapsis:\nThis is the angle
-    between the periapsis point and the ascending node - the point at which the orbit
-    crosses the reference plane from below.\n\nLongitude of the Ascending Node:\nThis
-    is the angle between the ascending node and the reference axis, which in KSP
-    is the direction of Kerbol from Kerbin at 0s UT.\n\nTime of Periapsis Passage:\nThis
-    value controls the position of the satellite in its orbit. By specifying at what
-    time the satellite passes through its periapsis, other properties of the satellite
-    may be calculated for any other time."
+    one is a parabolic trajectory, and a value greater than one is a hyperbolic trajectory.\n\n<size=24><b>Descending
+    Node:</b></size>\nThis is the point in the orbit where the satellite crosses
+    the </b> reference plane</b> from above.\n\n<size=24><b>Focus:</b></size>\nThe
+    focus of an orbit is the position of the attracting gravitational body that the
+    satellite is orbiting.\n\n<size=24><b>Inclination:</b></size>\nThis <b>orbital
+    element</b> is the angle between the orbital plane and the <b>reference plane</b>.
+    Changing this element has the effect of rotating the orbit around the <b>line
+    of nodes</b>. This value is defined such that it is always in the range [0, PI],
+    and trying to set this value to be out of this range will result in clamping.\n\n<size=24><b>Line
+    Of Apsides:</b></size>\nThe line of apsides passes through the <b>focus</b>,
+    the <b>periapsis</b>, and the <b>apoapsis</b>. In this tool, the line of apsides
+    is shown as a purple dotted line when an orbit is selected.\n\n<size=24><b>Line
+    Of Nodes:</b></size>\nThe line of nodes passes through the <b>focus</b>, the
+    <b>ascending node</b>, and the <b>descending node</b>. In this tool, the line
+    of nodes is shown as a green dotted line when an orbit is selected.\n\n<size=24><b>Longitude
+    Of The Ascending Node:</b></size>\nThis <b>orbital element</b> is the angle between
+    the <b>ascending node</b> and the <b>reference axis</b>. Changing this element
+    is like rotating an orbit around the 'up' axis.\n\n<size=24><b>Orbital Element:</b></size>\nAn
+    orbital element is a variable used to uniquely specify an orbit in space. This
+    tool uses the following six orbital elements to define each orbit: The <b>radius
+    of periapsis</b>, the <b>eccentricity</b>, the <b>inclination</b>, the <b>longitude
+    of the ascending node</b>, the <b>argument of periapsis</b>, and the <b>time
+    of periapsis passage</b>.\n\n<size=24><b>Orbital Plane:</b></size>\nThis is the
+    plane in which the orbital trajectory lies. As the gravitational force is radial,
+    all the motion of a free-falling satellite lies in a single plane.\n\n<size=24><b>Periapsis:</b></size>\nThis
+    is the point in the orbit where the satellite has the minimum separation to the
+    attracting gravitational body. The <b>radius of periapsis</b> is one of the <b>orbital
+    elements</b> used to define an orbit. In this tool, the periapsis is shown as
+    a blue sphere when an orbit is selected.\n\n<size=24><b>Radius Of Periapsis:</b></size>\nThis
+    <b>orbital element</b> is the separation between the satellite and the gravitational
+    body at the closest point in the orbit. This value controls the size of the orbit.\n\n<size=24><b>Reference
+    Axis:</b></size>\nIn KSP, the reference axis used the direction from Kerbin to
+    Kerbol at 0s UT.\n\n<size=24><b>Reference Plane:</b></size>\nIn KSP, the reference
+    plane is the equatorial plane of Kerbin.\n\n<size=24><b>Time Of Periapsis Passage:</b></size>\nThis
+    <b>orbital element</b> controls the position of the satellite in its orbit. By
+    specifying at what time the satellite passes through its <b>periapsis</b>, other
+    properties of the satellite may be calculated for any other time."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -7427,8 +7505,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20
-  m_fontSizeBase: 20
+  m_fontSize: 18
+  m_fontSizeBase: 18
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -7469,52 +7547,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!222 &5680159444669561915
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5680159444669561916}
-  m_CullTransparentMesh: 1
---- !u!1 &5680159444669561916
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5680159444669561917}
-  - component: {fileID: 5680159444669561915}
-  - component: {fileID: 5680159444669561912}
-  - component: {fileID: 5680159444669561914}
-  m_Layer: 5
-  m_Name: Help Text
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &5680159444669561917
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5680159444669561916}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 5680159446020695629}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 1090.26}
-  m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &5680159444870118598
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7612,7 +7644,7 @@ RectTransform:
   m_Father: {fileID: 5680159444617883589}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5927577}
+  m_AnchorMin: {x: 0, y: 0.75362897}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
@@ -7907,7 +7939,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 5680159445453436186}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.4072423
+  m_Size: 0.24637102
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
