@@ -281,7 +281,7 @@ public partial class Orbit : IEquatable<Orbit>
             if (double.IsNaN(value))
                 throw new ArgumentException("INC should never be set to NaN", "value");
 
-            inclination = Angled.Expel(value, Angled.QuarterTurn, Angled.ThreeQuartersTurn);
+            inclination = value % Math.PI;
         }
     }
 
