@@ -267,7 +267,8 @@ public partial class Orbit : IEquatable<Orbit>
     /// Gets or sets the inclination orbital element.
     /// </summary>
     /// <remarks>
-    /// The value of this orbital element is the angle in radians between the orbital plane and the reference XY plane.
+    /// The value of this orbital element is the angle in radians between the orbital plane and the reference XY plane. This value is always
+    /// in the range [0, PI]. Trying to set this value to an angle larger than PI will cause the value to get clamped down to PI.
     /// </remarks>
     /// <exception cref="ArgumentException">An attempt was made to set the inclination to NaN.</exception>
     public Angled INC
@@ -281,7 +282,7 @@ public partial class Orbit : IEquatable<Orbit>
             if (double.IsNaN(value))
                 throw new ArgumentException("INC should never be set to NaN", "value");
 
-            inclination = value % Math.PI;
+            inclination = value < Angled.HalfTurn ? value : Angled.HalfTurn;
         }
     }
 
