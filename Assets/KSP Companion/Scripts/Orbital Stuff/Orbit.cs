@@ -110,7 +110,7 @@ public partial class Orbit : IEquatable<Orbit>
         }
         set
         {
-            if (double.IsNaN(value))
+            if (Angled.IsNaN(value))
                 throw new ArgumentException("APE should never be set to NaN", "value");
 
             argumentOfPeriapsis = value;
@@ -279,7 +279,7 @@ public partial class Orbit : IEquatable<Orbit>
         }
         set
         {
-            if (double.IsNaN(value))
+            if (Angled.IsNaN(value))
                 throw new ArgumentException("INC should never be set to NaN", "value");
 
             inclination = value < Angled.HalfTurn ? value : Angled.HalfTurn;
@@ -303,7 +303,7 @@ public partial class Orbit : IEquatable<Orbit>
         }
         set
         {
-            if (double.IsNaN(value))
+            if (Angled.IsNaN(value))
                 throw new ArgumentException("LAN should never be set to NaN", "value");
 
             longitudeOfAscendingNode = value;
