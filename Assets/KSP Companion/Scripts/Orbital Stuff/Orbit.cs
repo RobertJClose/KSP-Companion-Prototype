@@ -214,7 +214,7 @@ public partial class Orbit : IEquatable<Orbit>
     }
 
     /// <summary>
-    /// Gets the eccecentricity vector for this orbit.
+    /// Gets the eccentricity vector for this orbit.
     /// </summary>
     /// <remarks>
     /// The eccentricity vector points from the attracting body to the point of periapsis with a magnitude equal to the 
@@ -364,11 +364,11 @@ public partial class Orbit : IEquatable<Orbit>
     }
 
     /// <summary>
-    /// Gets the nodal vector for the orbit.
+    /// Gets the nodal vector for the orbit. This is only defined if the inclination is non-zero.
     /// </summary>
     /// <remarks>
     /// The nodal vector points to the ascending node, where the orbiting body crosses the reference XY plane from below.
-    /// The magnitude of the vector is Sin(inclination).
+    /// The magnitude of the vector is Sin(inclination), so if the inclination is zero this equals the zero vector.
     /// </remarks>
     public Vector3d NodalVector
     {
