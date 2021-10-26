@@ -95,6 +95,86 @@ public partial class Orbit : IEquatable<Orbit>
     #region Properties
 
     /// <summary>
+    /// Gets the orbit of the KSP moon Bop around Jool.
+    /// </summary>
+    public static Orbit BopOrbit => new Orbit(98302500.0, 0.235, Math.PI / 12.0, 5.0 / 36.0 * Math.PI, Math.PI / 18.0, -52183.55229, GravitationalBody.Jool);
+
+    /// <summary>
+    /// Gets the orbit of the KSP planet Eeloo around Kerbol.
+    /// </summary>
+    public static Orbit EelooOrbit => new Orbit(66674926800.0, 0.26, 41.0 / 1200.0 * Math.PI, 13.0 / 9.0 * Math.PI, 5.0 / 18.0 * Math.PI, -78456229.89, GravitationalBody.Kerbol);
+
+    /// <summary>
+    /// Gets the orbit of the KSP planet Eve around Kerbol.
+    /// </summary>
+    public static Orbit EveOrbit => new Orbit(9734357698.56, 0.01, 7.0 / 600.0 * Math.PI, 0.0, Math.PI / 12.0, -2827563.386, GravitationalBody.Kerbol);
+
+    /// <summary>
+    /// Gets the orbit of the KSP planet Dres around Kerbol.
+    /// </summary>
+    public static Orbit DresOrbit => new Orbit(34917642713.565, 0.145, Math.PI / 36.0, Math.PI / 2, 14.0 / 9.0 * Math.PI, -23934391.65, GravitationalBody.Kerbol);
+
+    /// <summary>
+    /// Gets the orbit of the KSP planet Duna around Kerbol.
+    /// </summary>
+    public static Orbit DunaOrbit => new Orbit(19669121345.536, 0.051, 0.06 / 180.0 * Math.PI, 0.0, 271.0 / 360.0 * Math.PI, -8653310.967, GravitationalBody.Kerbol);
+
+    /// <summary>
+    /// Gets the orbit of the KSP moon Gilly around Eve.
+    /// </summary>
+    public static Orbit GillyOrbit => new Orbit(14175000.0, 0.55, Math.PI / 15.0, Math.PI / 18.0, 4.0 / 9.0 * Math.PI, -55661.04176, GravitationalBody.Eve);
+
+    /// <summary>
+    /// Gets the orbit of the KSP moon Ike around Duna.
+    /// </summary>
+    public static Orbit IkeOrbit => new Orbit(3.104e+6, 0.03, Math.PI / 900.0, 0.0, 0.0, -16935.04573, GravitationalBody.Duna);
+
+    /// <summary>
+    /// Gets the orbit of the KSP planet Jool around Kerbol.
+    /// </summary>
+    public static Orbit JoolOrbit => new Orbit(65334882304.0, 0.05, 1.304 / 180.0 * Math.PI, 0.0, 13.0 / 45.0 * Math.PI, -1665738.423, GravitationalBody.Kerbol);
+
+    /// <summary>
+    /// Gets the orbit of the KSP moon Laythe around Jool.
+    /// </summary>
+    public static Orbit LaytheOrbit => new Orbit(27.184e+6, 0.0, 0.0, 0.0, 0.0, -26477.0102, GravitationalBody.Jool);
+
+    /// <summary>
+    /// Gets the orbit of the KSP planet Kerbin around Kerbol.
+    /// </summary>
+    public static Orbit KerbinOrbit => new Orbit(13599840256.0, 0.0, 0.0, 0.0, 0.0, -4599439.396, GravitationalBody.Kerbol);
+
+    /// <summary>
+    /// Gets the orbit of the KSP moon Mun around Kerbin.
+    /// </summary>
+    public static Orbit MunOrbit => new Orbit(12000000.0, 0.0, 0.0, 0.0, 0.0, -37604.08593, GravitationalBody.Kerbin);
+
+    /// <summary>
+    /// Gets the orbit of the KSP moon Minmus around Kerbin.
+    /// </summary>
+    public static Orbit MinmusOrbit => new Orbit(47000000.0, 0.0, Math.PI / 30.0, 19.0 / 90.0 * Math.PI, 13.0 / 30.0 * Math.PI, -154313.3652, GravitationalBody.Kerbin);
+
+    /// <summary>
+    /// Gets the orbit of the KSP planet Moho around Kerbol.
+    /// </summary>
+    public static Orbit MohoOrbit => new Orbit(4210510643.2, 0.2, 7.0 / 180.0 * Math.PI, Math.PI / 12.0, 7.0 / 18.0 * Math.PI, -1107315.461, GravitationalBody.Kerbol);
+
+    /// <summary>
+    /// Gets the orbit of the KSP moon Pol around Jool.
+    /// </summary>
+    public static Orbit PolOrbit => new Orbit(149128810.0, 0.171, 17.0 / 720.0 * Math.PI, Math.PI / 12.0, Math.PI / 90.0, -97537.57511, GravitationalBody.Jool);
+
+    /// <summary>
+    /// Gets the orbit of the KSP moon Tylo around Jool.
+    /// </summary>
+    public static Orbit TyloOrbit => new Orbit(68.5e+6, 0.0, 0.025 / 180.0 * Math.PI, 0.0, 0.0, -105909.461, GravitationalBody.Jool);
+
+    /// <summary>
+    /// Gets the orbit of the KSP moon Vall around Jool.
+    /// </summary>
+    public static Orbit VallOrbit => new Orbit(43.152e+6, 0.0, 0.0, 0.0, 0.0, -15177.95132, GravitationalBody.Jool);
+
+    /// <summary>
     /// Gets or sets the argument of periapsis orbital element.
     /// </summary>
     /// <remarks>
