@@ -410,6 +410,19 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     }
 
     /// <summary>
+    /// Calculates the position of the body at the given time.
+    /// </summary>
+    /// <param name="time">The time at which to find the position.</param>
+    /// <returns>A Vector3d of the position of the centre of the body.</returns>
+    public Vector3d FindPosition(double time)
+    {
+        if (double.IsNaN(time) || double.IsInfinity(time))
+            throw new System.ArgumentException("The input time cannot be NaN or infinite", "time");
+
+        return orbit.Time2Point(time);
+    }
+
+    /// <summary>
     /// Calculates what the rotation of the body will be at a given time.
     /// </summary>
     /// <param name="time">The time at which the rotation will be calculated.</param>
