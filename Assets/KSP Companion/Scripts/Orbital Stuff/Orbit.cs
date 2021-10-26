@@ -381,6 +381,23 @@ public partial class Orbit : IEquatable<Orbit>
     }
 
     /// <summary>
+    /// Gets the type of conic section corresponding to the orbital trajectory of this orbit. Controlled by the eccentricity.
+    /// </summary>
+    /// <see cref="eccentricity"/>
+    public ConicSection OrbitType
+    {
+        get
+        {
+            if (eccentricity < 1.0)
+                return ConicSection.Elliptical;
+            if (eccentricity > 1.0)
+                return ConicSection.Hyperbolic;
+            else
+                return ConicSection.Parabolic;
+        }
+    }
+
+    /// <summary>
     /// Gets the position vector for the periapsis point for the orbit.
     /// </summary>
     /// <remarks>
@@ -407,23 +424,6 @@ public partial class Orbit : IEquatable<Orbit>
                 return double.PositiveInfinity;
             else
                 return 2.0 * Math.PI * Math.Sqrt(SemiMajorAxis * SemiMajorAxis * SemiMajorAxis / Mu);
-        }
-    }
-
-    /// <summary>
-    /// Gets the type of conic section corresponding to the orbital trajectory of this orbit. Controlled by the eccentricity.
-    /// </summary>
-    /// <see cref="eccentricity"/>
-    public ConicSection OrbitType
-    {
-        get
-        {
-            if (eccentricity < 1.0)
-                return ConicSection.Elliptical;
-            if (eccentricity > 1.0)
-                return ConicSection.Hyperbolic;
-            else
-                return ConicSection.Parabolic;
         }
     }
 
