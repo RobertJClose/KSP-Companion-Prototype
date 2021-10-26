@@ -446,5 +446,34 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
         return (gravitationalParameter + radius).GetHashCode();
     }
 
+    /// <summary>
+    /// Converts a measurement of latitude, longitude, and altitude of a point at a particular time to a Vector3d.
+    /// </summary>
+    /// <param name="latitude">The lattitude of the point.</param>
+    /// <param name="longitude">The longitude of the point.</param>
+    /// <param name="altitude">The altitude of the point.</param>
+    /// <param name="time">The time at which the measurements were made.</param>
+    /// <returns>The Vector3d from the origin to the point.</returns>
+    /// <exception cref="System.ArgumentException">The inputs cannot be NaN or infinite.</exception>
+    public Vector3d MeasurementsToVector3d(Angled latitude, Angled longitude, double altitude, double time)
+    {
+        if (Angled.IsNaN(latitude))
+            throw new System.ArgumentException("The input latitude cannot be NaN.", "latitude");
+
+        if (Angled.IsNaN(longitude))
+            throw new System.ArgumentException("The input longitude cannot be NaN.", "longitude");
+
+        if (double.IsNaN(altitude) || double.IsInfinity(altitude))
+            throw new System.ArgumentException("The input altitude cannot be NaN or infinite.", "altitude");
+
+        if (double.IsNaN(time) || double.IsInfinity(time))
+            throw new System.ArgumentException("The input time cannot be NaN or infinite.", "time");
+
+        Angled bodyRotation = FindRotation(time);
+        Vector3d zeroLatZeroLonDirection = Quaterniond.AngleAxis(bodyRotation.DegValue, Vector3d.forward) * Vector3d.right;
+        Vector3d output = FindPosition(time) + zeroLatZeroLonDirection * (altitude + radius);
+        return output;
+    }
+
     #endregion
 }
