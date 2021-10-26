@@ -22,22 +22,30 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     // The name of the gravitational body.
     protected string nameOfBody;
 
+    // The orbit that the gravitational body is on.
+    protected Orbit orbit;
+
     // The radius of the gravitational body, in metres. 
     // For KSP bodies, this is the radius quoted in game and in the wiki.
     // For Solar bodies, this value is the equatorial radius quoted on Wikipedia of the planet on the 9th of
     // October, 2021. 
     protected double radius;
 
+    // Time time in seconds for the body to rotate once around its axis.
+    protected double siderealRotationalPeriod;
+
     #endregion
 
     #region Constructors
 
     // Initialises a new GravitationalBody object.
-    private GravitationalBody(string bodyName, double bodyGravParameter, double bodyRadius)
+    private GravitationalBody(string nameOfBody, double gravitationalParameter, double radius, double siderealRotationalPeriod, Orbit orbit)
     {
-        nameOfBody = bodyName;
-        gravitationalParameter = bodyGravParameter;
-        radius = bodyRadius;
+        this.nameOfBody = nameOfBody;
+        this.gravitationalParameter = gravitationalParameter;
+        this.radius = radius;
+        this.siderealRotationalPeriod = siderealRotationalPeriod;
+        this.orbit = orbit;
     }
 
     #endregion
@@ -51,7 +59,7 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     {
         get
         {
-            return new GravitationalBody("Bop", 2.4868349e+9, 65_000.0);
+            return new GravitationalBody("Bop", 2.4868349e+9, 65_000.0, 544_507.43, Orbit.BopOrbit);
         }
     }
 
@@ -62,7 +70,7 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     {
         get
         {
-            return new GravitationalBody("Dres", 2.1484489e+10, 138_000.0);
+            return new GravitationalBody("Dres", 2.1484489e+10, 138_000.0, 34_800.0, Orbit.DresOrbit);
         }
     }
 
@@ -73,7 +81,7 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     {
         get
         {
-            return new GravitationalBody("Duna", 3.0136321e+11, 320_000.0);
+            return new GravitationalBody("Duna", 3.0136321e+11, 320_000.0, 65_517.859, Orbit.DunaOrbit);
         }
     }
 
@@ -84,7 +92,7 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     {
         get
         {
-            return new GravitationalBody("Earth", 3.986e+14, 6371000.0);
+            return new GravitationalBody("Earth", 3.986e+14, 6371000.0, 86_164.10035, null);
         }
     }
 
@@ -95,7 +103,18 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     {
         get
         {
-            return new GravitationalBody("Eeloo", 7.4410815e+10, 210_000.0);
+            return new GravitationalBody("Eeloo", 7.4410815e+10, 210_000.0, 19_460.0, Orbit.EelooOrbit);
+        }
+    }
+
+    /// <summary>
+    /// Gets a GravitationalBody with all fields set to the default/null value for their type.
+    /// </summary>
+    public static GravitationalBody Empty
+    {
+        get
+        {
+            return new GravitationalBody("", 0.0, 0.0, 0.0, null);
         }
     }
 
@@ -106,7 +125,7 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     {
         get
         {
-            return new GravitationalBody("Eve", 8.1717302e+12, 700_000.0);
+            return new GravitationalBody("Eve", 8.1717302e+12, 700_000.0, 80_500.0, Orbit.EveOrbit);
         }
     }
 
@@ -117,7 +136,7 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     {
         get
         {
-            return new GravitationalBody("Gilly", 8_289_449.8, 13_000.0);
+            return new GravitationalBody("Gilly", 8_289_449.8, 13_000.0, 28_255.0, Orbit.GillyOrbit);
         }
     }
 
@@ -128,7 +147,7 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     {
         get
         {
-            return new GravitationalBody("Ike", 1.8568369e+10, 130_000.0);
+            return new GravitationalBody("Ike", 1.8568369e+10, 130_000.0, 65_517.862, Orbit.IkeOrbit);
         }
     }
 
@@ -139,7 +158,7 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     {
         get
         {
-            return new GravitationalBody("Jool", 2.8252800e+14, 6_000_000.0);
+            return new GravitationalBody("Jool", 2.8252800e+14, 6_000_000.0, 36_000.0, Orbit.JoolOrbit);
         }
     }
 
@@ -150,7 +169,7 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     {
         get
         {
-            return new GravitationalBody("Jupiter", 1.2669e+17, 69911000.0);
+            return new GravitationalBody("Jupiter", 1.2669e+17, 69911000.0, 35_730.0, null);
         }
     }
 
@@ -161,7 +180,7 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     {
         get
         {
-            return new GravitationalBody("Kerbin", 3.5316e+12, 6e+5);
+            return new GravitationalBody("Kerbin", 3.5316e+12, 6e+5, 21_549.425, Orbit.KerbinOrbit);
         }
     }
 
@@ -172,7 +191,7 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     {
         get
         {
-            return new GravitationalBody("Kerbol", 1.1723328e+18, 261_600_000.0);
+            return new GravitationalBody("Kerbol", 1.1723328e+18, 261_600_000.0, 432_000.0, null);
         }
     }
 
@@ -183,7 +202,7 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     {
         get
         {
-            return new GravitationalBody("Laythe", 1.9620000e+12, 500_000.0);
+            return new GravitationalBody("Laythe", 1.9620000e+12, 500_000.0, 52_980.879, Orbit.LaytheOrbit);
         }
     }
 
@@ -194,7 +213,7 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     {
         get
         {
-            return new GravitationalBody("Minmus", 1.7658000e+9, 60_000.0);
+            return new GravitationalBody("Minmus", 1.7658000e+9, 60_000.0, 40_400.0, Orbit.MinmusOrbit);
         }
     }
 
@@ -205,7 +224,7 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     {
         get
         {
-            return new GravitationalBody("Moho", 1.6860938e+11, 250_000.0);
+            return new GravitationalBody("Moho", 1.6860938e+11, 250_000.0, 1_210_000.0, Orbit.MohoOrbit);
         }
     }
 
@@ -216,7 +235,7 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     {
         get
         {
-            return new GravitationalBody("Mun", 6.5138398e+10, 200_000.0);
+            return new GravitationalBody("Mun", 6.5138398e+10, 200_000.0, 138_984.38, Orbit.MunOrbit);
         }
     }
 
@@ -227,7 +246,7 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     {
         get
         {
-            return new GravitationalBody("Pol", 7.2170208e+8, 44_000.0);
+            return new GravitationalBody("Pol", 7.2170208e+8, 44_000.0, 901_902.62, Orbit.PolOrbit);
         }
     }
 
@@ -238,7 +257,7 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     {
         get
         {
-            return new GravitationalBody("Tylo", 2.8252800e+12, 600_000.0);
+            return new GravitationalBody("Tylo", 2.8252800e+12, 600_000.0, 211_926.36, Orbit.TyloOrbit);
         }
     }
 
@@ -249,7 +268,7 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     {
         get
         {
-            return new GravitationalBody("Vall", 2.0748150e+11, 300_000.0);
+            return new GravitationalBody("Vall", 2.0748150e+11, 300_000.0, 105_962.09, Orbit.VallOrbit);
         }
     }
 
