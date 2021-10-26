@@ -7,10 +7,484 @@ namespace Tests
     {
         private readonly double _absoluteAllowedErrorOnAngles = 0.001;
 
-        #region Backing field input validator tests
+        #region Property tests
 
         [Test]
-        public void RPESetterInputValidation_NegativeInput_ClampsToZero()
+        public void APESetter_NaNInput_ThrowsArgumentException()
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
+
+            // Act
+            void APESetter() => orbit.APE = double.NaN;
+
+            // Assert
+            Assert.That(APESetter, Throws.ArgumentException);
+        }
+
+        [Test]
+        public void ApoapsisPointGetter_EllipticalOrbit_ReturnsApoapsisPoint()
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
+            orbit.ECC = 0.5;
+            Vector3d apoapsisPoint = orbit.TrueAnomaly2Point(Angled.HalfTurn);
+
+            // Act
+            Vector3d actual = orbit.ApoapsisPoint.Value;
+
+            // Assert
+            Assert.That(actual.x, Is.EqualTo(apoapsisPoint.x).Within(0.01).Percent);
+            Assert.That(actual.y, Is.EqualTo(apoapsisPoint.y).Within(0.01).Percent);
+            Assert.That(actual.z, Is.EqualTo(apoapsisPoint.z).Within(0.01).Percent);
+        }
+
+        [Test]
+        public void ApoapsisPointGetter_OpenOrbit_ReturnsNull([Values(1.0, 1.5)] double eccentricity)
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
+            orbit.ECC = eccentricity;
+
+            // Act
+            Vector3d? actual = orbit.ApoapsisPoint;
+
+            // Assert
+            Assert.That(actual, Is.Null);
+        }
+
+        [Test]
+        public void ApoapsisRadiusGetter_EllipticalOrbit_ReturnsApoapsisRadius()
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
+            orbit.ECC = 0.5;
+            double apoapsisRadius = orbit.TrueAnomaly2Point(Angled.HalfTurn).magnitude;
+
+            // Act
+            double actual = orbit.ApoapsisRadius;
+
+            // Assert
+            Assert.That(actual, Is.EqualTo(apoapsisRadius).Within(0.01).Percent);
+        }
+
+        [Test]
+        public void ApoapsisRadiusGetter_OpenOrbit_ReturnsPositiveInifinity([Values(1.0, 1.5)] double eccentricity)
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
+            orbit.ECC = eccentricity;
+
+            // Act
+            double actual = orbit.ApoapsisRadius;
+
+            // Assert
+            Assert.That(actual, Is.EqualTo(double.PositiveInfinity));
+        }
+
+        [Test]
+        public void AscendingNodeGetter_NodeDoesExist_ReturnsAscendingNode()
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
+            orbit.ECC = 0.5;
+            orbit.INC = 1.2;
+            Vector3d ascendingNode = orbit.TrueAnomaly2Point(-orbit.APE);
+
+            // Act
+            Vector3d? actual = orbit.AscendingNode;
+
+            // Assert
+            Assert.That(actual.HasValue, Is.True);
+            Assert.That(actual.Value.x, Is.EqualTo(ascendingNode.x).Within(0.01).Percent);
+            Assert.That(actual.Value.y, Is.EqualTo(ascendingNode.y).Within(0.01).Percent);
+            Assert.That(actual.Value.z, Is.EqualTo(ascendingNode.z).Within(0.01).Percent);
+        }
+
+        [Test]
+        public void AscendingNodeGetter_NodeDoesNotExist_ReturnsNull()
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
+            orbit.ECC = 1.5;
+            orbit.INC = 1.2;
+            orbit.APE = Angled.HalfTurn;
+
+            // Act
+            Vector3d? actual = orbit.AscendingNode;
+
+            // Assert
+            Assert.That(actual, Is.Null);
+        }
+
+        [Test]
+        public void DescendingNodeGetter_NodeDoesExist_ReturnsAscendingNode()
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
+            orbit.ECC = 0.5;
+            orbit.INC = 1.2;
+            orbit.APE = 3.0;
+            orbit.LAN = Angled.HalfTurn;
+            Vector3d descendingNode = orbit.TrueAnomaly2Point(-orbit.APE + Angled.HalfTurn);
+
+            // Act
+            Vector3d? actual = orbit.DescendingNode;
+
+            // Assert
+            Assert.That(actual.HasValue, Is.True);
+            Assert.That(actual.Value.x, Is.EqualTo(descendingNode.x).Within(0.01).Percent);
+            Assert.That(actual.Value.y, Is.EqualTo(descendingNode.y).Within(0.01).Percent);
+            Assert.That(actual.Value.z, Is.EqualTo(descendingNode.z).Within(0.01).Percent);
+        }
+
+        [Test]
+        public void DescendingNodeGetter_NodeDoesNotExist_ReturnsNull()
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
+            orbit.ECC = 1.5;
+            orbit.INC = 1.2;
+
+            // Act
+            Vector3d? actual = orbit.DescendingNode;
+
+            // Assert
+            Assert.That(actual, Is.Null);
+        }
+
+        [Test]
+        public void ECCSetter_InputLessThanZero_GetsClampedUpToZero()
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
+            
+            // Act
+            orbit.ECC = -1.0;
+            double actual = orbit.ECC;
+
+            // Assert
+            Assert.That(actual, Is.EqualTo(0.0));
+        }
+
+        [Test]
+        public void ECCSetter_InputIsNaN_ThrowsArgumentException()
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
+
+            // Act
+            void ECCSetter() => orbit.ECC = double.NaN;
+
+            // Assert
+            Assert.That(ECCSetter, Throws.ArgumentException);
+        }
+
+        [Test]
+        public void EccentricityVectorGetter_ReturnsVectorThatPointsAtPeriapsis([Values(0.5, 1.0, 1.5)] double eccentricity)
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
+            orbit.ECC = eccentricity;
+            Vector3d periapsis = orbit.PeriapsisPoint;
+
+            // Act
+            Vector3d eccentricityVector = orbit.EccentricityVector;
+            double angleBetween = Vector3d.Angle(eccentricityVector, periapsis);
+            bool isAngleBetweenVectorsApproxZero = Mathd.Approximately(angleBetween, 0.0);
+
+            // Assert
+            Assert.That(isAngleBetweenVectorsApproxZero, Is.True);
+        }
+
+        [Test]
+        public void EccentricityVectorGetter_ReturnsVectorWithMagnitudeEqualToEccentricity([Values(0.5, 1.0, 1.5)] double eccentricity)
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
+            orbit.ECC = eccentricity;
+
+            // Act
+            Vector3d actual = orbit.EccentricityVector;
+            bool isActualMagnitudeApproxEqualToEccentricity = Mathd.Approximately(actual.magnitude, orbit.ECC);
+
+            // Assert
+            Assert.That(isActualMagnitudeApproxEqualToEccentricity, Is.True);
+        }
+
+        [Test]
+        public void ExcessVelocityGetter_EllipticalOrbit_ReturnsNull()
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
+            orbit.ECC = 0.5;
+
+            // Act
+            double? actual = orbit.ExcessVelocity;
+
+            // Assert
+            Assert.That(actual, Is.Null);
+        }
+
+        [Test]
+        public void ExcessVelocityGetter_ParabolicOrbit_ReturnsZero()
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
+            orbit.ECC = 1.0;
+
+            // Act
+            double? excessVelocity = orbit.ExcessVelocity;
+
+            // Assert
+            Assert.That(excessVelocity.HasValue, Is.True);
+            Assert.That(excessVelocity.Value, Is.EqualTo(0.0));
+        }
+
+        [Test]
+        public void ExcessVelocityGetter_HyperbolicOrbit_ReturnsExcessVelocity()
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
+            orbit.ECC = 1.5;
+            double trueValue = System.Math.Sqrt(orbit.Mu / -orbit.SemiMajorAxis);
+
+            // Act
+            double? actual = orbit.ExcessVelocity;
+            bool isActualAprroxCorrect = Mathd.Approximately(actual.Value, trueValue);
+
+            // Assert
+            Assert.That(isActualAprroxCorrect, Is.True);
+        }
+
+        [Test]
+        public void INCSetter_NaNInput_ThrowsArgumentException()
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
+
+            // Act
+            void INCSetterNaNInput() => orbit.INC = double.NaN;
+
+            // Assert
+            Assert.That(INCSetterNaNInput, Throws.ArgumentException);
+        }
+
+        [Test]
+        public void INCSetter_InputIsLargerThanPI_ClampsDownToPI()
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
+
+            // Act
+            orbit.INC = 3.0 / 2.0 * System.Math.PI;
+            bool isInclinationApproxPI = Angled.Approximately(orbit.INC, Angled.HalfTurn);
+
+            // Assert
+            Assert.That(isInclinationApproxPI, Is.True);
+        }
+
+        [Test]
+        public void LANSetter_NaNInput_ThrowsArgumentException()
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
+
+            // Act
+            void LANSetterNaNInput() => orbit.LAN = double.NaN;
+
+            // Assert
+            Assert.That(LANSetterNaNInput, Throws.ArgumentException);
+        }
+
+        [Test]
+        public void MaxTrueAnomalyGetter_EllipticalOrbit_ReturnsNull()
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
+            orbit.ECC = 0.5;
+
+            // Act
+            Angled? actual = orbit.MaxTrueAnomaly;
+
+            // Assert
+            Assert.That(actual, Is.Null);
+        }
+
+        [Test]
+        public void MaxTrueAnomalyGetter_ParabolicOrbit_ReturnsPI()
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
+            orbit.ECC = 1.0;
+
+            // Act
+            Angled? actual = orbit.MaxTrueAnomaly;
+            bool isActualApproxPI = Angled.Approximately(actual.Value, Angled.HalfTurn);
+
+            // Assert
+            Assert.That(isActualApproxPI, Is.True);
+        }
+
+        [Test]
+        public void MaxTrueAnomalyGetter_HyperbolicOrbit_ReturnsMaxTrueAnomalyValue()
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
+            orbit.ECC = 1.5;
+            Angled result = System.Math.Acos(-1.0 / orbit.ECC);
+
+            // Act
+            Angled actual = orbit.MaxTrueAnomaly.Value;
+            bool isActualApproxCorrect = Angled.Approximately(actual, result);
+
+            // Assert
+            Assert.That(isActualApproxCorrect, Is.True);
+        }
+
+        [Test]
+        public void MeanMotionGetter_ReturnsCorrectValues([Values(0.5, 1.0, 1.5)] double eccentricity)
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
+            orbit.ECC = eccentricity;
+            double trueMeanMotion = (orbit.ECC == 1) ? System.Math.Sqrt(orbit.Mu) : System.Math.Sqrt(orbit.Mu / System.Math.Pow(System.Math.Abs(orbit.SemiMajorAxis), 3));
+
+            // Act
+            double actual = orbit.MeanMotion;
+
+            // Assert
+            Assert.That(actual, Is.EqualTo(trueMeanMotion).Within(0.01).Percent);
+        }
+
+        [Test]
+        public void NodalVectorGetter_NonZeroInclination_ReturnsVectorThatPointsAtAscendingNode([Values(0.0, 1.5, 2.5, 3.5, 4.5)] double longitudeOfAscendingNode)
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
+            orbit.INC = 0.5;
+            orbit.LAN = longitudeOfAscendingNode;
+            Vector3d ascendingNode = orbit.AscendingNode.Value;
+
+            // Act
+            Vector3d actual = orbit.NodalVector;
+            double angleBetween = Vector3d.Angle(actual, ascendingNode);
+
+            // Assert
+            Assert.That(angleBetween, Is.EqualTo(0.0).Within(1e-5));
+        }
+
+        [Test]
+        public void NodalVectorGetter_NonZeroInclination_ReturnsVectorWithMagnitudeEqualToSinInclination([Values(0.5, 1.5, 2.5)] double inclination)
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
+            orbit.INC = inclination;
+
+            // Act
+            Vector3d actual = orbit.NodalVector;
+
+            // Assert
+            Assert.That(actual.magnitude, Is.EqualTo(System.Math.Sin(orbit.INC)).Within(0.01).Percent);
+        }
+
+        [Test]
+        public void NodalVectorGetter_ZeroInclination_ReturnsZeroVector()
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
+            orbit.INC = Angled.Zero;
+
+            // Act
+            Vector3d actual = orbit.NodalVector;
+
+            // Assert
+            Assert.That(actual.magnitude, Is.EqualTo(0.0));
+        }
+
+        [Test]
+        public void OrbitTypeGetter_ReturnsConicSectionEnumValueOfCorrectType([Values(0.5, 1.0, 1.5)] double eccentricity)
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
+            orbit.ECC = eccentricity;
+
+            // Act
+            Orbit.ConicSection actual = orbit.OrbitType;
+
+            // Assert
+            if (orbit.ECC < 1.0)
+                Assert.That(actual, Is.EqualTo(Orbit.ConicSection.Elliptical));
+            else if (orbit.ECC == 1.0)
+                Assert.That(actual, Is.EqualTo(Orbit.ConicSection.Parabolic));
+            else
+                Assert.That(actual, Is.EqualTo(Orbit.ConicSection.Hyperbolic));
+        }
+
+        [Test]
+        public void PeriapsisPointGetter_ReturnsPeriapsisPoint([Values(0.5, 1.0, 1.5)] double eccentricity)
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
+            orbit.ECC = eccentricity;
+            orbit.INC = 0.5;
+            orbit.LAN = 1.5;
+            orbit.APE = 2.5;
+            Vector3d periapsisPoint = orbit.EccentricityVector.normalized * orbit.RPE;
+
+            // Act
+            Vector3d actual = orbit.PeriapsisPoint;
+
+            // Assert
+            Assert.That(actual.x, Is.EqualTo(periapsisPoint.x).Within(0.01).Percent);
+            Assert.That(actual.y, Is.EqualTo(periapsisPoint.y).Within(0.01).Percent);
+            Assert.That(actual.z, Is.EqualTo(periapsisPoint.z).Within(0.01).Percent);
+        }
+
+        [Test]
+        public void PeriodGetter_EllipticalOrbit_ReturnsOrbitalPeriod()
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
+            orbit.ECC = 0.5;
+            double truePeriod = 2.0 * System.Math.PI / orbit.MeanMotion;
+
+            // Act
+            double actual = orbit.Period;
+
+            // Assert
+            Assert.That(actual, Is.EqualTo(truePeriod).Within(0.01).Percent);
+        }
+
+        [Test]
+        public void PeriodGetter_OpenOrbit_ReturnsPositiveInfinity([Values(1.0, 1.5)] double eccentricity)
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
+            orbit.ECC = eccentricity;
+
+            // Act
+            double actual = orbit.Period;
+
+            // Assert
+            Assert.That(actual, Is.EqualTo(double.PositiveInfinity));
+        }
+
+        [Test]
+        public void RPESetter_NaNInput_ThrowsArgumentException()
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
+
+            // Act
+            void RPESetterNaNInput() => orbit.RPE = double.NaN;
+
+            // Assert
+            Assert.That(RPESetterNaNInput, Throws.ArgumentException);
+        }
+
+        [Test]
+        public void RPESetter_NegativeInput_ClampsUpToZero()
         {
             // Arrange
             Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
@@ -23,16 +497,126 @@ namespace Tests
         }
 
         [Test]
-        public void ECCSetterInputValidation_NegativeInput_ClampsToZero()
+        public void SemiLatusRectumGetter_ReturnsCorrectValue()
         {
             // Arrange
-            Orbit closedOrbit = GravitationalBody.Kerbin.DefaultOrbit;
+            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
+            double trueSLR = orbit.RPE * (1.0 + orbit.ECC);
 
             // Act
-            closedOrbit.ECC = -1.0;
+            double actual = orbit.SemiLatusRectum;
 
             // Assert
-            Assert.That(closedOrbit.ECC, Is.EqualTo(0.0));
+            Assert.That(actual, Is.EqualTo(trueSLR).Within(0.01).Percent);
+        }
+
+        [Test]
+        public void SemiMajorAxisGetter_ParabolicOrbit_ReturnsPositiveInfinity()
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
+            orbit.ECC = 1.0;
+
+            // Act
+            double actual = orbit.SemiMajorAxis;
+
+            // Assert
+            Assert.That(actual, Is.EqualTo(double.PositiveInfinity));
+        }
+
+        [Test]
+        public void SemiMajorAxisGetter_EllipticalOrbit_ReturnsCorrectValueThatIsGreaterThanZero()
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
+            orbit.ECC = 0.5;
+            double trueSMA = orbit.RPE / (1.0 - orbit.ECC);
+
+            // Act
+            double actual = orbit.SemiMajorAxis;
+
+            // Assert
+            Assert.That(actual, Is.EqualTo(trueSMA).Within(0.01).Percent);
+        }
+
+        [Test]
+        public void SemiMajorAxisGetter_HyperbolicOrbit_ReturnsCorrectValueThatIsLessThanZero()
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
+            orbit.ECC = 1.5;
+            double trueSMA = orbit.RPE / (1.0 - orbit.ECC);
+
+            // Act
+            double actual = orbit.SemiMajorAxis;
+
+            // Assert
+            Assert.That(actual, Is.EqualTo(trueSMA).Within(0.01).Percent);
+        }
+
+        [Test]
+        public void SpecificAngularMomentumVectorGetter_ReturnsVectorThatIsPerpendicularToOrbit()
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
+            var (points, _) = orbit.OrbitalPoints(0.0, 0.0, 0.5);
+
+            // Act
+            Vector3d actual = orbit.SpecificAngularMomentumVector;
+
+            // Assert
+            foreach (var point in points)
+            {
+                double angleBetween = Vector3d.Angle(point, actual);
+                Assert.That(angleBetween, Is.EqualTo(90.0).Within(0.01).Percent);
+            }
+        }
+
+        [Test]
+        public void SpecificAngularMomentumVectorGetter_ReturnsVectorWithMagnitudeEqualToSpecificAngularMomentumOfOrbit()
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
+            Angled trueAnomaly = Angled.QuarterTurn;
+            Vector3d specificAngularMomentum = Vector3d.Cross(orbit.TrueAnomaly2Point(trueAnomaly), orbit.TrueAnomaly2Velocity(trueAnomaly));
+
+            // Act
+            Vector3d actual = orbit.SpecificAngularMomentumVector;
+
+            // Assert
+            Assert.That(actual.magnitude, Is.EqualTo(specificAngularMomentum.magnitude).Within(0.01).Percent);
+        }
+
+        [Test]
+        public void SpecificEnergyGetter_ReturnsCorrectValue([Values(0.5, 1.0, 1.5)] double eccentricity)
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
+            orbit.ECC = eccentricity;
+            System.Collections.Generic.List<Angled> trueAnomalies = new System.Collections.Generic.List<Angled>() { 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0 };
+
+            // Act
+            double actual = orbit.SpecificEnergy;
+
+            // Assert
+            foreach (var trueAnomaly in trueAnomalies)
+            {
+                double specificEnergy = 0.5 * System.Math.Pow(orbit.TrueAnomaly2Velocity(trueAnomaly).magnitude, 2) - orbit.Mu / orbit.TrueAnomaly2Point(trueAnomaly).magnitude;
+                Assert.That(actual, Is.EqualTo(specificEnergy).Within(1e-5));
+            }
+        }
+
+        [Test]
+        public void TPPSetter_NaNInput_ThrowsArgumentException()
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
+
+            // Act
+            void TPPSetterWithNaNInput() => orbit.TPP = double.NaN;
+
+            // Assert
+            Assert.That(TPPSetterWithNaNInput, Throws.ArgumentException);
         }
 
         #endregion
@@ -804,7 +1388,7 @@ namespace Tests
             Orbit orbit = GravitationalBody.Earth.DefaultOrbit;
             orbit.RPE = 1_125_000.0;
             orbit.ECC = 0.5;
-            orbit.INC = 6.0f;
+            orbit.INC = 2.0f;
             orbit.APE = 5.5f;
             orbit.LAN = 4.5f;
             orbit.TPP = 6000.0;
