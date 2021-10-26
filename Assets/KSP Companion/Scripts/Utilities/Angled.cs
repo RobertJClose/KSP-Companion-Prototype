@@ -52,6 +52,11 @@ public readonly struct Angled : System.IEquatable<Angled>, System.IComparable<An
     public static Angled MaxAngle => new Angled(6.28318530717958534381750723696313798427581787109375);
 
     /// <summary>
+    /// Gets an Angled representing an angle that is not a number (NaN).
+    /// </summary>
+    public static Angled NaN => new Angled(double.NaN);
+
+    /// <summary>
     /// Gets an angle of one quarter turn.
     /// </summary>
     public static Angled QuarterTurn => new Angled(System.Math.PI / 2.0);
