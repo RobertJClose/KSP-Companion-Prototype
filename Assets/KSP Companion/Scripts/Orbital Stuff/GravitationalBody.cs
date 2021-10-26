@@ -410,6 +410,21 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     }
 
     /// <summary>
+    /// Calculates what the rotation of the body will be at a given time.
+    /// </summary>
+    /// <param name="time">The time at which the rotation will be calculated.</param>
+    /// <returns>The rotation of the body.</returns>
+    /// <exception cref="System.ArgumentException">The input time cannot be NaN or infinite.</exception>
+    public Angled FindRotation(double time)
+    {
+        if (double.IsNaN(time) || double.IsInfinity(time))
+            throw new System.ArgumentException("time cannot be NaN or infinite.", "time");
+
+        double percentRotation = time % siderealRotationalPeriod;
+        return initialRotation + percentRotation * 2.0 * System.Math.PI;
+    }
+
+    /// <summary>
     /// Serves as the hash function for this GravitationalBody.
     /// </summary>
     /// <returns>A hask code for this GravitationalBody.</returns>
