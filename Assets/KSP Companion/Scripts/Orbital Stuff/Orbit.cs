@@ -135,19 +135,14 @@ public partial class Orbit : IEquatable<Orbit>
     public static Orbit JoolOrbit => new Orbit(65334882304.0, 0.05, 1.304 / 180.0 * Math.PI, 0.0, 13.0 / 45.0 * Math.PI, -1665738.423, GravitationalBody.Kerbol);
 
     /// <summary>
-    /// Gets the orbit of the KSP moon Laythe around Jool.
-    /// </summary>
-    public static Orbit LaytheOrbit => new Orbit(27.184e+6, 0.0, 0.0, 0.0, 0.0, -26477.0102, GravitationalBody.Jool);
-
-    /// <summary>
     /// Gets the orbit of the KSP planet Kerbin around Kerbol.
     /// </summary>
     public static Orbit KerbinOrbit => new Orbit(13599840256.0, 0.0, 0.0, 0.0, 0.0, -4599439.396, GravitationalBody.Kerbol);
 
     /// <summary>
-    /// Gets the orbit of the KSP moon Mun around Kerbin.
+    /// Gets the orbit of the KSP moon Laythe around Jool.
     /// </summary>
-    public static Orbit MunOrbit => new Orbit(12000000.0, 0.0, 0.0, 0.0, 0.0, -37604.08593, GravitationalBody.Kerbin);
+    public static Orbit LaytheOrbit => new Orbit(27.184e+6, 0.0, 0.0, 0.0, 0.0, -26477.0102, GravitationalBody.Jool);
 
     /// <summary>
     /// Gets the orbit of the KSP moon Minmus around Kerbin.
@@ -158,6 +153,11 @@ public partial class Orbit : IEquatable<Orbit>
     /// Gets the orbit of the KSP planet Moho around Kerbol.
     /// </summary>
     public static Orbit MohoOrbit => new Orbit(4210510643.2, 0.2, 7.0 / 180.0 * Math.PI, Math.PI / 12.0, 7.0 / 18.0 * Math.PI, -1107315.461, GravitationalBody.Kerbol);
+
+    /// <summary>
+    /// Gets the orbit of the KSP moon Mun around Kerbin.
+    /// </summary>
+    public static Orbit MunOrbit => new Orbit(12000000.0, 0.0, 0.0, 0.0, 0.0, -37604.08593, GravitationalBody.Kerbin);
 
     /// <summary>
     /// Gets the orbit of the KSP moon Pol around Jool.
