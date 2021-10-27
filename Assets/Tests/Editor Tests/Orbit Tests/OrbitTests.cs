@@ -1412,6 +1412,121 @@ namespace Tests
 
         #endregion
 
+        #region Positions2Orbit() tests
+
+        [Test]
+        public void Positions2Orbit_InputFromTime2Point_ReconstructsOriginalOrbit([Values(0.5, 1.0, 1.5)] double eccentricity)
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
+            orbit.ECC = eccentricity;
+            orbit.INC = 0.5;
+            orbit.APE = 1.5;
+            orbit.LAN = 3.0;
+            orbit.TPP = 100.0;
+            double timeOne = 2000.0;
+            double timeTwo = 3000.0;
+            Vector3d posOne = orbit.Time2Point(timeOne);
+            Vector3d posTwo = orbit.Time2Point(timeTwo);
+
+            // Act
+            Orbit actual = Orbit.Positions2Orbit(GravitationalBody.Kerbin, posOne, timeOne, posTwo, timeTwo);
+            bool isActualApproxCorrect = Orbit.Approximately(actual, orbit);
+
+            // Assert
+            Assert.That(isActualApproxCorrect, Is.True);
+        }
+
+        [Test]
+        public void Positions2Orbit_InputPositionVectorsAreZeroOrInfinite_ThrowsArgumentException()
+        {
+            // Arrange
+            double timeOne = 0.0;
+            double timeTwo = 1.0;
+            Vector3d infinite = new Vector3d(0.0, 0.0, double.PositiveInfinity);
+
+            // Act
+            void Positions2OrbitWithZeroPositionOneVector() => Orbit.Positions2Orbit(GravitationalBody.Kerbin, Vector3d.zero, timeOne, Vector3d.right, timeTwo);
+            void Positions2OrbitWithZeroPositionTwoVector() => Orbit.Positions2Orbit(GravitationalBody.Kerbin, Vector3d.right, timeOne, Vector3d.zero, timeTwo);
+            void Positions2OrbitWithInfinitePositionOneVector() => Orbit.Positions2Orbit(GravitationalBody.Kerbin, infinite, timeOne, Vector3d.right, timeTwo);
+            void Positions2OrbitWithInfinitePositionTwoVector() => Orbit.Positions2Orbit(GravitationalBody.Kerbin, Vector3d.right, timeOne, infinite, timeTwo);
+
+            // Assert
+            Assert.That(Positions2OrbitWithZeroPositionOneVector, Throws.ArgumentException);
+            Assert.That(Positions2OrbitWithZeroPositionTwoVector, Throws.ArgumentException);
+            Assert.That(Positions2OrbitWithInfinitePositionOneVector, Throws.ArgumentException);
+            Assert.That(Positions2OrbitWithInfinitePositionTwoVector, Throws.ArgumentException);
+        }
+
+        [Test]
+        public void Positions2Orbit_NullGravitationalBody_ThrowsArgumentException()
+        {
+            // Arrange
+            GravitationalBody gravitationalBody = null;
+            Vector3d posOne = Vector3d.right;
+            Vector3d posTwo = Vector3d.up;
+            double timeOne = 0.0;
+            double timeTwo = 1.0;
+
+            // Act
+            void Positions2OrbitWithNullBodyInput() => Orbit.Positions2Orbit(gravitationalBody, posOne, timeOne, posTwo, timeTwo);
+
+            // Assert
+            Assert.That(Positions2OrbitWithNullBodyInput, Throws.ArgumentException);
+        }
+
+        [TestCase(double.NaN, 0.0)]
+        [TestCase(double.PositiveInfinity, 0.0)]
+        [TestCase(double.NegativeInfinity, 0.0)]
+        [TestCase(0.0, double.NaN)]
+        [TestCase(0.0, double.PositiveInfinity)]
+        [TestCase(0.0, double.NegativeInfinity)]
+        public void Positions2Orbit_NaNOrInfiniteTimeInputs_ThrowsArgumentException(double timeOne, double timeTwo)
+        {
+            // Arrange
+            Vector3d posOne = Vector3d.right;
+            Vector3d posTwo = Vector3d.up;
+
+            // Act
+            void Positions2OrbitWithNaNOrInfiniteTimeInputs() => Orbit.Positions2Orbit(GravitationalBody.Kerbin, posOne, timeOne, posTwo, timeTwo);
+
+            // Assert
+            Assert.That(Positions2OrbitWithNaNOrInfiniteTimeInputs, Throws.ArgumentException);
+        }
+
+        [Test]
+        public void Positions2Orbit_TimesOneAndTwoAreEqual_ReturnsNull()
+        {
+            // Arrange
+            Vector3d posOne = Vector3d.right;
+            Vector3d posTwo = Vector3d.up;
+            double timeOne = 0.0;
+            double timeTwo = 0.0;
+
+            // Act
+            Orbit actual = Orbit.Positions2Orbit(GravitationalBody.Kerbin, posOne, timeOne, posTwo, timeTwo);
+
+            // Assert
+            Assert.That(actual, Is.Null);
+        }
+
+        [Test]
+        public void Positions2Orbit_PositionsOneAndTwoAreEqual_ReturnsNull()
+        {
+            // Arrange
+            Vector3d pos = Vector3d.right;
+            double timeOne = 0.0;
+            double timeTwo = 1000.0;
+
+            // Act
+            Orbit actual = Orbit.Positions2Orbit(GravitationalBody.Kerbin, pos, timeOne, pos, timeTwo);
+
+            // Assert
+            Assert.That(actual, Is.Null);
+        }
+
+        #endregion
+
         #region StateVectors2Orbit() tests
 
         [Test]
