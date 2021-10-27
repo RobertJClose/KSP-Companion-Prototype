@@ -698,7 +698,7 @@ public partial class Orbit : IEquatable<Orbit>
 
         if (departurePoint == arrivalPoint)
         {
-            if (Mathd.Approximately(departureTime, arrivalTime))
+            if (departureTime == arrivalTime)
             {
                 return initialOrbit;
             }
@@ -708,21 +708,50 @@ public partial class Orbit : IEquatable<Orbit>
             }
         }
 
-        Vector3d[] terminalVelocities = LambertsProblemHelper.Solver(initialOrbit.gravitationalBody, departurePoint, departureTime, arrivalPoint, arrivalTime);
+        return Positions2Orbit(initialOrbit.GravitationalBody, departurePoint, departureTime, arrivalPoint, arrivalTime);
+    }
 
-        // Check if the solver was able to find valid terminal velocity vectors, and thus a transfer orbit may be found
+    /// <summary>
+    /// Solves Lambert's problem to calculate an orbit, given measurements of positions and the times of those measurements.
+    /// </summary>
+    /// <param name="body">The gravitational body that the satellite is orbiting.</param>
+    /// <param name="positionOne">The position of the satellite at the time of the first measurement.</param>
+    /// <param name="timeOne">The time of the first measurement.</param>
+    /// <param name="positionTwo">The position of the satellite at the time of the second measurement.</param>
+    /// <param name="timeTwo">The time of the second measurement.</param>
+    /// <returns>The orbit that the satellite must be on. If the orbit cannot be calculated, then null is returned.</returns>
+    public static Orbit Positions2Orbit(GravitationalBody body, Vector3d positionOne, double timeOne, Vector3d positionTwo, double timeTwo)
+    {
+        if (body is null)
+            throw new ArgumentException("There must be a gravitational body.", "body");
+
+        if (double.IsInfinity(positionOne.magnitude) || positionOne.magnitude == 0.0)
+            throw new ArgumentException("The position cannot have infinite or zero magnitude.", "positionOne");
+
+        if (double.IsInfinity(positionTwo.magnitude) || positionTwo.magnitude == 0.0)
+            throw new ArgumentException("The position cannot have infinite or zero magnitude.", "positionTwo");
+
+        if (double.IsNaN(timeOne) || double.IsInfinity(timeOne))
+            throw new ArgumentException("The time cannot be NaN or infinite.", "timeOne");
+
+        if (double.IsNaN(timeTwo) || double.IsInfinity(timeTwo))
+            throw new ArgumentException("The time cannot be NaN or infinite.", "timeTwo");
+
+        Vector3d[] terminalVelocities = LambertsProblemHelper.Solver(body, positionOne, timeOne, positionTwo, timeTwo);
+
+        // Check if the solver was able to find valid terminal velocity vectors, and thus an orbit may be found
         foreach (Vector3d velocityVector in terminalVelocities)
         {
             for (int i = 0; i < 3; i++)
             {
-                if (double.IsNaN(velocityVector[i]))
+                if (double.IsNaN(velocityVector[i]) || double.IsInfinity(velocityVector[i]))
                 {
                     return null;
                 }
             }
         }
 
-        return StateVectors2Orbit(initialOrbit.gravitationalBody, departurePoint, terminalVelocities[0], departureTime);
+        return StateVectors2Orbit(body, positionOne, terminalVelocities[0], timeOne);
     }
 
     /// <summary>
