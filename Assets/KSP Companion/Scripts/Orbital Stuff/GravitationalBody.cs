@@ -322,6 +322,17 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     }
 
     /// <summary>
+    /// Gets the orbit of the body.
+    /// </summary>
+    public Orbit Orbit
+    {
+        get
+        {
+            return orbit;
+        }
+    }
+
+    /// <summary>
     /// Gets the radius of the body.
     /// </summary>
     public double Radius
@@ -329,6 +340,17 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
         get
         {
             return radius;
+        }
+    }
+
+    /// <summary>
+    /// Gets the sidereal rotational period of the body.
+    /// </summary>
+    public double SiderealRotationalPeriod
+    {
+        get
+        {
+            return siderealRotationalPeriod;
         }
     }
 
