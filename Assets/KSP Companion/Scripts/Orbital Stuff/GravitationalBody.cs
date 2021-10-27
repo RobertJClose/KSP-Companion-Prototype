@@ -455,7 +455,7 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
         if (double.IsNaN(time) || double.IsInfinity(time))
             throw new System.ArgumentException("time cannot be NaN or infinite.", "time");
 
-        double percentRotation = time % siderealRotationalPeriod;
+        double percentRotation = (time % siderealRotationalPeriod) / siderealRotationalPeriod;
         return initialRotation + percentRotation * 2.0 * System.Math.PI;
     }
 
@@ -492,16 +492,7 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
         if (double.IsNaN(time) || double.IsInfinity(time))
             throw new System.ArgumentException("The input time cannot be NaN or infinite.", "time");
 
-        Angled bodyRotation = FindRotation(time);
-        Vector3d zeroLatZeroLonDirection = Quaterniond.AngleAxis(bodyRotation.DegValue, Vector3d.forward) * Vector3d.right;
-        Quaterniond rotation = Quaterniond.AngleAxis(latitude.DegValue, Vector3d.right) * Quaterniond.AngleAxis(longitude.DegValue, Vector3d.forward);
-        Vector3d localDirection = rotation * zeroLatZeroLonDirection;
-        Vector3d offset = isOutputLocal == true ? Vector3d.zero : FindPosition(time);      
-
-        Vector3d output;
-        output = offset + localDirection * (radius + altitude);
-
-        return output;
+        throw new System.NotImplementedException();
     }
 
     #endregion
