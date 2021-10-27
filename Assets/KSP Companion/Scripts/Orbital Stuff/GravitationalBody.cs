@@ -475,9 +475,10 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     /// <param name="longitude">The longitude of the point.</param>
     /// <param name="altitude">The altitude of the point.</param>
     /// <param name="time">The time at which the measurements were made.</param>
+    /// <param name="isOutputLocal">Is the output vector local to the centre of the body.</param>
     /// <returns>The Vector3d from the origin to the point.</returns>
     /// <exception cref="System.ArgumentException">The inputs cannot be NaN or infinite.</exception>
-    public Vector3d MeasurementsToVector3d(Angled latitude, Angled longitude, double altitude, double time)
+    public Vector3d MeasurementsToVector3d(Angled latitude, Angled longitude, double altitude, double time, bool isOutputLocal = true)
     {
         if (Angled.IsNaN(latitude))
             throw new System.ArgumentException("The input latitude cannot be NaN.", "latitude");
@@ -493,7 +494,13 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
 
         Angled bodyRotation = FindRotation(time);
         Vector3d zeroLatZeroLonDirection = Quaterniond.AngleAxis(bodyRotation.DegValue, Vector3d.forward) * Vector3d.right;
-        Vector3d output = FindPosition(time) + zeroLatZeroLonDirection * (altitude + radius);
+        Quaterniond rotation = Quaterniond.AngleAxis(latitude.DegValue, Vector3d.right) * Quaterniond.AngleAxis(longitude.DegValue, Vector3d.forward);
+        Vector3d localDirection = rotation * zeroLatZeroLonDirection;
+        Vector3d offset = isOutputLocal == true ? Vector3d.zero : FindPosition(time);      
+
+        Vector3d output;
+        output = offset + localDirection * (radius + altitude);
+
         return output;
     }
 
