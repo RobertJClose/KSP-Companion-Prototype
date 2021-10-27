@@ -676,6 +676,18 @@ public partial class Orbit : IEquatable<Orbit>
     /// </returns>
     public static Orbit FindTransferOrbit(Orbit initialOrbit, double departureTime, Orbit targetOrbit, double arrivalTime)
     {
+        if (double.IsNaN(departureTime) || double.IsInfinity(departureTime))
+            throw new ArgumentException("The departure time cannot be NaN or infinite.", "departureTime");
+
+        if (double.IsNaN(arrivalTime) || double.IsInfinity(arrivalTime))
+            throw new ArgumentException("The arrival time cannot be NaN or infinite.", "arrivalTime");
+
+        if (initialOrbit is null)
+            throw new ArgumentException("The initial orbit cannot be null.", "initialOrbit");
+
+        if (targetOrbit is null)
+            throw new ArgumentException("The target orbit cannot be null.", "targetOrbit");
+
         // First check that the initial and final orbits are around the same body.
         if (initialOrbit.gravitationalBody != targetOrbit.gravitationalBody)
             return null;
