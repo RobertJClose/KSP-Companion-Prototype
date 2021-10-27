@@ -1153,6 +1153,39 @@ namespace Tests
             Assert.That(actual.TPP, Is.EqualTo(initial.TPP).Within(0.01).Percent);
         }
 
+        [Test]
+        public void FindTransferOrbit_EitherOrbitInputIsNull_ThrowsArgumentException()
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
+
+            // Act
+            void FindTransferOrbitWithNullInitialOrbit() => Orbit.FindTransferOrbit(null, 0.0, orbit, 1.0);
+            void FindTransferOrbitWithNullTargetOrbit() => Orbit.FindTransferOrbit(orbit, 0.0, null, 1.0);
+
+            // Assert
+            Assert.That(FindTransferOrbitWithNullInitialOrbit, Throws.ArgumentException);
+            Assert.That(FindTransferOrbitWithNullTargetOrbit, Throws.ArgumentException);
+        }
+
+        [TestCase(double.NaN, 0.0)]
+        [TestCase(double.PositiveInfinity, 0.0)]
+        [TestCase(double.NegativeInfinity, 0.0)]
+        [TestCase(0.0, double.NaN)]
+        [TestCase(0.0, double.PositiveInfinity)]
+        [TestCase(0.0, double.NegativeInfinity)]
+        public void FindTransferOrbit_NaNOrInfiniteTimeInputs_ThrowsArgumentException(double timeOne, double timeTwo)
+        {
+            // Arrange
+            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
+
+            // Act
+            void FindTransferOrbitTestDelegate() => Orbit.FindTransferOrbit(orbit, timeOne, orbit, timeTwo);
+
+            // Assert
+            Assert.That(FindTransferOrbitTestDelegate, Throws.ArgumentException);
+        }
+
         #endregion
 
         #region OrbitalPoints() tests
