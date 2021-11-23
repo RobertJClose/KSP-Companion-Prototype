@@ -602,7 +602,7 @@ namespace Tests
             Vector3d vel = new Vector3d(10.0, 200.0, 500.0);
             Orbit orbit = Orbit.StateVectors2Orbit(GravitationalBody.Kerbin, pos, vel, 0.0);
 
-            Vector3d trueResult = new Vector3d(4.98e+7, -5e+10, 2e+10);
+            Vector3d trueResult = new Vector3d(4.98e+7, -4.999999e+10, 1.9999e+10);
 
             // Act
             Vector3d actual = orbit.SpecificAngularMomentumVector;
