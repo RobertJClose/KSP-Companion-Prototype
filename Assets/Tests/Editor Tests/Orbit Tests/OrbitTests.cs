@@ -83,13 +83,16 @@ namespace Tests
         }
 
         [Test]
-        public void AscendingNodeGetter_NodeDoesExist_ReturnsAscendingNode()
+        public void AscendingNodeGetter_NodeDoesExist_MatchesHandwrittenWork()
         {
             // Arrange
             Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
-            orbit.ECC = 0.5;
-            orbit.INC = 1.2;
-            Vector3d ascendingNode = orbit.TrueAnomaly2Point(-orbit.APE);
+            orbit.RPE = 1e+9;
+            orbit.ECC = 0.7;
+            orbit.INC = 0.5;
+            orbit.APE = 2.5;
+            orbit.LAN = 4.0;
+            Vector3d ascendingNode = new Vector3d(-2530044396.0, -2929339246.0, 0.0);
 
             // Act
             Vector3d? actual = orbit.AscendingNode;
@@ -98,7 +101,7 @@ namespace Tests
             Assert.That(actual.HasValue, Is.True);
             Assert.That(actual.Value.x, Is.EqualTo(ascendingNode.x).Within(0.01).Percent);
             Assert.That(actual.Value.y, Is.EqualTo(ascendingNode.y).Within(0.01).Percent);
-            Assert.That(actual.Value.z, Is.EqualTo(ascendingNode.z).Within(0.01).Percent);
+            Assert.That(actual.Value.z, Is.EqualTo(ascendingNode.z).Within(0.01));
         }
 
         [Test]
@@ -118,15 +121,16 @@ namespace Tests
         }
 
         [Test]
-        public void DescendingNodeGetter_NodeDoesExist_ReturnsAscendingNode()
+        public void DescendingNodeGetter_NodeDoesExist_MatchesHandwrittenWork()
         {
             // Arrange
             Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
-            orbit.ECC = 0.5;
-            orbit.INC = 1.2;
-            orbit.APE = 3.0;
-            orbit.LAN = Angled.HalfTurn;
-            Vector3d descendingNode = orbit.TrueAnomaly2Point(-orbit.APE + Angled.HalfTurn);
+            orbit.RPE = 1e+9;
+            orbit.ECC = 0.7;
+            orbit.INC = 0.5;
+            orbit.APE = 2.5;
+            orbit.LAN = 4.0;
+            Vector3d descendingNode = new Vector3d(711938606.8, 824297670.7, 0.0);
 
             // Act
             Vector3d? actual = orbit.DescendingNode;
@@ -135,7 +139,7 @@ namespace Tests
             Assert.That(actual.HasValue, Is.True);
             Assert.That(actual.Value.x, Is.EqualTo(descendingNode.x).Within(0.01).Percent);
             Assert.That(actual.Value.y, Is.EqualTo(descendingNode.y).Within(0.01).Percent);
-            Assert.That(actual.Value.z, Is.EqualTo(descendingNode.z).Within(0.01).Percent);
+            Assert.That(actual.Value.z, Is.EqualTo(descendingNode.z).Within(0.01));
         }
 
         [Test]
@@ -178,6 +182,24 @@ namespace Tests
 
             // Assert
             Assert.That(ECCSetter, Throws.ArgumentException);
+        }
+
+        [Test]
+        public void EccentricityVectorGetter_MatchesHandwrittenWork()
+        {
+            // Arrange
+            Vector3d pos = new Vector3d(1e+8, 1e+5, 1e+3);
+            Vector3d vel = new Vector3d(10.0, 200.0, 500.0);
+            Orbit orbit = Orbit.StateVectors2Orbit(GravitationalBody.Kerbin, pos, vel, 0.0);
+            Vector3d handwrittenResult = new Vector3d(7.211517943, -0.05057809441, -0.1444091109);
+
+            // Act
+            Vector3d actual = orbit.EccentricityVector;
+
+            // Assert
+            Assert.That(actual.x, Is.EqualTo(handwrittenResult.x).Within(0.01).Percent);
+            Assert.That(actual.y, Is.EqualTo(handwrittenResult.y).Within(0.01).Percent);
+            Assert.That(actual.z, Is.EqualTo(handwrittenResult.z).Within(0.01).Percent);
         }
 
         [Test]
@@ -355,6 +377,24 @@ namespace Tests
 
             // Assert
             Assert.That(actual, Is.EqualTo(trueMeanMotion).Within(0.01).Percent);
+        }
+
+        [Test]
+        public void NodalVectorGetter_MatchesHandwrittenWork()
+        {
+            // Arrange
+            Vector3d pos = new Vector3d(1e+8, 1e+5, 1e+3);
+            Vector3d vel = new Vector3d(10.0, 200.0, 500.0);
+            Orbit orbit = Orbit.StateVectors2Orbit(GravitationalBody.Kerbin, pos, vel, 0.0);
+            Vector3d handwrittenResult = new Vector3d(0.9284826714, 9.247689257e-4, 0.0);
+
+            // Act
+            Vector3d actual = orbit.NodalVector;
+
+            // Assert
+            Assert.That(actual.x, Is.EqualTo(handwrittenResult.x).Within(0.01).Percent);
+            Assert.That(actual.y, Is.EqualTo(handwrittenResult.y).Within(0.01).Percent);
+            Assert.That(actual.z, Is.EqualTo(handwrittenResult.z).Within(0.01).Percent);
         }
 
         [Test]
@@ -555,36 +595,22 @@ namespace Tests
         }
 
         [Test]
-        public void SpecificAngularMomentumVectorGetter_ReturnsVectorThatIsPerpendicularToOrbit()
+        public void SpecificAngularMomentumVectorGetter_MatchesHandwrittenWork()
         {
             // Arrange
-            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
-            var (points, _) = orbit.OrbitalPoints(0.0, 0.0, 0.5);
+            Vector3d pos = new Vector3d(1e+8, 1e+5, 1e+3);
+            Vector3d vel = new Vector3d(10.0, 200.0, 500.0);
+            Orbit orbit = Orbit.StateVectors2Orbit(GravitationalBody.Kerbin, pos, vel, 0.0);
+
+            Vector3d trueResult = new Vector3d(4.98e+7, -5e+10, 2e+10);
 
             // Act
             Vector3d actual = orbit.SpecificAngularMomentumVector;
 
             // Assert
-            foreach (var point in points)
-            {
-                double angleBetween = Vector3d.Angle(point, actual);
-                Assert.That(angleBetween, Is.EqualTo(90.0).Within(0.01).Percent);
-            }
-        }
-
-        [Test]
-        public void SpecificAngularMomentumVectorGetter_ReturnsVectorWithMagnitudeEqualToSpecificAngularMomentumOfOrbit()
-        {
-            // Arrange
-            Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
-            Angled trueAnomaly = Angled.QuarterTurn;
-            Vector3d specificAngularMomentum = Vector3d.Cross(orbit.TrueAnomaly2Point(trueAnomaly), orbit.TrueAnomaly2Velocity(trueAnomaly));
-
-            // Act
-            Vector3d actual = orbit.SpecificAngularMomentumVector;
-
-            // Assert
-            Assert.That(actual.magnitude, Is.EqualTo(specificAngularMomentum.magnitude).Within(0.01).Percent);
+            Assert.That(actual.x, Is.EqualTo(trueResult.x).Within(0.01).Percent);
+            Assert.That(actual.y, Is.EqualTo(trueResult.y).Within(0.01).Percent);
+            Assert.That(actual.z, Is.EqualTo(trueResult.z).Within(0.01).Percent);
         }
 
         [Test]
@@ -1528,6 +1554,27 @@ namespace Tests
         #endregion
 
         #region StateVectors2Orbit() tests
+
+        [Test]
+        public void StateVectors2Orbit_MatchesHandwrittenWork()
+        {
+            // Arrange
+            Vector3d pos = new Vector3d(1e+8, 1e+5, 1e+3);
+            Vector3d vel = new Vector3d(10.0, 200.0, 500.0);
+            double time = 0.0;
+            Orbit handwrittenAnswer = new Orbit(99979610.9, 7.213141006, 1.190307293, 6.261621283, 9.959998695e-4, -4005.277616, GravitationalBody.Kerbin);
+
+            // Act
+            Orbit actual = Orbit.StateVectors2Orbit(GravitationalBody.Kerbin, pos, vel, time);
+
+            // Assert
+            Assert.That(actual.RPE, Is.EqualTo(handwrittenAnswer.RPE).Within(0.1).Percent);
+            Assert.That(actual.ECC, Is.EqualTo(handwrittenAnswer.ECC).Within(0.1).Percent);
+            Assert.That(actual.INC.RadValueMinusPiToPiRange, Is.EqualTo(handwrittenAnswer.INC.RadValueMinusPiToPiRange).Within(0.01).Percent);
+            Assert.That(actual.APE.RadValueMinusPiToPiRange, Is.EqualTo(handwrittenAnswer.APE.RadValueMinusPiToPiRange).Within(0.01).Percent);
+            Assert.That(actual.LAN.RadValueMinusPiToPiRange, Is.EqualTo(handwrittenAnswer.LAN.RadValueMinusPiToPiRange).Within(0.01).Percent);
+            Assert.That(actual.TPP, Is.EqualTo(handwrittenAnswer.TPP).Within(0.01).Percent);
+        }
 
         [Test]
         public void StateVectors2Orbit_EllipticalCaseInputFromTime2PointAndTime2VelocityMethods_ReproducesOriginalOrbit()
