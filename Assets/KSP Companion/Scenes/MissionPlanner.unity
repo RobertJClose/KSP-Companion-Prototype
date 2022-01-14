@@ -7437,48 +7437,62 @@ MonoBehaviour:
     sphere when an orbit is selected.\n\n<size=24><b>Argument of Periapsis:</b></size>\nThis
     <b>orbital element</b> is the angle between the <b>periapsis</b> and the <b>ascending
     node</b>. Changing this element has the effect of rotating the orbit around in
-    the <b>orbital plane</b>.\n\n<size=24><b>Ascending Node:</b></size>\nThis is
-    the point in the orbit where the satellite crosses the <b>reference plane</b>
+    the <b>orbital plane</b>.\nThe value of this element may be found in-game by
+    entering map view, selecting \"Maneuver Mode\" in the bottom left corner, and
+    then selecting the \"Advanced Orbital Info\" tab.\n\n<size=24><b>Ascending Node:</b></size>\nThis
+    is the point in the orbit where the satellite crosses the <b>reference plane</b>
     from below.\n\n<size=24><b>Eccentricity:</b></size>\nThis <b>orbital element</b>
     controls the shape of the orbit. A value of zero indicates a circular trajectory,
     a value between zero and one is an elliptical trajectory, a value of exactly
-    one is a parabolic trajectory, and a value greater than one is a hyperbolic trajectory.\n\n<size=24><b>Descending
-    Node:</b></size>\nThis is the point in the orbit where the satellite crosses
-    the </b> reference plane</b> from above.\n\n<size=24><b>Focus:</b></size>\nThe
+    one is a parabolic trajectory, and a value greater than one is a hyperbolic trajectory.\nThe
+    value of this element may be found in-game by entering map view, selecting \"Maneuver
+    Mode\" in the bottom left corner, and then selecting the \"Advanced Orbital Info\"
+    tab.\n\n<size=24><b>Descending Node:</b></size>\nThis is the point in the orbit
+    where the satellite crosses the <b>reference plane</b> from above.\n\n<size=24><b>Focus:</b></size>\nThe
     focus of an orbit is the position of the attracting gravitational body that the
     satellite is orbiting.\n\n<size=24><b>Inclination:</b></size>\nThis <b>orbital
     element</b> is the angle between the orbital plane and the <b>reference plane</b>.
     Changing this element has the effect of rotating the orbit around the <b>line
     of nodes</b>. This value is defined such that it is always in the range [0, PI],
-    and trying to set this value to be out of this range will result in clamping.\n\n<size=24><b>Line
-    Of Apsides:</b></size>\nThe line of apsides passes through the <b>focus</b>,
-    the <b>periapsis</b>, and the <b>apoapsis</b>. In this tool, the line of apsides
-    is shown as a purple dotted line when an orbit is selected.\n\n<size=24><b>Line
+    and trying to set this value to be out of this range will result in clamping.\nThe
+    value of this element may be found in-game by entering map view, selecting \"Maneuver
+    Mode\" in the bottom left corner, and then selecting the \"Advanced Orbital Info\"
+    tab.\n\n<size=24><b>Line Of Apsides:</b></size>\nThe line of apsides passes through
+    the <b>focus</b>, the <b>periapsis</b>, and the <b>apoapsis</b>. In this tool,
+    the line of apsides is shown as a purple dotted line when an orbit is selected.\n\n<size=24><b>Line
     Of Nodes:</b></size>\nThe line of nodes passes through the <b>focus</b>, the
     <b>ascending node</b>, and the <b>descending node</b>. In this tool, the line
     of nodes is shown as a green dotted line when an orbit is selected.\n\n<size=24><b>Longitude
     Of The Ascending Node:</b></size>\nThis <b>orbital element</b> is the angle between
     the <b>ascending node</b> and the <b>reference axis</b>. Changing this element
-    is like rotating an orbit around the 'up' axis.\n\n<size=24><b>Orbital Element:</b></size>\nAn
-    orbital element is a variable used to uniquely specify an orbit in space. This
-    tool uses the following six orbital elements to define each orbit: The <b>radius
-    of periapsis</b>, the <b>eccentricity</b>, the <b>inclination</b>, the <b>longitude
-    of the ascending node</b>, the <b>argument of periapsis</b>, and the <b>time
-    of periapsis passage</b>.\n\n<size=24><b>Orbital Plane:</b></size>\nThis is the
-    plane in which the orbital trajectory lies. As the gravitational force is radial,
-    all the motion of a free-falling satellite lies in a single plane.\n\n<size=24><b>Periapsis:</b></size>\nThis
+    is like rotating an orbit around the 'up' axis.\nThe value of this element may
+    be found in-game by entering map view, selecting \"Maneuver Mode\" in the bottom
+    left corner, and then selecting the \"Advanced Orbital Info\" tab.\n\n<size=24><b>Orbital
+    Element:</b></size>\nAn orbital element is a variable used to uniquely specify
+    an orbit in space. This tool uses the following six orbital elements to define
+    each orbit: The <b>radius of periapsis</b>, the <b>eccentricity</b>, the <b>inclination</b>,
+    the <b>longitude of the ascending node</b>, the <b>argument of periapsis</b>,
+    and the <b>time of periapsis passage</b>.\n\n<size=24><b>Orbital Plane:</b></size>\nThis
+    is the plane in which the orbital trajectory lies. As the gravitational force
+    is radial, all the motion of a free-falling satellite lies in a single plane.\n\n<size=24><b>Periapsis:</b></size>\nThis
     is the point in the orbit where the satellite has the minimum separation to the
     attracting gravitational body. The <b>radius of periapsis</b> is one of the <b>orbital
     elements</b> used to define an orbit. In this tool, the periapsis is shown as
     a blue sphere when an orbit is selected.\n\n<size=24><b>Radius Of Periapsis:</b></size>\nThis
     <b>orbital element</b> is the separation between the satellite and the gravitational
-    body at the closest point in the orbit. This value controls the size of the orbit.\n\n<size=24><b>Reference
-    Axis:</b></size>\nIn KSP, the reference axis used the direction from Kerbin to
-    Kerbol at 0s UT.\n\n<size=24><b>Reference Plane:</b></size>\nIn KSP, the reference
-    plane is the equatorial plane of Kerbin.\n\n<size=24><b>Time Of Periapsis Passage:</b></size>\nThis
-    <b>orbital element</b> controls the position of the satellite in its orbit. By
-    specifying at what time the satellite passes through its <b>periapsis</b>, other
-    properties of the satellite may be calculated for any other time."
+    body at the closest point in the orbit. This value controls the size of the orbit.\nThe
+    value of this element may be found in-game by entering map view, and reading
+    the periapsis radius off the trajectory plot.\n\n<size=24><b>Reference Axis:</b></size>\nIn
+    KSP, the reference axis used the direction from Kerbin to Kerbol at 0s UT.\n\n<size=24><b>Reference
+    Plane:</b></size>\nIn KSP, the reference plane is the equatorial plane of Kerbin.\n\n<size=24><b>Time
+    Of Periapsis Passage:</b></size>\nThis <b>orbital element</b> controls the position
+    of the satellite in its orbit. By specifying at what time the satellite passes
+    through its <b>periapsis</b>, other properties of the satellite may be calculated
+    for any other time.\nThe value of this element may be found in-game by entering
+    map view, reading the time-to-periapsis from the map trajectory, and then adding
+    that value to the current game time. The current game time can be found in the
+    top left corner, or in a more useful format from the debug mentu (Alt + F12 or
+    Crt + Alt + F12)."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
