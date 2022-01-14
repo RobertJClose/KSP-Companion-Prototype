@@ -462,15 +462,16 @@ namespace Tests
         }
 
         [Test]
-        public void PeriapsisPointGetter_ReturnsPeriapsisPoint([Values(0.5, 1.0, 1.5)] double eccentricity)
+        public void PeriapsisPointGetter_MatchesHandwrittenWork([Values(0.5, 1.0, 1.5)] double eccentricity)
         {
             // Arrange
             Orbit orbit = GravitationalBody.Kerbin.DefaultOrbit;
+            orbit.RPE = 1e+8;
             orbit.ECC = eccentricity;
             orbit.INC = 0.5;
-            orbit.LAN = 1.5;
-            orbit.APE = 2.5;
-            Vector3d periapsisPoint = orbit.EccentricityVector.normalized * orbit.RPE;
+            orbit.APE = 1.5;
+            orbit.LAN = 2.5;
+            Vector3d periapsisPoint = new Vector3d(-58056372.01, -65897422.29, 47822457.12);
 
             // Act
             Vector3d actual = orbit.PeriapsisPoint;
