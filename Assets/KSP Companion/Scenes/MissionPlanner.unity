@@ -7482,7 +7482,8 @@ MonoBehaviour:
     <b>orbital element</b> is the separation between the satellite and the gravitational
     body at the closest point in the orbit. This value controls the size of the orbit.\nThe
     value of this element may be found in-game by entering map view, and reading
-    the periapsis radius off the trajectory plot.\n\n<size=24><b>Reference Axis:</b></size>\nIn
+    the periapsis radius off the trajectory plot. Or by selecting \"Maneuver Mode\"
+    in the bottom left corner of the screen.\n\n<size=24><b>Reference Axis:</b></size>\nIn
     KSP, the reference axis used the direction from Kerbin to Kerbol at 0s UT.\n\n<size=24><b>Reference
     Plane:</b></size>\nIn KSP, the reference plane is the equatorial plane of Kerbin.\n\n<size=24><b>Time
     Of Periapsis Passage:</b></size>\nThis <b>orbital element</b> controls the position
