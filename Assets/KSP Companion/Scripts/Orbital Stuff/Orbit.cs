@@ -1078,7 +1078,7 @@ public partial class Orbit : IEquatable<Orbit>
         if (double.IsNaN(trueAnomaly))
             throw new ArgumentException("The true anomaly input angle cannot be NaN", "trueAnomaly");
 
-        double angMomentum = SpecificAngularMomentumVector.magnitude;
+        double angMomentum = Math.Sqrt(Mu * radiusOfPeriapsis * (1.0 + eccentricity));
 
         Vector3d output;
         output.x = -Mu / angMomentum * (Math.Cos(longitudeOfAscendingNode) * (Math.Sin(argumentOfPeriapsis + trueAnomaly) + eccentricity * Math.Sin(argumentOfPeriapsis)) + Math.Sin(longitudeOfAscendingNode) * (Math.Cos(argumentOfPeriapsis + trueAnomaly) + eccentricity * Math.Cos(argumentOfPeriapsis)) * Math.Cos(inclination));
