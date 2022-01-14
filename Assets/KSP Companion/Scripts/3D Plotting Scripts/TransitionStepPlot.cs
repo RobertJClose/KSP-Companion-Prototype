@@ -38,8 +38,14 @@ public class TransitionStepPlot : InspectablePlot
     public void SetPlotPoint(Vector3 position)
     {
         if (position.magnitude < Constants.MaximumPlotDistance)
-            transform.position = position;
+        {
+            // Unity's render engine uses a left-handed coordinate system, whereas KSP uses a right-handed system.
+            // To account for this difference the y-coordinate is flipped before plotting.
+            transform.position = new Vector3(position.x, -position.y, position.z);
+        }
         else
+        {
             transform.position = Vector3.zero;
+        }
     }
 }

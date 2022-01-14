@@ -90,6 +90,10 @@ public class OrbitPlot : InspectablePlot
 
             nextPoint.thickness = Constants.OrbitPlotThickness;
 
+            // Unity's render engine uses a left-handed coordinate system, whereas KSP uses a right-handed system.
+            // To account for this difference each point has its y-coordinate flipped before plotting.
+            nextPoint.point.y = -nextPoint.point.y;
+
             polylinePoints.Add(nextPoint);
             pointIndex++;
         }
