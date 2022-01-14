@@ -32,7 +32,7 @@ public class ManeuverTransitionStep : TransitionStep
         get
         {
             if (CheckAdjacentOrbits())
-                return (float)Mathd.Atan2(ManeuverVelocityChange.Value.y, ManeuverVelocityChange.Value.x);
+                return Mathd.Atan2(ManeuverVelocityChange.Value.y, ManeuverVelocityChange.Value.x);
             else
                 return null;
         }
@@ -43,7 +43,7 @@ public class ManeuverTransitionStep : TransitionStep
         get
         {
             if (CheckAdjacentOrbits())
-                return (float)Mathd.Atan2(ManeuverVelocityChange.Value.z, Mathd.Sqrt(ManeuverVelocityChange.Value.x * ManeuverVelocityChange.Value.x + ManeuverVelocityChange.Value.y * ManeuverVelocityChange.Value.y));
+                return Mathd.Atan2(ManeuverVelocityChange.Value.z, Mathd.Sqrt(ManeuverVelocityChange.Value.x * ManeuverVelocityChange.Value.x + ManeuverVelocityChange.Value.y * ManeuverVelocityChange.Value.y));
             else
                 return null;
         }
