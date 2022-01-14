@@ -577,9 +577,7 @@ public partial class Orbit : IEquatable<Orbit>
     {
         get
         {
-            double magnitude = Math.Sqrt(Mu * radiusOfPeriapsis * (1.0 + eccentricity));
-            Quaterniond rotation = Quaterniond.AngleAxis(inclination.DegValue, Vector3d.right) * Quaterniond.AngleAxis(longitudeOfAscendingNode.DegValue, Vector3d.forward);
-            return magnitude * (rotation * Vector3d.forward);
+            return Vector3d.Cross(TrueAnomaly2Point(0.0), TrueAnomaly2Velocity(0.0));
         }
     }
 
