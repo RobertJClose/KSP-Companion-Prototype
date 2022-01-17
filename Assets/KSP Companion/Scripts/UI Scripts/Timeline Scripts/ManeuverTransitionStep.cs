@@ -49,6 +49,39 @@ public class ManeuverTransitionStep : TransitionStep
         }
     }
 
+    public double? NormalDeltaV
+    {
+        get
+        {
+            if (CheckAdjacentOrbits())
+                return Vector3d.Dot(ManeuverVelocityChange.Value, previousOrbitalStep.Orbit.SpecificAngularMomentumVector.normalized);
+            else
+                return null;
+        }
+    }
+
+    public double? ProgradeDeltaV
+    {
+        get
+        {
+            if (CheckAdjacentOrbits())
+                return Vector3d.Dot(ManeuverVelocityChange.Value, previousOrbitalStep.Orbit.Time2Velocity(transitionTime).normalized);
+            else
+                return null;
+        }
+    }
+
+    public double? RadialDeltaV
+    {
+        get
+        {
+            if (CheckAdjacentOrbits())
+                return Vector3d.Dot(ManeuverVelocityChange.Value, Vector3d.Cross(previousOrbitalStep.Orbit.Time2Velocity(transitionTime), previousOrbitalStep.Orbit.SpecificAngularMomentumVector).normalized);
+            else
+                return null;
+        }
+    }
+
     public override void OnSelect(BaseEventData eventData)
     {
         inspector.Clear();
@@ -59,9 +92,14 @@ public class ManeuverTransitionStep : TransitionStep
         blockOne.AddDoubleProperty("Maneuver Time (s UT)", () => TransitionTime);
 
         InspectorPropertyBlock blockTwo = inspector.AddPropertyBlock();
-        blockTwo.AddDoubleProperty("\u0394V (m/s)",             ValueGetter: () => { if (DeltaV.HasValue) return DeltaV.Value; else return 0.0; },                                                  DisplayCondition: () => DeltaV.HasValue);
-        blockTwo.AddDoubleProperty("Maneuver azimuth (Deg)",    ValueGetter: () => { if (ManeuverAzimuth.HasValue) return ManeuverAzimuth.Value.DegValue; else return 0.0; },                       DisplayCondition: () => ManeuverAzimuth.HasValue);
-        blockTwo.AddDoubleProperty("Maneuver elevation (Deg)",  ValueGetter: () => { if (ManeuverElevation.HasValue) return ManeuverElevation.Value.DegValueMinus180To180Range; else return 0.0; }, DisplayCondition: () => ManeuverElevation.HasValue);
+        blockTwo.AddDoubleProperty("\u0394V (m/s)",             ValueGetter: () => DeltaV.GetValueOrDefault(),              DisplayCondition: () => DeltaV.HasValue);
+        blockTwo.AddDoubleProperty("Maneuver azimuth (Deg)",    ValueGetter: () => ManeuverAzimuth.GetValueOrDefault(),     DisplayCondition: () => ManeuverAzimuth.HasValue);
+        blockTwo.AddDoubleProperty("Maneuver elevation (Deg)",  ValueGetter: () => ManeuverElevation.GetValueOrDefault(),   DisplayCondition: () => ManeuverElevation.HasValue);
+
+        InspectorPropertyBlock blockThree = inspector.AddPropertyBlock();
+        blockThree.AddDoubleProperty("Prograde \u0394V (m/s)",  ValueGetter: () => ProgradeDeltaV.GetValueOrDefault(),  DisplayCondition: () => ProgradeDeltaV.HasValue);
+        blockThree.AddDoubleProperty("Normal \u0394V (m/s)",    ValueGetter: () => NormalDeltaV.GetValueOrDefault(),    DisplayCondition: () => NormalDeltaV.HasValue);
+        blockThree.AddDoubleProperty("Radial \u0394V (m/s)",    ValueGetter: () => RadialDeltaV.GetValueOrDefault(),    DisplayCondition: () => RadialDeltaV.HasValue);
 
         plot.HighlightPlot(true);
     }
