@@ -58,6 +58,9 @@ public class OrbitPlot : InspectablePlot
         // of periapsis, apoapsis, ascending node, descending node, and the lines of apsides and the line of nodes. 
         // The start/endTime arguments may be passed so that it may be determined if a particular point is actually travelled
         // on during the orbital trajectory; points that are not travelled on are coloured grey.
+        // Unity's render engine uses a left-handed coordinate system, whereas KSP uses a right-handed system.
+        // To account for this difference each plot has its y-coordinate flipped before plotting.
+        Vector3 yFlipVec = new Vector3(1f, -1f, 1f);
 
         // 1. Plot the orbital trajectory
         // First get a list of Vector3 points along the orbital trajectory.
@@ -90,9 +93,8 @@ public class OrbitPlot : InspectablePlot
 
             nextPoint.thickness = Constants.OrbitPlotThickness;
 
-            // Unity's render engine uses a left-handed coordinate system, whereas KSP uses a right-handed system.
-            // To account for this difference each point has its y-coordinate flipped before plotting.
-            nextPoint.point.y = -nextPoint.point.y;
+            // Flip the y-coordinate (See note at top of method)
+            nextPoint.point = Vector3.Scale(nextPoint.point, yFlipVec);
 
             polylinePoints.Add(nextPoint);
             pointIndex++;
@@ -123,12 +125,15 @@ public class OrbitPlot : InspectablePlot
         else
             apoapsisPlotPosition = Vector3.zero;
 
+        periapsisPlotPosition = Vector3.Scale(periapsisPlotPosition, yFlipVec);
+        apoapsisPlotPosition = Vector3.Scale(apoapsisPlotPosition, yFlipVec);
+
         periapsisSphere.transform.position = periapsisPlotPosition;
         apoapsisSphere.transform.position = apoapsisPlotPosition;
         periapsisSphere.Radius = nodesRadius;
         apoapsisSphere.Radius = nodesRadius;
-        lineOfApsides.Start = periapsisSphere.transform.position;
-        lineOfApsides.End = apoapsisSphere.transform.position;
+        lineOfApsides.Start = periapsisPlotPosition;
+        lineOfApsides.End = apoapsisPlotPosition;
 
         // 3. Position the spheres for the ascending and descending nodes, and position the line of nodes.
         Vector3 ascendingNodePlotPosition;
@@ -146,12 +151,15 @@ public class OrbitPlot : InspectablePlot
         else
             descendingNodePlotPosition = Vector3.zero;
 
+        ascendingNodePlotPosition = Vector3.Scale(ascendingNodePlotPosition, yFlipVec);
+        descendingNodePlotPosition = Vector3.Scale(descendingNodePlotPosition, yFlipVec);
+
         ascendingNodeSphere.transform.position = ascendingNodePlotPosition;
         descendingNodeSphere.transform.position = descendingNodePlotPosition;
         ascendingNodeSphere.Radius = nodesRadius * 0.75f;
         descendingNodeSphere.Radius = nodesRadius * 0.75f;
-        lineOfNodes.Start = ascendingNodeSphere.transform.position;
-        lineOfNodes.End = descendingNodeSphere.transform.position;
+        lineOfNodes.Start = ascendingNodePlotPosition;
+        lineOfNodes.End = descendingNodePlotPosition;
     }
 
     private bool DetermineIfPointIsTravelledOn(Angled pointTrueAnomaly, Orbit orbit, double? startTime, double? endTime)
