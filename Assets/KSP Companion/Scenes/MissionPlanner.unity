@@ -7415,23 +7415,26 @@ MonoBehaviour:
     Space Program (KSP). In its current state, it is pretty basic and has a somewhat
     restrictive workflow that can make it tough to use in certain scenarios that
     might be expected to arise in game. But it does techincally have everything needed
-    to plan a mission around the home planet Kerbin. \n\nThe basic workflow of the
-    tool allows you to solve this problem: You have a satellite in a known orbit
-    around Kerbin, and there is a final orbit that you would like to place that satellite
-    into. This tool allows you to specify a direct transfer orbit to go straight
-    from the initial orbit to the final orbit. Alternatively, you may have some intermediate
-    orbits that you wish to travel to first, or you may know of some intermediate
-    orbits that would be more efficient to transfer into first rather than going
-    directly. This tool allows you to specify those intermediate orbits and calculate
-    the transfer orbits between those as well. By inspecting the calculated maneuvers
-    you can see all the information needed to perform the maneuvers in KSP. \n\nCurrently,
-    the transfer orbits are specified by the times at which the maneuvers between
-    the two orbits will occur, which is internally the most simple method, but isn't
-    very user friendly and makes it very tricky to find transfer orbits that are
-    optimally efficient. It also deceptively means that transfer orbits also depend
-    on the 'time of periapsis passage' orbital elements of the surrounding orbits
-    (see below), which is not very intuitive. The plan in the future is to make this
-    easier to use via a 'pork-chop plot'.\n\n<size=32><b>Glossary of Terms:</b></size>\n<size=24><b>Apoapsis:</b></size>\nThis
+    to plan a mission around the home planet Kerbin. \n\nThe most basic problem you
+    can solve with the tool is probably this:\nYou have a satellite already in orbit
+    around Kerbin, and there is another orbit you would like the satellite to move
+    to - perhaps to rendezvous with another satellite. By entering the current orbit
+    as the \"initial orbit\", and the target as the \"final orbit\", the tool will
+    display the two orbits on the screen. By clicking on the '+' button, the tool
+    may then calculate a transfer orbit to move the satellite from one orbit to the
+    next. Details about the transfer may be adjusted, and the calculated maneuvers
+    may be inspected to find out what maneuvers are necessary in-game. \n\nA more
+    efficient way of travelling between the initial and final orbits may be possible
+    by specifying one or more intermediate orbits, but knowing how to find these
+    needs a bit of intuition about orbital mechanics and so may be hard to find given
+    the current UI.\n\nAnother challenge for the user is that the transfer orbits
+    are specified by the times at which the maneuvers between the two orbits will
+    occur. Internally this is the most simple method, but isn't very user friendly
+    and makes it very tricky to find transfer orbits that are optimally efficient.
+    It also deceptively means that transfer orbits also depend on the 'time of periapsis
+    passage' orbital elements of the surrounding orbits (see below), which is not
+    very intuitive. The plan in the future is to make this easier to use via a 'pork-chop
+    plot'.\n\n<size=32><b>Glossary of Terms:</b></size>\n<size=24><b>Apoapsis:</b></size>\nThis
     is the point in the orbit where the satellite has the maximum separation from
     the attracting gravitational body. In this tool, the apoapsis is shown as a red
     sphere when an orbit is selected.\n\n<size=24><b>Argument of Periapsis:</b></size>\nThis
@@ -7482,8 +7485,9 @@ MonoBehaviour:
     <b>orbital element</b> is the separation between the satellite and the gravitational
     body at the closest point in the orbit. This value controls the size of the orbit.\nThe
     value of this element may be found in-game by entering map view, and reading
-    the periapsis radius off the trajectory plot. Or by selecting \"Maneuver Mode\"
-    in the bottom left corner of the screen.\n\n<size=24><b>Reference Axis:</b></size>\nIn
+    the periapsis radius off the trajectory plot - or by selecting \"Maneuver Mode\"
+    in the bottom left corner of the screen. Then those values must be added to the
+    radius of the body being orbited.\n\n<size=24><b>Reference Axis:</b></size>\nIn
     KSP, the reference axis used the direction from Kerbin to Kerbol at 0s UT.\n\n<size=24><b>Reference
     Plane:</b></size>\nIn KSP, the reference plane is the equatorial plane of Kerbin.\n\n<size=24><b>Time
     Of Periapsis Passage:</b></size>\nThis <b>orbital element</b> controls the position
