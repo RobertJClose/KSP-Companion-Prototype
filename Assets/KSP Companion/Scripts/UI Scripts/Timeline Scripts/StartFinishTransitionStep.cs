@@ -18,14 +18,14 @@ public class StartFinishTransitionStep : TransitionStep
             // Start step.
             inspector.SetHeader("Mission Start Time:");
             InspectorPropertyBlock blockOne = inspector.AddPropertyBlock();
-            blockOne.AddDoubleProperty("Transition Time (s UT)", () => TransitionTime, (double newTime) => TransitionTime = newTime);
+            blockOne.AddDoubleProperty("Start Time (s UT)", () => TransitionTime, (double newTime) => TransitionTime = newTime);
         }
         else if (IndexInTimeline == missionTimeline.StepCount - 1)
         {
             // Finish step.
-            inspector.SetHeader("Mission End Time:");
+            inspector.SetHeader("Mission Finish Time:");
             InspectorPropertyBlock blockOne = inspector.AddPropertyBlock();
-            blockOne.AddDoubleProperty("Transition Time (s UT)", () => TransitionTime, (double newTime) => TransitionTime = newTime);
+            blockOne.AddDoubleProperty("Finish Time (s UT)", () => TransitionTime, (double newTime) => TransitionTime = newTime);
         }
 
         plot.HighlightPlot(true);
