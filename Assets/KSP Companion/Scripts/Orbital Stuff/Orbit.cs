@@ -702,7 +702,10 @@ public partial class Orbit : IEquatable<Orbit>
             }
             else
             {
-                throw new NotImplementedException();
+                // In this case the orientation of the transfer orbit is not well defined. Ideally the orbit that
+                // results in the lowest deltaV would be returned, however I have found this a tricky problem to solve.
+                // To match the documentation comment, we instead ignore this problem and just return the transfer orbit
+                // that matches the orientation of the initial orbit.
             }
         }
 
