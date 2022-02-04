@@ -7414,7 +7414,7 @@ MonoBehaviour:
   m_text: "This tool is designed to make it easier to plan missions in the game Kerbal
     Space Program (KSP). In its current state, it is pretty basic and has a somewhat
     restrictive workflow that can make it tough to use in certain scenarios that
-    might be expected to arise in game. But it does techincally have everything needed
+    might be expected to arise in game. But it does technically have everything needed
     to plan a mission around the home planet Kerbin. \n\nThe most basic problem you
     can solve with the tool is probably this:\nYou have a satellite already in orbit
     around Kerbin, and there is another orbit you would like the satellite to move
