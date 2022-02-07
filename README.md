@@ -2,8 +2,14 @@
 
 This program is designed to be used alongside the game Kerbal Space Program (KSP). Personally, when I played the game and used trial-and-error to find successful designs, I felt a bit like I was cheating. I wanted to play the game with the same stakes as a real space agency. You have to know before launch that your rocket is big enough, but you can't just waste resources when it comes to expensive rocketry. The goal is that it should be possible for a player to launch a mission with full confidence that the spacecraft they've built will be able to complete all the mission objectives - without unnecessary waste. This first prototype allows for the planning of a basic mission around the game's home planet Kerbin, and has all the core mechanisms needed for a final mission design tool.
 
+![](/Other/Images/ToolScreenshot.png)
+
 ## For Employers
-This project has been significantly larger in scale and complexity compared to my previous coding experiences; I estimate I used 460 A5 notebook pages from the start to v1.0.0. This project involved many firsts for me, and has taught me several valuable lessons in software design and engineering. Before writing any code at all I had to spend time thinking about what the user experience would be, and so how the program would be structured. I looked into different software design tools such as UML to help me make sense of what the goals of the program were, and how they could be achieved. \
+This project has been significantly larger in scale and complexity compared to my previous coding experiences; I estimate I used 460 A5 notebook pages from the start to v1.0.0. An outline of some of the features of this tool is:
+* Data serialisation for saving and loading
+* 
+
+This project involved many firsts for me, and has taught me several valuable lessons in software design and engineering. Before writing any code at all I had to spend time thinking about what the user experience would be, and so how the program would be structured. I looked into different software design tools such as UML to help me make sense of what the goals of the program were, and how they could be achieved. \
 This process also inspired me to read "A Philosophy Of Software Design" by Ousterhout for some guidance and a framework to assess the choices I made in the design. Even though I knew I would be the sole developer, I felt that it would be best if I coded this project as though other developers could come along and have to build on top of my work without prior experience in orbital mechanics or my code. 
 
 ### The Highlights
@@ -19,7 +25,7 @@ Despite the issues, I'm glad for the experience of having to work with this clas
 ### The Main Lessons Learned
 The completion of this project demonstrated through experience some software engineering principles that I have read about in books and articles around the web. For example, I found that a small misalignment between the interface of a class and the abstraction the class is meant to represent could lead to unnecessarily complex problems arising in other modules when they try to use the class. \
 I discovered the joy of proper testing during this project - this is something I found a bit of a chore when I first explored it but by the end I loved the confidence that my testing provided. \
-I could make similar remarks on the writing of comments - by the end I enjoyed the experience of knowing my work in documenting effectively would pay off later when working with the code again later. \
+I could make similar remarks on the writing of comments - by the end I enjoyed the experience of knowing my work in documenting effectively would pay off later when working with the code again later.
 
 I'd be happy to discuss this project in more detail, and I'm excited to further develop my software development skills in a professional collaborative environment.
 
