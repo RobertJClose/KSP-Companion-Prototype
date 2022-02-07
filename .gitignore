@@ -58,3 +58,8 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+# Asset Store Stuff
+/[Aa]ssets/CleanFlatIcon
+/[Aa]ssets/CleanFlatIcon.meta
+/[Aa]ssets/Shapes
+/[Aa]ssets/Shapes.meta
