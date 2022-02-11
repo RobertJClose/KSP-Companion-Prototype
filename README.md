@@ -22,19 +22,14 @@ An aspect of the program that really needs a re-do is the MissionTimeline class 
 The MissionTimeline class contains a list of TimelineStep objects that represent the steps needed to achieve the mission. This class is important, but it ended up with several issues. For brevity, the fundamental problem is that the MissionTimeline class represents several different abstractions - it's a mix of UI work and various data management tasks all at once. It evolved this way due to needs of the program being met with quick ad-hoc solutions at times, and MissionTimeline's central role drew those solutions towards it. I was aware of the growing problem, particularly as my understanding of data structures deepened considerably since the first version of this class. I decided it was tolerable for the prototype, but it is something worthy of deliberate design in the future. \
 Despite the issues, I'm glad for the experience of having to work with this class and its problems for the sake of understanding acronyms like SOLID and the need for what Ousterhout calls 'strategic programming'.
 
-Try it out [here](https://play.unity.com/mg/other/webgl-builds-148518).
-
 ### Conclusion
 The completion of this project demonstrated through experience some software engineering principles that I have read about in books and articles around the web. For example, I found that a small misalignment between the interface of a class and the abstraction the class is meant to represent could lead to unnecessarily complex problems arising in other modules when they try to use the class. \
 I discovered the joy of proper testing during this project - this is something I found a bit of a chore when I first explored it but by the end I loved the confidence that my testing provided. I could make similar remarks on the writing of comments - by the end I enjoyed the experience of knowing my work in documenting effectively would pay off later when working with the code again later. \
 Finally, this project was also an opportunity to practise skills beyond just coding. Knowing how important source control is I focused on writing good commits with helpful messages, and tried to use branches and issues effectively. 
 
-
 I'd be happy to discuss this project in more detail, and I'm excited to further develop my software development skills in a professional collaborative environment.
 
-## Style guide
-
-[This](https://github.com/RobertJClose/UnityStyleGuide) is my style guide.
+Try it out [here](https://play.unity.com/mg/other/webgl-builds-148518).
 
 ## Credits:
 * Most of the orbital mechanics knowledge was learned from Prussing and Conway's Orbital Mechanics textbook, and from [this](http://braeunig.us/space/index_top.htm) website.
