@@ -27,7 +27,12 @@ The completion of this project demonstrated through experience some software eng
 I discovered the joy of proper testing during this project - this is something I found a bit of a chore when I first explored it but by the end I loved the confidence that my testing provided. I could make similar remarks on the writing of comments - by the end I enjoyed the experience of knowing my work in documenting effectively would pay off later when working with the code again later. \
 Finally, this project was also an opportunity to practise skills beyond just coding. Knowing how important source control is I focused on writing good commits with helpful messages, and tried to use branches and issues effectively. 
 
+
 I'd be happy to discuss this project in more detail, and I'm excited to further develop my software development skills in a professional collaborative environment.
+
+## Style guide
+
+[This](https://github.com/RobertJClose/UnityStyleGuide) is my style guide.
 
 ## Credits:
 * Most of the orbital mechanics knowledge was learned from Prussing and Conway's Orbital Mechanics textbook, and from [this](http://braeunig.us/space/index_top.htm) website.
