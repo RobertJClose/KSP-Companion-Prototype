@@ -1,4 +1,4 @@
-# KSP Companion
+# [KSP Companion](https://play.unity.com/mg/other/webgl-builds-148518)
 
 This program is designed to be used alongside the game Kerbal Space Program (KSP) - a space flight simulation game with realistic orbital physics. Personally, when I played the game and used trial-and-error to find successful designs, I felt a bit like I was cheating. I wanted to play the game with the same stakes as a real space agency. You have to know before launch that your rocket is big enough, but you can't just waste resources when it comes to expensive rocketry. The goal is that it should be possible for a player to launch a mission with full confidence that the spacecraft they've built will be able to complete all the mission objectives - without unnecessary waste. This first prototype allows for the planning of a basic mission around the game's home planet Kerbin, and has all the core mechanisms needed for a final mission design tool.
 
@@ -21,6 +21,8 @@ Ideally many more classes in the program would have received a similar level of 
 An aspect of the program that really needs a re-do is the MissionTimeline class and the related TimelineStep class hierarchy. 
 The MissionTimeline class contains a list of TimelineStep objects that represent the steps needed to achieve the mission. This class is important, but it ended up with several issues. For brevity, the fundamental problem is that the MissionTimeline class represents several different abstractions - it's a mix of UI work and various data management tasks all at once. It evolved this way due to needs of the program being met with quick ad-hoc solutions at times, and MissionTimeline's central role drew those solutions towards it. I was aware of the growing problem, particularly as my understanding of data structures deepened considerably since the first version of this class. I decided it was tolerable for the prototype, but it is something worthy of deliberate design in the future. \
 Despite the issues, I'm glad for the experience of having to work with this class and its problems for the sake of understanding acronyms like SOLID and the need for what Ousterhout calls 'strategic programming'.
+
+Try it out [here](https://play.unity.com/mg/other/webgl-builds-148518).
 
 ### Conclusion
 The completion of this project demonstrated through experience some software engineering principles that I have read about in books and articles around the web. For example, I found that a small misalignment between the interface of a class and the abstraction the class is meant to represent could lead to unnecessarily complex problems arising in other modules when they try to use the class. \
