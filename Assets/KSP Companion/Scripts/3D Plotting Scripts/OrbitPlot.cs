@@ -77,7 +77,8 @@ public class OrbitPlot : InspectablePlot
             Vector3 rescaledPoint = (Vector3)(point * Constants.PlotRescaleFactor);
 
             // If a point is too far away, don't add it to the plot.
-            if (rescaledPoint.magnitude > Constants.MaximumPlotDistance)
+            if (rescaledPoint.magnitude > Constants.MaximumPlotDistance ||
+                float.IsNaN(rescaledPoint.magnitude))
             {
                 pointIndex++;
                 continue;
