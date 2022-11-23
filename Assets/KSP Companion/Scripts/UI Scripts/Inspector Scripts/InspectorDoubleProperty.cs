@@ -69,7 +69,7 @@ public class InspectorDoubleProperty : InspectorProperty
 
     public override void UpdateDisplayedValue()
     {
-        inputFieldComponent.text = ValueGetter?.Invoke().ToString();
+        inputFieldComponent.text = ValueGetter?.Invoke().ToString("N2");
 
         if (ValueSetter == null || !IsEditable)
             inputFieldComponent.interactable = false;
