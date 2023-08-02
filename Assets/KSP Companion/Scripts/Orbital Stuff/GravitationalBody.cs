@@ -42,7 +42,7 @@ public class GravitationalBody : System.IEquatable<GravitationalBody>
     #region Constructors
 
     // Initialises a new GravitationalBody object.
-    private GravitationalBody(string nameOfBody, double gravitationalParameter, double radius, double siderealRotationalPeriod, Angled initialRotation, Orbit orbit)
+    public GravitationalBody(string nameOfBody, double gravitationalParameter, double radius, double siderealRotationalPeriod, Angled initialRotation, Orbit orbit)
     {
         this.nameOfBody = nameOfBody;
         this.gravitationalParameter = gravitationalParameter;

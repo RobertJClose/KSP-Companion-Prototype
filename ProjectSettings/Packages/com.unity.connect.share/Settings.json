@@ -21,7 +21,7 @@
             {
                 "type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
                 "key": "buildOutputDirList",
-                "value": "{\"m_Value\":\"C:/Users/robbi/UnityProjects/KSP-Companion-Prototype/WebGL Builds/13-59_23-11-22;C:/Users/robbi/UnityProjects/KSP-Companion-Prototype/WebGL Builds;;;;;;;;\"}"
+                "value": "{\"m_Value\":\"C:/Users/robbi/robbo-net/static/unityWebGLBuilds/ToyBuild;C:/Users/robbi/UnityProjects/KSP-Companion-Prototype/WebGL Builds/ToyBuild;C:/Users/robbi/UnityProjects/KSP-Companion-Prototype/WebGL Builds/13-59_23-11-22;C:/Users/robbi/UnityProjects/KSP-Companion-Prototype/WebGL Builds;;;;;;\"}"
             }
         ]
     }

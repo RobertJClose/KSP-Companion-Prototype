@@ -1,0 +1,17 @@
+{
+    "name": "RobboNetToy",
+    "rootNamespace": "",
+    "references": [
+        "GUID:71c05d64325b3714d9fdd52e956cb8d5",
+        "GUID:13a6fdc14ca9df84eb8019bc66fa9e5d"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
